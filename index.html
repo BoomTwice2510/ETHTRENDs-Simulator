@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#06090c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ETHTRENDs Simulator">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<title>ETHTRENDs — Historical Simulator</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#000000;--panel:#000000;--panel2:#030303;--panel3:#050505;--border:#19dfff;--text:#f4f7fa;--muted:#8a929a;--cyan:#20dfff;--green:#20e6a0;--red:#ff4d6d;--amber:#ff9fc0;--pink:#ff9fc0;--shadow:0 12px 35px rgba(0,0,0,.55)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}.app{width:100%;max-width:1180px;margin:auto;padding:18px 18px 50px}.top{display:flex;align-items:center;justify-content:space-between;padding:4px 0 16px}.brand{font:800 13px monospace;letter-spacing:.08em}.live{font:700 9px monospace;color:var(--green);border:1px solid rgba(32,223,255,.55);border-radius:999px;padding:6px 8px}.hero{background:linear-gradient(145deg,#0c1319,#090e13);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}.hero h1{font-size:23px;line-height:1.15;margin:0 0 7px}.hero p{font-size:12px;line-height:1.5;color:var(--muted);margin:0}.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:12px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:15px;min-width:0}.input-panel{position:sticky;top:12px;align-self:start}.title{font:800 11px monospace;letter-spacing:.09em;color:var(--text);margin-bottom:13px}.field{margin:12px 0}.field label{display:block;color:var(--muted);font:10px monospace;text-transform:uppercase;margin-bottom:6px}.field input{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:11px 12px;outline:0}.field input:focus{border-color:var(--cyan)}.currency{display:grid;grid-template-columns:1fr 1fr;gap:6px}.currency button{border:1px solid var(--border);background:var(--panel2);color:var(--muted);border-radius:7px;padding:10px;font-weight:800;font-size:12px}.currency button.active{border-color:var(--cyan);color:var(--cyan);box-shadow:inset 0 0 0 1px rgba(32,215,255,.12)}.run{width:100%;margin-top:9px;border:1px solid var(--cyan);background:var(--cyan);color:#031016;border-radius:7px;padding:12px;font-weight:900;font-size:12px;cursor:pointer}.run:disabled{opacity:.55;cursor:wait}.hint,.disclaimer{font:10px/1.55 monospace;color:var(--muted);margin-top:11px}.error{display:none;background:#291017;border:1px solid #66313d;color:#ff9aaa;border-radius:7px;padding:10px;font:10px/1.5 monospace;white-space:pre-wrap;margin-bottom:10px}.empty{text-align:center;color:var(--muted);padding:80px 20px;font-size:12px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:3px 0 10px}.section-head .title{margin:0}.badge{font:9px monospace;color:var(--muted);white-space:nowrap}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.metric{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:11px;min-width:0}.metric small{display:block;color:var(--muted);font:8px monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.metric strong{display:block;margin-top:6px;font:800 16px monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pos{color:var(--green)!important}.neg{color:var(--red)!important}.cyan{color:var(--cyan)!important}.chartbox{height:285px;margin:12px -2px 2px}.list{display:flex;flex-direction:column;gap:6px}.accordion{border:1px solid var(--border);background:var(--panel3);border-radius:8px;overflow:hidden}.acc-head{width:100%;display:grid;grid-template-columns:1.1fr 1fr 1fr 30px;align-items:center;gap:7px;text-align:left;border:0;background:transparent;color:var(--text);padding:11px 10px;cursor:pointer}.acc-head:active{background:#111c24}.acc-main{font:800 11px monospace}.acc-sub{font:9px monospace;color:var(--muted)}.acc-value{text-align:right;font:800 11px monospace}.chev{color:var(--muted);font-size:15px;text-align:right;transition:.18s}.accordion.open .chev{transform:rotate(180deg);color:var(--cyan)}.acc-body{display:none;border-top:1px solid var(--border);padding:10px}.accordion.open .acc-body{display:block}.details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.detail{background:#0a1016;border:1px solid var(--border);border-radius:6px;padding:8px}.detail small{display:block;color:var(--muted);font:8px monospace}.detail b{display:block;margin-top:4px;font:800 10px monospace}.trade-log-head{grid-template-columns:1fr auto 25px}.trade-head{grid-template-columns:42px 1fr 1fr 30px}.side{font-weight:900}.side.long{color:var(--green)}.side.short{color:var(--red)}.trade-pnl{text-align:right;font:800 10px monospace}.trade-times{font:9px monospace;color:var(--muted);line-height:1.5}.footer-note{font:9px/1.5 monospace;color:#687680;margin-top:11px}
+@media(max-width:900px){.app{max-width:720px;padding:12px 12px 35px}.top{padding:4px 2px 12px}.brand{font-size:11px}.hero{padding:15px;border-radius:10px}.hero h1{font-size:20px}.layout{grid-template-columns:1fr}.input-panel{position:static}.panel{padding:12px;border-radius:10px}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:10px}.metric strong{font-size:15px}.chartbox{height:235px}.details-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){body{padding-bottom:env(safe-area-inset-bottom)}.app{padding:8px 9px 28px}.top{position:sticky;top:0;z-index:20;background:rgba(6,9,12,.94);backdrop-filter:blur(12px);margin:0 -9px;padding:12px 11px;border-bottom:1px solid rgba(27,41,52,.7)}.brand{font-size:10px}.live{font-size:8px;padding:5px 7px}.hero{margin-top:9px;margin-bottom:9px;padding:14px}.hero h1{font-size:19px}.hero p{font-size:11px}.layout{gap:9px}.panel{padding:11px}.input-panel{box-shadow:none}.field{margin:10px 0}.field input{padding:12px;font-size:15px}.currency button{padding:11px}.run{padding:13px}.hint,.disclaimer{font-size:9px}.section-head{margin-top:1px}.title{font-size:10px}.badge{font-size:8px}.summary{gap:6px}.metric{padding:10px 9px;border-radius:7px}.metric small{font-size:7px}.metric strong{font-size:14px}.chartbox{height:205px;margin-top:8px}.acc-head{grid-template-columns:1fr auto 25px;padding:12px 9px}.acc-sub{margin-top:3px}.acc-value{font-size:10px}.trade-log-head{padding:13px 9px}.trade-head{grid-template-columns:42px 1fr 25px}.trade-pnl{grid-column:2;text-align:left;margin-top:-3px}.details-grid{gap:5px}.detail{padding:8px}.detail small{font-size:7px}.detail b{font-size:9px}.footer-note{font-size:8px}}
+
+/* BLACK / CYAN / LIGHT-PINK APP PALETTE */
+.hero,.panel,.metric,.accordion,.acc-head,.detail,.trade-log-accordion,.chart-wrap,.month-row,.list .accordion{background:#000!important}
+.hero,.panel,.metric,.accordion,.chart-wrap{border-color:rgba(32,223,255,.42)!important}
+.input,.select,input,select{background:#000!important;border-color:rgba(32,223,255,.48)!important;color:#f4f7fa!important}
+.acc-head:hover,.metric:hover,.month-row:hover{border-color:rgba(255,159,192,.70)!important}
+.pill,.badge{border-color:rgba(255,159,192,.55)!important;color:#ff9fc0!important}
+.long,.pos,.profit,.green{color:#20e6a0!important}
+.short,.neg,.loss,.red{color:#ff4d6d!important}
+button.primary,button.run{background:#20dfff!important;color:#000!important}
+.chev{color:#ff9fc0!important}
+.section-head .title,.title{color:#f4f7fa}
+::selection{background:#20dfff;color:#000}
+
+.disclaimer-card{margin-top:16px;padding:15px;background:#000;border:1px solid #ff9fc0;border-left:3px solid #20dfff;border-radius:9px;box-shadow:inset 0 0 24px rgba(255,159,192,.035)}.disclaimer-title{color:#ff9fc0;font:800 11px/1.35 monospace;letter-spacing:.07em;margin-bottom:9px}.disclaimer-text{color:#aeb9c2;font:10px/1.65 monospace;margin-top:7px}.disclaimer-text strong{color:#f3f6f8}.disclaimer-warning{margin-top:11px;padding-top:10px;border-top:1px solid rgba(32,223,255,.3);color:#20dfff;font:800 9px/1.5 monospace;letter-spacing:.03em}@media(max-width:520px){.disclaimer-card{margin-top:13px;padding:12px}.disclaimer-title{font-size:9px}.disclaimer-text{font-size:9px;line-height:1.65}.disclaimer-warning{font-size:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+  <div class="brand"><img src="/icons/icon-192.png" alt="ETHTRENDs logo" style="width:28px;height:28px;border-radius:50%;vertical-align:middle;margin-right:7px">ETHTRENDs / HISTORICAL SIMULATOR</div>
+  <div style="display:flex;align-items:center;gap:6px">
+    <button id="installBtn" type="button" style="display:none;border:1px solid #20dfff;background:#000;color:#20dfff;border-radius:999px;padding:6px 9px;font:800 8px monospace;cursor:pointer">INSTALL APP</button>
+    <div class="live">REAL BOT DATA</div>
+  </div>
+</header>
+  <section class="hero"><h1>From 01.01.2026 → Today</h1><p>One complete historical simulation using the actual ETHTRENDs completed signal-to-signal trade record.</p></section>
+  <div class="layout">
+    <aside class="panel input-panel">
+      <div class="title">SIMULATION INPUT</div>
+      <div class="field"><label>Starting Capital (USD)</label><input id="capital" type="number" min="0.01" step="0.01" value="100"></div>
+      <div class="field"><label>Position Size (ETH)</label><input id="size" type="number" min="0.0001" step="0.0001" value="0.10"></div>
+      <div class="field"><label>Leverage</label><input id="leverage" type="number" min="1" max="125" step="1" value="10"></div>
+      <div class="field"><label>Display Currency</label><div class="currency"><button id="usd" class="active" onclick="setCurrency('USD')">$ USD</button><button id="inr" onclick="setCurrency('INR')">₹ INR</button></div></div>
+      <div class="field"><label>USD → INR Rate</label><input id="fx" type="number" min="1" step="0.01" value="102"></div>
+      <button id="run" class="run" onclick="runSimulation()">RUN FULL SIMULATION</button>
+      <div class="hint">All history is simulated from the real backend. No demo trades or hard-coded results are generated here.</div>
+          </aside>
+    <main class="panel">
+      <div id="error" class="error"></div>
+      <div id="empty" class="empty">Enter your assumptions and run the full historical simulation.</div>
+      <div id="results" style="display:none">
+        <div class="section-head"><div class="title">ALL-TIME RESULT</div><span id="scope" class="badge"></span></div>
+        <div class="summary">
+          <div class="metric"><small>STARTING CAPITAL</small><strong id="starting"></strong></div><div class="metric"><small>FINAL BALANCE</small><strong id="final"></strong></div><div class="metric"><small>NET P&L</small><strong id="pnl"></strong></div><div class="metric"><small>TOTAL ROI</small><strong id="roi"></strong></div>
+          <div class="metric"><small>EXECUTED TRADES</small><strong id="trades"></strong></div><div class="metric"><small>WIN RATE</small><strong id="winrate"></strong></div><div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div>
+        </div>
+        <div class="chartbox"><canvas id="equity"></canvas></div>
+
+        <div class="section-head"><div class="title">MONTH-BY-MONTH RETURN</div><span class="badge">tap a month to expand</span></div>
+        <div id="months" class="list"></div>
+
+        <div class="section-head" style="margin-top:20px">
+          <div class="title">ACTUAL SIMULATED TRADE LOG</div>
+          <span class="badge" id="tradeCount"></span>
+        </div>
+        <div class="accordion trade-log-accordion" id="tradeLogAccordion">
+          <button class="acc-head trade-log-head" onclick="toggle(this)">
+            <div>
+              <div class="acc-main">ALL TRADES</div>
+              <div class="acc-sub">Tap to view the complete trade history</div>
+            </div>
+            <div class="acc-value" id="tradeLogSummary">129 trades</div>
+            <div class="chev">⌄</div>
+          </button>
+          <div class="acc-body">
+            <div id="tradeLog" class="list"></div>
+          </div>
+        </div>
+        <div class="footer-note">Trade history is collapsed by default. Tap ALL TRADES, then tap any trade to inspect its full details.</div>
+
+        <div class="disclaimer-card">
+          <div class="disclaimer-title">⚠ HISTORICAL PERFORMANCE ≠ FUTURE RESULTS</div>
+          <div class="disclaimer-text">This simulator shows how the <strong>ETH Trends historical signal record</strong> would have performed under the assumptions you entered. It is a <strong>historical scenario only</strong> — not a prediction, promise, or guarantee of future returns.</div>
+          <div class="disclaimer-text">Past performance does not guarantee future performance. Actual results may differ materially because of market conditions, volatility, liquidity, fees, funding, slippage, execution price, leverage, position sizing, missed trades and other factors.</div>
+          <div class="disclaimer-warning">NO GUARANTEED RETURNS&nbsp;&nbsp; • &nbsp;&nbsp;NOT FINANCIAL ADVICE&nbsp;&nbsp; • &nbsp;&nbsp;HISTORICAL DATA ONLY</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+let currency='USD',chart=null,lastData=null;
+const $=id=>document.getElementById(id), num=x=>Number(x||0);
+function setCurrency(c){currency=c;$('usd').classList.toggle('active',c==='USD');$('inr').classList.toggle('active',c==='INR');if(lastData)render(lastData)}
+function fx(){return currency==='INR'?num($('fx').value):1}
+function money(x){return (currency==='INR'?'₹':'$')+(num(x)*fx()).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
+function signedMoney(x){return (num(x)>=0?'+':'-')+money(Math.abs(num(x)))}
+function pct(x){return (num(x)>=0?'+':'')+num(x).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+'%'}
+function cls(x){return num(x)>=0?'pos':'neg'}
+function toggle(el){el.closest('.accordion').classList.toggle('open')}
+function dateKey(s){return String(s||'').slice(0,7)}
+function groupMonths(trades,starting){const groups={};let prior=starting;for(const t of trades){const key=dateKey(t.exitTime);if(!/^\d{4}-\d{2}$/.test(key))continue;if(!groups[key])groups[key]={month:key,openBalance:prior,pnl:0,closeBalance:prior,trades:0,wins:0,losses:0};const g=groups[key],p=num(t.pnl);g.pnl+=p;g.closeBalance=num(t.balanceAfter);g.trades++;if(p>0)g.wins++;else if(p<0)g.losses++;prior=num(t.balanceAfter)}return Object.values(groups).sort((a,b)=>a.month.localeCompare(b.month)).map(g=>({...g,returnPct:g.openBalance>0?g.pnl/g.openBalance*100:0,winRate:g.trades?g.wins/g.trades*100:0}))}
+function renderMonths(months){$('months').innerHTML=months.map((g,i)=>`<div class="accordion"><button class="acc-head" onclick="toggle(this)"><div><div class="acc-main">${g.month}</div><div class="acc-sub">${g.trades} trades • ${g.wins}W / ${g.losses}L</div></div><div class="acc-value ${cls(g.pnl)}">${signedMoney(g.pnl)}<br><span style="font-size:9px">${pct(g.returnPct)}</span></div><div class="chev">⌄</div></button><div class="acc-body"><div class="details-grid"><div class="detail"><small>OPEN BALANCE</small><b>${money(g.openBalance)}</b></div><div class="detail"><small>CLOSE BALANCE</small><b>${money(g.closeBalance)}</b></div><div class="detail"><small>MONTH P&amp;L</small><b class="${cls(g.pnl)}">${signedMoney(g.pnl)}</b></div><div class="detail"><small>WIN RATE</small><b>${g.winRate.toFixed(1)}%</b></div></div></div></div>`).join('')}
+function renderTrades(trades){
+  $('tradeCount').textContent=`${trades.length} records`;
+  $('tradeLogSummary').textContent=`${trades.length} trades`;
+  $('tradeLog').innerHTML=trades.map(t=>{
+    const side=String(t.side||'').toUpperCase(),p=num(t.pnl);
+    return `<div class="accordion">
+      <button class="acc-head trade-head" onclick="toggle(this)">
+        <div class="side ${side==='LONG'?'long':'short'}">#${t.tradeNumber??''} ${side}</div>
+        <div class="trade-times">${t.entryTime||''}<br>→ ${t.exitTime||''}</div>
+        <div class="trade-pnl ${cls(p)}">${signedMoney(p)}</div>
+        <div class="chev">⌄</div>
+      </button>
+      <div class="acc-body">
+        <div class="details-grid">
+          <div class="detail"><small>ENTRY PRICE</small><b>${num(t.entryPrice).toFixed(2)}</b></div>
+          <div class="detail"><small>EXIT PRICE</small><b>${num(t.exitPrice).toFixed(2)}</b></div>
+          <div class="detail"><small>P&amp;L</small><b class="${cls(p)}">${signedMoney(p)}</b></div>
+          <div class="detail"><small>BALANCE AFTER</small><b>${money(t.balanceAfter)}</b></div>
+          <div class="detail"><small>REQUIRED MARGIN</small><b>${money(t.requiredMargin)}</b></div>
+          <div class="detail"><small>STATUS</small><b>${t.status||'—'}</b></div>
+        </div>
+      </div>
+    </div>`
+  }).join('');
+  $('tradeLogAccordion').classList.remove('open');
+}
+function render(d){lastData=d;const trades=d.trades||[],months=groupMonths(trades,num(d.startingCapital));$('empty').style.display='none';$('results').style.display='block';$('scope').textContent=`${trades.length} returned trades • ALL HISTORY`;$('starting').textContent=money(d.startingCapital);$('final').textContent=money(d.finalBalance);$('pnl').textContent=signedMoney(d.netPnl);$('pnl').className=cls(d.netPnl);$('roi').textContent=pct(d.roiPercent);$('roi').className=cls(d.roiPercent);$('trades').textContent=d.executedTrades??0;$('winrate').textContent=num(d.winRate).toFixed(2)+'%';$('best').textContent=signedMoney(d.bestTradePnl);$('best').className=cls(d.bestTradePnl);$('dd').textContent=money(d.maxDrawdown)+' ('+num(d.maxDrawdownPercent).toFixed(2)+'%)';$('dd').className='neg';renderMonths(months);renderTrades(trades);const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(125,140,152,.08)'},ticks:{color:'#7d8c98',maxTicksLimit:8}},y:{grid:{color:'rgba(125,140,152,.08)'},ticks:{color:'#7d8c98',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})}
+async function runSimulation(){const btn=$('run'),err=$('error');err.style.display='none';btn.disabled=true;btn.textContent='RUNNING...';try{const payload={startingCapital:num($('capital').value),positionSize:num($('size').value),leverage:parseInt($('leverage').value,10),period:'all'};if(payload.startingCapital<=0||payload.positionSize<=0||payload.leverage<1)throw new Error('Enter valid capital, position size and leverage.');const r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw new Error(JSON.stringify(d,null,2));render(d)}catch(e){err.textContent=e.message;err.style.display='block'}finally{btn.disabled=false;btn.textContent='RUN FULL SIMULATION'}}
+$('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (installBtn) installBtn.style.display = "block";
+});
+if (installBtn) {
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.style.display = "none";
+  });
+}
+window.addEventListener("appinstalled", () => {
+  if (installBtn) installBtn.style.display = "none";
+});
+</script>
+
+</body>
+</html>

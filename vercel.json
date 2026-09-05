@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/simulate",
+      "destination": "https://ethtrends-backend.up.railway.app/api/v1/simulator"
+    }
+  ]
+}
