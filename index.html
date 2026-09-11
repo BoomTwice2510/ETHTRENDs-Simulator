@@ -3,197 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#06090c">
+<meta name="theme-color" content="#ffffff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ETHTRENDs Simulator">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <title>ETHTRENDs — Historical Simulator</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap');
-:root{--bg:#050608;--card:#090c11;--card2:#0d1218;--cyan:#25e8ff;--pink:#ff9fc7;--green:#25e6a5;--red:#ff4f70;--yellow:#ffe38b;--text:#ffffff;--muted:#a0adb8}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:#000;scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:#000000;color:var(--text);font-family:"Space Grotesk",system-ui,sans-serif}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root{--bg:#ffffff;--card:#f8fafc;--card2:#f1f5f9;--cyan:#0284c7;--pink:#db2777;--green:#059669;--red:#dc2626;--yellow:#d97706;--text:#111111;--muted:#475569}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:#ffffff;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:#ffffff;color:var(--text);font-family:"Inter",system-ui,sans-serif}
 button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px;margin:auto;padding:18px 18px 70px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 2px 14px}.brand{display:flex;align-items:center;gap:9px;font:700 15px "Space Grotesk";letter-spacing:.08em}.brand img{width:34px!important;height:34px!important;border-radius:10px!important;box-shadow:0 0 24px #25e8ff55}.top-right{display:flex;align-items:center;gap:6px}.live,.install{font:700 10px "DM Mono";letter-spacing:.06em;border-radius:999px;padding:7px 11px}.live{color:var(--green);border:1px solid #25e6a566;background:#25e6a50c}.install{display:none;color:var(--cyan);border:1px solid #25e8ff88;background:#25e8ff09;cursor:pointer}
-.hero{position:relative;overflow:hidden;min-height:330px;border:1px solid #25e8ff5c;border-radius:24px;background:linear-gradient(135deg,#0a171d,#07090d 58%,#120c12);padding:34px;box-shadow:0 24px 80px #0009}.hero:before{content:"";position:absolute;width:430px;height:430px;right:-170px;top:-210px;border-radius:50%;background:#25e8ff14;box-shadow:0 0 100px #25e8ff18}.eyebrow{position:relative;color:var(--pink);font:700 11px "DM Mono";letter-spacing:.16em;margin-bottom:16px}.hero h1{position:relative;max-width:820px;margin:0;font:700 clamp(36px,6vw,66px)/.98 "Space Grotesk";letter-spacing:-.055em}.hero h1 span{color:var(--cyan)}.hero-copy{position:relative;max-width:650px;color:#d0dcde;font:600 13px/1.7 "DM Mono";margin:18px 0}.hero-pills{position:relative;display:flex;flex-wrap:wrap;gap:7px}.pill{border:1px solid #ffffff18;background:#0006;border-radius:999px;padding:7px 11px;color:#d0dcde;font:700 10px "DM Mono"}.pill b{color:var(--cyan)}.hero-coin{position:absolute;right:55px;bottom:42px;width:124px;height:124px;border:1px solid #25e8ff55;border-radius:50%;display:grid;place-items:center;background:#25e8ff08;box-shadow:0 0 55px #25e8ff12;transform:rotate(-8deg)}.hero-coin:before{content:"ETH";font:700 30px "Space Grotesk";color:#fff}.hero-coin:after{content:"✦";position:absolute;right:7px;top:4px;color:var(--pink);font-size:22px;animation:float 2.5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px) rotate(8deg)}}
-.main-grid{display:grid;grid-template-columns:300px 1fr;gap:14px;margin-top:14px}.card{background:#070a0eee;border:1px solid #25e8ff3d;border-radius:18px;padding:16px;box-shadow:0 15px 45px #0007}.input-card{position:sticky;top:10px;align-self:start}.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font:700 12px "DM Mono";letter-spacing:.1em}.card-title:before{content:"✦";color:var(--pink);margin-right:6px}.mini{color:var(--muted);font:600 9px "DM Mono"}.field{margin:12px 0}.field label{display:block;color:#a0b0bc;font:700 10px "DM Mono";letter-spacing:.06em;margin-bottom:6px}.field input{width:100%;padding:12px;border:1px solid #25e8ff38;background:#040608;color:var(--text);border-radius:10px;outline:0;font:700 15px "DM Mono"}.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #25e8ff0d}.currency{display:grid;grid-template-columns:1fr 1fr;gap:6px}.currency button{padding:10px;border:1px solid #25e8ff38;background:#040608;color:#a0b0bc;border-radius:9px;font:700 12px "DM Mono";cursor:pointer}.currency button.active{color:var(--cyan);border-color:var(--cyan);background:#25e8ff0b}.run{width:100%;margin-top:9px;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,var(--cyan),#a6f8ff);color:#031116;font:900 12px "DM Mono";letter-spacing:.07em;cursor:pointer;box-shadow:0 10px 35px #25e8ff25}.run:disabled{opacity:.55;cursor:wait}.hint{margin-top:10px;color:#a0adb8;font:600 10px/1.6 "DM Mono"}.error{display:none;margin-bottom:10px;background:#ff4f7010;border:1px solid #ff4f7066;color:#ff9aaa;border-radius:10px;padding:11px;font:600 11px/1.5 "DM Mono"}.err-title{display:block;color:#ff6b87;font-weight:800;margin-bottom:4px}.err-copy{display:block}
-.result-top{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result-card{background:linear-gradient(145deg,#0a1115,#07090d);border:1px solid #25e8ff42;border-radius:17px;padding:17px}.result-card.accent{border-color:#ff9fc755;background:linear-gradient(145deg,#120e13,#08090d)}.result-label{color:#a0b0bc;font:700 10px "DM Mono";letter-spacing:.09em}.big-money{font:700 clamp(28px,4vw,42px) "Space Grotesk";margin-top:7px}.green,.pos,.profit{color:var(--green)!important}.red,.neg,.loss{color:var(--red)!important}.result-sub{color:#b0c0cc;font:600 10px "DM Mono";margin-top:4px}.score-wrap{display:flex;align-items:center;gap:15px}.score-ring{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--cyan) 0 72%,#182127 72%);position:relative;flex:none}.score-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:#090d11}.score-num{position:relative;z-index:1;text-align:center;font:700 26px "Space Grotesk"}.score-num small{display:block;color:var(--muted);font:700 9px "DM Mono"}.score-copy h3{margin:0 0 5px;font:700 16px "Space Grotesk"}.score-copy p{margin:0;color:#b0c0cc;font:600 10px/1.55 "DM Mono"}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.metric{background:#05070a;border:1px solid #25e8ff32;border-radius:10px;padding:11px}.metric small{display:block;color:#98a8b4;font:700 9px "DM Mono"}.metric strong{display:block;margin-top:6px;font:800 16px "DM Mono";white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.section{margin-top:14px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 9px}.section-title{font:700 12px "DM Mono";letter-spacing:.08em}.section-title b{color:var(--pink)}.badge{color:var(--pink);border:1px solid #ff9fc73d;border-radius:999px;padding:5px 9px;font:700 9px "DM Mono"}.chartbox{height:285px;border:1px solid #25e8ff26;border-radius:13px;padding:6px;background:linear-gradient(180deg,#25e8ff06,transparent)}
-.achievements{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.achievement{border:1px solid #ffffff14;background:#07090d;border-radius:11px;padding:12px}.achievement.unlocked{border-color:#25e6a544;background:linear-gradient(135deg,#25e6a508,#07090d)}.achievement .icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:9px;border:1px solid #25e8ff35;border-radius:11px;background:#25e8ff08;color:var(--cyan);font-size:0}.achievement b{display:block;font:700 11px "Space Grotesk";color:#fff}.achievement span{display:block;color:#a0adb8;font:600 9px/1.5 "DM Mono";margin-top:3px}.achievement.locked{opacity:.48}.progress{height:5px;background:#182026;border-radius:99px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey{display:grid;grid-template-columns:1fr 1fr;gap:8px}.journey-card{border:1px solid #25e8ff27;border-radius:12px;background:#05070a;padding:12px}.journey-head{display:flex;justify-content:space-between;font:800 11px "DM Mono";color:#fff}.journey-head span{color:var(--green)}.journey-bar{height:8px;background:#151c21;border-radius:99px;overflow:hidden;margin:10px 0 5px}.journey-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey-meta{display:flex;justify-content:space-between;color:#a0adb8;font:700 9px "DM Mono"}
-.list{display:flex;flex-direction:column;gap:7px}.accordion{border:1px solid #25e8ff2e;background:#05070a;border-radius:11px;overflow:hidden}.accordion:hover{border-color:#ff9fc760}.acc-head{width:100%;display:grid;grid-template-columns:1.3fr 1fr 25px;gap:8px;align-items:center;text-align:left;background:transparent;color:var(--text);border:0;padding:12px 11px;cursor:pointer}.acc-main{font:800 12px "Space Grotesk";color:#fff}.acc-sub{color:#a0adb8;font:600 9px "DM Mono";margin-top:3px}.acc-value{text-align:right;font:800 12px "DM Mono"}.chev{color:var(--pink);text-align:right;font-size:16px;transition:.2s}.accordion.open .chev{transform:rotate(180deg);color:var(--cyan)}.acc-body{display:none;border-top:1px solid #25e8ff20;padding:10px}.accordion.open .acc-body{display:block;animation:drop .18s ease}@keyframes drop{from{opacity:.3;transform:translateY(-3px)}to{opacity:1;transform:none}}.details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.detail{background:#080c10;border:1px solid #25e8ff20;border-radius:8px;padding:8px}.detail small{display:block;color:#98a8b4;font:700 8px "DM Mono"}.detail b{display:block;margin-top:5px;font:800 11px "DM Mono";color:#fff}.trade-head{grid-template-columns:46px 1fr auto 24px}.side{font:900 11px "DM Mono"}.side.long{color:var(--green)}.side.short{color:var(--red)}.trade-pnl{font:900 11px "DM Mono"}.trade-times{color:#a0adb8;font:600 9px/1.45 "DM Mono"}.disclaimer-card{margin-top:14px;padding:13px;border:1px solid #ff9fc73d;border-left:3px solid var(--cyan);border-radius:11px;background:#05070a}.disclaimer-title{color:var(--pink);font:800 11px "DM Mono"}.disclaimer-text{color:#b0c0cc;font:600 10px/1.7 "DM Mono";margin-top:7px}.disclaimer-text strong{color:#ffffff}.disclaimer-warning{color:var(--cyan);font:800 9px/1.6 "DM Mono";margin-top:8px;padding-top:8px;border-top:1px solid #25e8ff20}.empty{text-align:center;padding:100px 20px;color:#a0adb8;font:600 11px/1.7 "DM Mono"}.footer-note{color:#98a8b4;font:600 9px/1.6 "DM Mono";margin:8px 2px}
-@media(max-width:900px){.app{padding:12px 12px 50px}.hero{min-height:290px;padding:27px 22px}.hero-coin{right:28px;bottom:28px;width:98px;height:98px}.hero-coin:before{font-size:25px}.main-grid{grid-template-columns:1fr}.input-card{position:static}.summary{grid-template-columns:repeat(4,1fr)}.achievements{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){body{padding-bottom:env(safe-area-inset-bottom)}.app{padding:6px 9px 28px}.top{position:sticky;top:0;z-index:30;background:#000;backdrop-filter:blur(15px);margin:0 -9px;padding:calc(10px + env(safe-area-inset-top)) 10px 10px;border-bottom:1px solid #25e8ff18}.brand{font-size:11px}.brand img{width:29px!important;height:29px!important}.live,.install{font-size:8px;padding:6px 9px}.hero{min-height:280px;margin-top:7px;border-radius:17px;padding:22px 16px}.eyebrow{font-size:9px}.hero h1{font-size:34px;max-width:95%}.hero-copy{font-size:11px;max-width:90%;margin:14px 0}.hero-pills{max-width:80%}.pill{font-size:8px;padding:6px 9px}.hero-coin{width:82px;height:82px;right:14px;bottom:20px}.hero-coin:before{font-size:21px}.main-grid{gap:9px}.card{border-radius:13px;padding:11px}.card-title{font-size:11px}.field{margin:9px 0}.field label{font-size:9px}.field input{font-size:14px;padding:11px}.run{padding:13px}.result-top{grid-template-columns:1fr}.result-card{padding:13px;border-radius:13px}.big-money{font-size:32px}.score-wrap{gap:12px}.score-ring{width:82px;height:82px}.score-num{font-size:22px}.summary{grid-template-columns:repeat(2,1fr);gap:5px}.metric{padding:9px}.metric strong{font-size:15px}.chartbox{height:220px}.achievements{gap:5px}.achievement{padding:9px}.achievement .icon{width:36px;height:36px}.journey{grid-template-columns:1fr}.details-grid{grid-template-columns:repeat(2,1fr)}.trade-head{grid-template-columns:42px 1fr 24px}.trade-pnl{grid-column:2;text-align:left;margin-top:-2px}.acc-head{padding:11px 9px}.disclaimer-card{padding:11px}.disclaimer-text{font-size:9px}}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 2px 14px}.brand{display:flex;align-items:center;gap:9px;font:800 15px "Inter";letter-spacing:.08em;color:#111}.brand img{width:34px!important;height:34px!important;border-radius:10px!important;box-shadow:0 4px 12px rgba(0,0,0,0.08)}.top-right{display:flex;align-items:center;gap:6px}.live,.install{font:700 10px "JetBrains Mono";letter-spacing:.06em;border-radius:999px;padding:7px 11px}.live{color:#059669;border:1px solid rgba(5,150,105,0.3);background:rgba(5,150,105,0.08)}.install{display:none;color:#0284c7;border:1px solid rgba(2,132,199,0.3);background:rgba(2,132,199,0.08);cursor:pointer}
+.hero{position:relative;overflow:hidden;min-height:330px;border:1px solid #cbd5e1;border-radius:24px;background:linear-gradient(135deg,#f8fafc,#f1f5f9 58%,#e2e8f0);padding:34px;box-shadow:0 12px 30px rgba(0,0,0,0.04)}.hero:before{content:"";position:absolute;width:430px;height:430px;right:-170px;top:-210px;border-radius:50%;background:rgba(2,132,199,0.06)}.eyebrow{position:relative;color:var(--pink);font:700 11px "JetBrains Mono";letter-spacing:.16em;margin-bottom:16px}.hero h1{position:relative;max-width:820px;margin:0;font:800 clamp(36px,6vw,66px)/.98 "Inter";letter-spacing:-.035em;color:#111}.hero h1 span{color:var(--cyan)}.hero-copy{position:relative;max-width:650px;color:#334155;font:600 14px/1.7 "Inter";margin:18px 0}.hero-pills{position:relative;display:flex;flex-wrap:wrap;gap:7px}.pill{border:1px solid #cbd5e1;background:#ffffff;border-radius:999px;padding:7px 11px;color:#1e293b;font:700 10px "JetBrains Mono";box-shadow:0 2px 5px rgba(0,0,0,0.03)}.pill b{color:var(--cyan)}.hero-coin{position:absolute;right:55px;bottom:42px;width:124px;height:124px;border:1px solid #cbd5e1;border-radius:50%;display:grid;place-items:center;background:#ffffff;box-shadow:0 8px 25px rgba(0,0,0,0.06);transform:rotate(-8deg)}.hero-coin:before{content:"ETH";font:800 30px "Inter";color:#111}.hero-coin:after{content:"✦";position:absolute;right:7px;top:4px;color:var(--pink);font-size:22px;animation:float 2.5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px) rotate(8deg)}}
+.main-grid{display:grid;grid-template-columns:300px 1fr;gap:14px;margin-top:14px}.card{background:#ffffff;border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,0.04)}.input-card{position:sticky;top:10px;align-self:start}.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font:800 12px "JetBrains Mono";letter-spacing:.1em;color:#111}.card-title:before{content:"✦";color:var(--pink);margin-right:6px}.mini{color:var(--muted);font:700 9px "JetBrains Mono"}.field{margin:12px 0}.field label{display:block;color:#334155;font:700 10px "JetBrains Mono";letter-spacing:.06em;margin-bottom:6px}.field input{width:100%;padding:12px;border:1px solid #cbd5e1;background:#ffffff;color:var(--text);border-radius:10px;outline:0;font:700 15px "JetBrains Mono"}.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(2,132,199,0.15)}.currency{display:grid;grid-template-columns:1fr 1fr;gap:6px}.currency button{padding:10px;border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:9px;font:700 12px "JetBrains Mono";cursor:pointer}.currency button.active{color:#ffffff;border-color:var(--cyan);background:var(--cyan)}.run{width:100%;margin-top:9px;padding:14px;border:0;border-radius:11px;background:linear-gradient(100deg,var(--cyan),#38bdf8);color:#ffffff;font:800 12px "JetBrains Mono";letter-spacing:.07em;cursor:pointer;box-shadow:0 6px 20px rgba(2,132,199,0.3)}.run:disabled{opacity:.55;cursor:wait}.hint{margin-top:10px;color:#475569;font:600 10px/1.6 "Inter"}.error{display:none;margin-bottom:10px;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.3);color:#b91c1c;border-radius:10px;padding:11px;font:600 11px/1.5 "Inter"}.err-title{display:block;color:#dc2626;font-weight:800;margin-bottom:4px}.err-copy{display:block}
+.result-top{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result-card{background:linear-gradient(145deg,#f8fafc,#f1f5f9);border:1px solid #cbd5e1;border-radius:17px;padding:17px}.result-card.accent{border-color:rgba(219,39,119,0.3);background:linear-gradient(145deg,#fdf2f8,#fce7f3)}.result-label{color:#475569;font:700 10px "JetBrains Mono";letter-spacing:.09em}.big-money{font:800 clamp(28px,4vw,42px) "Inter";margin-top:7px;color:#111}.green,.pos,.profit{color:var(--green)!important}.red,.neg,.loss{color:var(--red)!important}.result-sub{color:#475569;font:600 10px "JetBrains Mono";margin-top:4px}.score-wrap{display:flex;align-items:center;gap:15px}.score-ring{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--cyan) 0 72%,#e2e8f0 72%);position:relative;flex:none}.score-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:#ffffff}.score-num{position:relative;z-index:1;text-align:center;font:800 26px "Inter";color:#111}.score-num small{display:block;color:var(--muted);font:700 9px "JetBrains Mono"}.score-copy h3{margin:0 0 5px;font:800 16px "Inter";color:#111}.score-copy p{margin:0;color:#334155;font:600 10px/1.55 "Inter"}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.metric{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:11px}.metric small{display:block;color:#475569;font:700 9px "JetBrains Mono"}.metric strong{display:block;margin-top:6px;font:800 16px "JetBrains Mono";white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111}
+.section{margin-top:14px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 9px}.section-title{font:800 12px "JetBrains Mono";letter-spacing:.08em;color:#111}.section-title b{color:var(--pink)}.badge{color:var(--pink);border:1px solid rgba(219,39,119,0.3);border-radius:999px;padding:5px 9px;font:700 9px "JetBrains Mono";background:rgba(219,39,119,0.05)}.chartbox{height:285px;border:1px solid #cbd5e1;border-radius:13px;padding:6px;background:linear-gradient(180deg,rgba(2,132,199,0.03),transparent)}
+.achievements{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.achievement{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;padding:12px}.achievement.unlocked{border-color:rgba(5,150,105,0.4);background:linear-gradient(135deg,rgba(5,150,105,0.05),#f8fafc)}.achievement .icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:9px;border:1px solid #cbd5e1;border-radius:11px;background:#ffffff;color:var(--cyan);font-size:0}.achievement b{display:block;font:800 11px "Inter";color:#111}.achievement span{display:block;color:#475569;font:600 9px/1.5 "Inter";margin-top:3px}.achievement.locked{opacity:.5}.progress{height:5px;background:#e2e8f0;border-radius:99px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}
+.journey{display:grid;grid-template-columns:1fr 1fr;gap:8px}.journey-card{border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:12px}.journey-head{display:flex;justify-content:space-between;font:800 11px "JetBrains Mono";color:#111}.journey-head span{color:var(--green)}.journey-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0 5px}.journey-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey-meta{display:flex;justify-content:space-between;color:#475569;font:700 9px "JetBrains Mono"}
+.list{display:flex;flex-direction:column;gap:7px}.accordion{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;overflow:hidden}.accordion:hover{border-color:rgba(219,39,119,0.4)}.acc-head{width:100%;display:grid;grid-template-columns:1.3fr 1fr 25px;gap:8px;align-items:center;text-align:left;background:transparent;color:var(--text);border:0;padding:12px 11px;cursor:pointer}.acc-main{font:800 12px "Inter";color:#111}.acc-sub{color:#475569;font:600 9px "JetBrains Mono";margin-top:3px}.acc-value{text-align:right;font:800 12px "JetBrains Mono";color:#111}.chev{color:var(--pink);text-align:right;font-size:16px;transition:.2s}.accordion.open .chev{transform:rotate(180deg);color:var(--cyan)}.acc-body{display:none;border-top:1px solid #cbd5e1;padding:10px;background:#ffffff}.accordion.open .acc-body{display:block;animation:drop .18s ease}@keyframes drop{from{opacity:.3;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.detail{background:#f8fafc;border:1px solid #cbd5e1;border-radius:8px;padding:8px}.detail small{display:block;color:#475569;font:700 8px "JetBrains Mono"}.detail b{display:block;margin-top:5px;font:800 11px "JetBrains Mono";color:#111}.trade-head{grid-template-columns:46px 1fr auto 24px}.side{font:900 11px "JetBrains Mono"}.side.long{color:var(--green)}.side.short{color:var(--red)}.trade-pnl{font:900 11px "JetBrains Mono"}.trade-times{color:#475569;font:600 9px/1.45 "JetBrains Mono"}
+.disclaimer-card{margin-top:14px;padding:13px;border:1px solid rgba(219,39,119,0.3);border-left:3px solid var(--cyan);border-radius:11px;background:#f8fafc}.disclaimer-title{color:var(--pink);font:800 11px "JetBrains Mono"}.disclaimer-text{color:#334155;font:600 10px/1.7 "Inter";margin-top:7px}.disclaimer-text strong{color:#111}.disclaimer-warning{color:var(--cyan);font:800 9px/1.6 "JetBrains Mono";margin-top:8px;padding-top:8px;border-top:1px solid #cbd5e1}
+.empty{text-align:center;padding:100px 20px;color:#475569;font:600 11px/1.7 "Inter"}.footer-note{color:#475569;font:600 9px/1.6 "Inter";margin:8px 2px}
 
 /* ===== REAL SIGNAL QUEST GAMIFICATION ===== */
 .game-shell{margin-top:14px;display:none}
-.game-console{position:relative;overflow:hidden;border:1px solid #ff9fc74d;border-radius:18px;background:linear-gradient(135deg,#100c12,#070a0e 55%,#07151a);padding:16px;box-shadow:0 20px 60px #0008}
-.game-console:before{content:"";position:absolute;width:280px;height:280px;right:-130px;top:-150px;border-radius:50%;background:#25e8ff0d;box-shadow:0 0 100px #25e8ff14}
-.game-kicker{color:var(--pink);font:800 10px "DM Mono";letter-spacing:.14em}
+.game-console{position:relative;overflow:hidden;border:1px solid rgba(219,39,119,0.3);border-radius:18px;background:linear-gradient(135deg,#ffffff,#f8fafc 55%,#f1f5f9);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,0.04)}
+.game-kicker{color:var(--pink);font:800 10px "JetBrains Mono";letter-spacing:.14em}
 .game-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:7px}
-.level-title{font:700 23px "Space Grotesk";letter-spacing:-.03em;color:#fff}.level-title span{color:var(--cyan)}
-.xp-box{width:230px}.xp-label{color:#a0b0bc;font:700 9px "DM Mono"}.xp-value{color:var(--cyan);font:800 12px "DM Mono";margin-top:4px}.xp-bar{height:8px;background:#182127;border-radius:99px;overflow:hidden;margin-top:6px}.xp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
-.game-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:13px}.game-stat{border:1px solid #ffffff12;background:#0005;border-radius:10px;padding:9px}.game-stat small{display:block;color:#98a8b4;font:700 8px "DM Mono"}.game-stat b{display:block;margin-top:5px;font:800 14px "DM Mono"}
-.mission{margin-top:10px;padding:11px;border:1px dashed #25e8ff35;border-radius:10px;background:#25e8ff05;font:700 10px/1.6 "DM Mono";color:#b0c0cc}.mission strong{color:var(--text)}
-.rank-strip{display:flex;align-items:center;gap:8px;margin-top:11px}.rank-badge{padding:7px 11px;border-radius:8px;background:#25e8ff0d;border:1px solid #25e8ff45;color:var(--cyan);font:900 10px "DM Mono"}.rank-text{color:#a0adb8;font:600 9px "DM Mono"}
-.milestones{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:9px}.milestone{text-align:center;border:1px solid #ffffff10;background:#06080b;border-radius:9px;padding:8px 4px;opacity:.38}.milestone.done{opacity:1;border-color:#25e6a544;background:#25e6a507}.milestone .micon{width:34px;height:34px;margin:0 auto 3px;display:grid;place-items:center;border:1px solid #ffffff18;border-radius:10px;background:#25e8ff07;color:var(--cyan);font-size:0}.milestone b{display:block;margin-top:4px;font:800 8px "DM Mono";color:#d0dcde}.milestone.done b{color:var(--green)}
-.quest-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:8px;margin-top:10px}.quest-card{border:1px solid #25e8ff27;border-radius:11px;background:#05070a;padding:11px}.quest-card h4{margin:0;font:800 10px "DM Mono";color:var(--pink);letter-spacing:.07em}.quest-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}.quest-row span{color:#a0adb8;font:700 9px "DM Mono"}.quest-row b{font:800 10px "DM Mono";color:#fff}.quest-bar{height:6px;background:#182026;border-radius:99px;overflow:hidden;margin-top:5px}.quest-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}
-.risk-orb{display:flex;align-items:center;gap:10px}.risk-circle{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0 70%,#182127 70%);position:relative}.risk-circle:after{content:"";position:absolute;inset:6px;background:#070a0d;border-radius:50%}.risk-circle span{position:relative;z-index:1;font:900 13px "DM Mono";color:#fff}.risk-copy b{display:block;font:700 11px "Space Grotesk";color:#fff}.risk-copy small{display:block;color:#a0adb8;font:600 8px/1.5 "DM Mono";margin-top:3px}
-@keyframes questIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.game-console{animation:questIn .45s ease}
-@media(max-width:700px){.game-top{align-items:flex-start;flex-direction:column}.xp-box{width:100%}.game-stats{grid-template-columns:repeat(2,1fr)}.milestones{grid-template-columns:repeat(3,1fr)}.quest-grid{grid-template-columns:1fr}}
-@media(max-width:560px){.game-console{padding:12px;border-radius:13px}.level-title{font-size:19px}}
+.level-title{font:800 23px "Inter";letter-spacing:-.03em;color:#111}.level-title span{color:var(--cyan)}
+.xp-box{width:230px}.xp-label{color:#475569;font:700 9px "JetBrains Mono"}.xp-value{color:var(--cyan);font:800 12px "JetBrains Mono";margin-top:4px}.xp-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:6px}.xp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.game-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:13px}.game-stat{border:1px solid #cbd5e1;background:#ffffff;border-radius:10px;padding:9px}.game-stat small{display:block;color:#475569;font:700 8px "JetBrains Mono"}.game-stat b{display:block;margin-top:5px;font:800 14px "JetBrains Mono";color:#111}
+.mission{margin-top:10px;padding:11px;border:1px dashed rgba(2,132,199,0.4);border-radius:10px;background:rgba(2,132,199,0.04);font:700 10px/1.6 "JetBrains Mono";color:#334155}.mission strong{color:#111}
+.rank-strip{display:flex;align-items:center;gap:8px;margin-top:11px}.rank-badge{padding:7px 11px;border-radius:8px;background:rgba(2,132,199,0.08);border:1px solid rgba(2,132,199,0.3);color:var(--cyan);font:900 10px "JetBrains Mono"}.rank-text{color:#475569;font:600 9px "JetBrains Mono"}
+.milestones{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:9px}.milestone{text-align:center;border:1px solid #cbd5e1;background:#ffffff;border-radius:9px;padding:8px 4px;opacity:.4}.milestone.done{opacity:1;border-color:rgba(5,150,105,0.4);background:rgba(5,150,105,0.05)}.milestone .micon{width:34px;height:34px;margin:0 auto 3px;display:grid;place-items:center;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;color:var(--cyan);font-size:0}.milestone b{display:block;margin-top:4px;font:800 8px "JetBrains Mono";color:#334155}.milestone.done b{color:var(--green)}
+.quest-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:8px;margin-top:10px}.quest-card{border:1px solid #cbd5e1;border-radius:11px;background:#ffffff;padding:11px}.quest-card h4{margin:0;font:800 10px "JetBrains Mono";color:var(--pink);letter-spacing:.07em}.quest-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}.quest-row span{color:#475569;font:700 9px "JetBrains Mono"}.quest-row b{font:800 10px "JetBrains Mono";color:#111}.quest-bar{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:5px}.quest-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}
+.risk-orb{display:flex;align-items:center;gap:10px}.risk-circle{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0 70%,#e2e8f0 70%);position:relative}.risk-circle:after{content:"";position:absolute;inset:6px;background:#ffffff;border-radius:50%}.risk-circle span{position:relative;z-index:1;font:900 13px "JetBrains Mono";color:#111}.risk-copy b{display:block;font:700 11px "Inter";color:#111}.risk-copy small{display:block;color:#475569;font:600 8px/1.5 "JetBrains Mono";margin-top:3px}
 
-/* ===== ANIMATED REAL EMOJI ICONS ===== */
-.animated-emoji{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
-  font-size:25px;
-  line-height:1;
-  transform-origin:center;
-  filter:drop-shadow(0 0 7px #25e8ff35);
-  animation:emojiFloat 2.1s ease-in-out infinite;
-  will-change:transform;
-}
-.achievement .animated-emoji{
-  font-size:27px;
-  animation:emojiFloat 2s ease-in-out infinite, emojiGlow 2.4s ease-in-out infinite;
-}
-.milestone .animated-emoji{
-  font-size:23px;
-  animation:emojiBounce 1.8s ease-in-out infinite;
-}
-.achievement.unlocked .animated-emoji,
-.milestone.done .animated-emoji{
-  filter:drop-shadow(0 0 9px #25e6a566);
-}
-@keyframes emojiFloat{
-  0%,100%{transform:translateY(0) rotate(-2deg) scale(1)}
-  50%{transform:translateY(-4px) rotate(2deg) scale(1.06)}
-}
-@keyframes emojiBounce{
-  0%,100%{transform:translateY(0) scale(1)}
-  45%{transform:translateY(-5px) scale(1.08)}
-  60%{transform:translateY(0) scale(.98)}
-}
-@keyframes emojiGlow{
-  0%,100%{filter:drop-shadow(0 0 5px #25e8ff22)}
-  50%{filter:drop-shadow(0 0 11px #ff9fc766)}
-}
-
-/* ===== SIMULATION LOADING EXPERIENCE ===== */
-.loading-overlay{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(0,0,0,.94);
-  backdrop-filter:blur(12px);
-}
+/* Loading Overlay */
+.loading-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px)}
 .loading-overlay.show{display:flex;animation:loadFadeIn .22s ease}
-.loading-panel{
-  width:min(460px,100%);
-  padding:28px 24px 24px;
-  border:1px solid #25e8ff55;
-  border-radius:20px;
-  background:linear-gradient(145deg,#070d11,#09070b);
-  box-shadow:0 25px 90px #000,0 0 55px #25e8ff10;
-  text-align:center;
-}
-.loading-emoji{
-  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
-  font-size:58px;
-  line-height:1;
-  display:block;
-  margin-bottom:16px;
-  animation:loaderEmoji 1.05s ease-in-out infinite;
-}
-.loading-kicker{
-  color:var(--pink);
-  font:800 10px "DM Mono";
-  letter-spacing:.16em;
-}
-.loading-title{
-  margin-top:8px;
-  color:var(--text);
-  font:700 24px "Space Grotesk";
-}
-.loading-copy{
-  margin-top:7px;
-  color:#a0adb8;
-  font:600 10px/1.6 "DM Mono";
-}
-.loading-percent{
-  margin-top:20px;
-  color:var(--cyan);
-  font:700 32px "Space Grotesk";
-}
-.loading-track{
-  height:8px;
-  margin-top:10px;
-  border-radius:99px;
-  overflow:hidden;
-  background:#172127;
-  border:1px solid #25e8ff18;
-}
-.loading-track i{
-  display:block;
-  width:0%;
-  height:100%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--cyan),var(--pink));
-  box-shadow:0 0 14px #25e8ff55;
-  transition:width .12s linear;
-}
-.loading-status{
-  margin-top:10px;
-  min-height:16px;
-  color:#b0c0cc;
-  font:700 9px "DM Mono";
-}
-.loading-dots::after{
-  content:"";
-  animation:loadingDots 1.1s steps(4,end) infinite;
-}
-@keyframes loaderEmoji{
-  0%,100%{transform:translateY(0) rotate(-5deg) scale(1)}
-  50%{transform:translateY(-10px) rotate(5deg) scale(1.12)}
-}
-@keyframes loadingDots{
-  0%{content:""}
-  25%{content:"."}
-  50%{content:".."}
-  75%{content:"..."}
-}
-@keyframes loadFadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-.results-reveal{
-  animation:resultsReveal .7s cubic-bezier(.16,1,.3,1);
-}
-@keyframes resultsReveal{
-  0%{opacity:0;transform:translateY(24px) scale(.985)}
-  100%{opacity:1;transform:none}
-}
-@media(max-width:560px){
-  .animated-emoji{font-size:23px}
-  .achievement .animated-emoji{font-size:25px}
-  .milestone .animated-emoji{font-size:21px}
-  .loading-panel{padding:24px 18px 20px;border-radius:16px}
-  .loading-emoji{font-size:52px}
-  .loading-title{font-size:20px}
-}
-
-/* ===== TRUE DEEP BLACK MODE ===== */
-html,body{background:#000!important;background-color:#000!important;background-image:none!important}body::before,body::after,.app::before,.app::after,.hero::before,.hero::after,.game-console::before,.game-console::after{display:none!important;content:none!important;background:none!important;box-shadow:none!important}.app,.top,.hero,.card,.result-card,.result-card.accent,.metric,.chartbox,.achievement,.journey-card,.accordion,.detail,.disclaimer-card,.game-console,.game-stat,.quest-card,.mission,.loading-overlay,.loading-panel,.field input,.currency button,.pill,.hero-coin{background:#000!important;background-image:none!important}.app,.card,.result-card,.metric,.achievement,.journey-card,.accordion,.detail,.disclaimer-card,.game-console,.game-stat,.quest-card,.loading-panel{box-shadow:none!important}.loading-overlay{backdrop-filter:none!important}.progress,.journey-bar,.quest-bar,.xp-bar,.loading-track{background:#111!important}
+.loading-panel{width:min(460px,100%);padding:28px 24px 24px;border:1px solid #cbd5e1;border-radius:20px;background:#ffffff;box-shadow:0 25px 50px rgba(0,0,0,0.1);text-align:center}
+.loading-emoji{font-size:58px;line-height:1;display:block;margin-bottom:16px;animation:loaderEmoji 1.05s ease-in-out infinite}
+.loading-kicker{color:var(--pink);font:800 10px "JetBrains Mono";letter-spacing:.16em}
+.loading-title{margin-top:8px;color:#111;font:800 24px "Inter"}
+.loading-copy{margin-top:7px;color:#475569;font:600 10px/1.6 "Inter"}
+.loading-percent{margin-top:20px;color:var(--cyan);font:800 32px "Inter"}
+.loading-track{height:8px;margin-top:10px;border-radius:99px;overflow:hidden;background:#e2e8f0;border:1px solid #cbd5e1}
+.loading-track i{display:block;width:0%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--pink));transition:width .12s linear}
+.loading-status{margin-top:10px;min-height:16px;color:#475569;font:700 9px "JetBrains Mono"}
+@keyframes loaderEmoji{0%,100%{transform:translateY(0) rotate(-5deg) scale(1)}50%{transform:translateY(-10px) rotate(5deg) scale(1.12)}}
+@keyframes loadFadeIn{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -201,7 +68,7 @@ html,body{background:#000!important;background-color:#000!important;background-i
   <div class="loading-panel">
     <span id="loadingEmoji" class="loading-emoji">🚀</span>
     <div class="loading-kicker">ETHTRENDs · HISTORICAL ENGINE</div>
-    <div class="loading-title">REPLAYING REAL SIGNALS<span class="loading-dots"></span></div>
+    <div class="loading-title">REPLAYING REAL SIGNALS</div>
     <div class="loading-copy">Processing your capital, position size and the complete historical signal-to-signal record.</div>
     <div id="loadingPercent" class="loading-percent">0%</div>
     <div class="loading-track"><i id="loadingFill"></i></div>
@@ -255,11 +122,10 @@ html,body{background:#000!important;background-color:#000!important;background-i
     </div>
   </div>
 </section>
-
 <section class="section"><div class="section-head"><div class="section-title"><b>08</b> · PROGRESS MAP</div><span class="badge">YOUR SCENARIO</span></div><div id="journey" class="journey"></div></section>
-
 <div class="disclaimer-card"><div class="disclaimer-title">⚠ HISTORICAL PERFORMANCE ≠ FUTURE RESULTS</div><div class="disclaimer-text">This simulator shows how the <strong>ETHTRENDs historical signal record</strong> would have performed under the assumptions you entered. It is a <strong>historical scenario only</strong> — not a prediction, promise, or guarantee of future returns.</div><div class="disclaimer-text">Past performance does not guarantee future performance. Actual results may differ materially because of market conditions, volatility, liquidity, fees, funding, slippage, execution price, leverage, position sizing, missed trades and other factors.</div><div class="disclaimer-warning">NO GUARANTEED RETURNS · NOT FINANCIAL ADVICE · HISTORICAL DATA ONLY</div></div>
-</div></main></div></div><script>
+</div></main></div></div>
+<script>
 let currency='USD',chart=null,lastData=null;
 const $=id=>document.getElementById(id), num=x=>Number(x||0);
 function setCurrency(c){currency=c;$('usd').classList.toggle('active',c==='USD');$('inr').classList.toggle('active',c==='INR');if(lastData)render(lastData)}
@@ -298,79 +164,52 @@ function renderTrades(trades){
   }).join('');
   $('tradeLogAccordion').classList.remove('open');
 }
-
 function iconSVG(name){
-  const emojis={
-    rocket:'🚀', trophy:'🏆', diamond:'💎', shield:'🛡️',
-    bolt:'⚡', flame:'🔥', compass:'🧭', target:'🎯', money:'💰'
-  };
-  const e=emojis[name]||'⚡';
-  return `<span class="animated-emoji" aria-hidden="true">${e}</span>`;
+  const emojis={rocket:'🚀', trophy:'🏆', diamond:'💎', shield:'🛡️', bolt:'⚡', flame:'🔥', compass:'🧭', target:'🎯', money:'💰'};
+  return `<span style="font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:24px;line-height:1;">${emojis[name]||'⚡'}</span>`;
 }
-
 function gamify(d,trades,months){
   const capital=Math.max(num(d.startingCapital),0.000001);
   const size=Math.max(num(d.positionSize),0.000001);
-  const leverage=Math.max(num(d.leverage),1);
   const finalBal=num(d.finalBalance), net=num(d.netPnl), roi=num(d.roiPercent);
   const dd=Math.max(0,num(d.maxDrawdownPercent)), winRate=num(d.winRate);
   const pnls=trades.map(t=>num(t.pnl));
   const wins=pnls.filter(p=>p>0), losses=pnls.filter(p=>p<0);
   const best=Math.max(...pnls,0), worst=Math.min(...pnls,0);
-  const totalAbs=pnls.reduce((s,p)=>s+Math.abs(p),0);
-  const avgAbs=pnls.length?totalAbs/pnls.length:0;
   const avgMargin=trades.length?trades.reduce((s,t)=>s+num(t.requiredMargin),0)/trades.length:0;
   const avgNotional=trades.length?trades.reduce((s,t)=>s+num(t.entryPrice)*size,0)/trades.length:0;
-  const capitalImpact=net/capital*100;
-  const bestCapitalImpact=best/capital*100;
-  const marginLoad=capital?avgMargin/capital*100:0;
-  const exposureVsCapital=capital?avgNotional/capital*100:0;
-
+  const capitalImpact=net/capital*100, bestCapitalImpact=best/capital*100, marginLoad=capital?avgMargin/capital*100:0;
   const tradeContribution=pnls.map(p=>10+(Math.abs(p)/capital*100));
-  const rawXP=tradeContribution.reduce((a,b)=>a+b,0);
-  const profitXP=wins.reduce((s,p)=>s+(p/capital*200),0);
-  const recoveryXP=worst<0 ? Math.max(0,(net-worst)/capital*50) : 0;
-  const xp=Math.max(0,Math.round(rawXP+profitXP+recoveryXP));
-  const xpPerLevel=Math.max(100,Math.round(100+Math.abs(avgAbs)/capital*100));
+  const xp=Math.max(0,Math.round(tradeContribution.reduce((a,b)=>a+b,0)+wins.reduce((s,p)=>s+(p/capital*200),0)));
+  const xpPerLevel=100;
   const level=Math.max(1,Math.floor(xp/xpPerLevel)+1);
   const currentXP=xp%xpPerLevel;
   const rank=level>=8?'SIGNAL LEGEND':level>=5?'MARKET HUNTER':level>=3?'STRATEGIST':level>=2?'SCOUT':'ROOKIE';
-
-  const score=Math.max(0,Math.min(100,Math.round(
-    50 + capitalImpact*.35 + winRate*.20 - dd*.35 + Math.min(10,trades.length?Math.abs(net)/(capital)*10:0)
-  )));
-
+  const score=Math.max(0,Math.min(100,Math.round(50 + capitalImpact*.35 + winRate*.20 - dd*.35)));
   $('score').textContent=score;
-  $('scoreRing').style.background=`conic-gradient(var(--cyan) 0 ${score}%,#182127 ${score}% 100%)`;
+  $('scoreRing').style.background=`conic-gradient(var(--cyan) 0 ${score}%,#e2e8f0 ${score}% 100%)`;
   $('verdict').textContent=score>=80?'LEGENDARY RUN':score>=65?'STRONG RUN':score>=50?'QUEST COMPLETE':'TOUGH MARKET';
-  $('verdictCopy').textContent=`Calculated from your $${capital.toLocaleString()} starting capital, ${size} ETH position and the real historical trades. Not a forecast.`;
-
+  $('verdictCopy').textContent=`Calculated from your $${capital.toLocaleString()} starting capital, ${size} ETH position and real historical trades.`;
   $('gameShell').style.display='block';
   $('gameLevel').textContent=String(level).padStart(2,'0');
   $('gameRank').textContent=rank;
   $('rankBadge').textContent=rank;
-  $('rankText').textContent=`Adaptive to your ${size} ETH position and ${capital.toLocaleString()} starting capital • avg margin ${avgMargin.toFixed(2)} • avg exposure ${avgNotional.toFixed(2)}.`;
+  $('rankText').textContent=`Adaptive to your ${size} ETH position and ${capital.toLocaleString()} starting capital.`;
   $('xpNow').textContent=currentXP.toLocaleString();
   $('xpNext').textContent=xpPerLevel.toLocaleString();
-  requestAnimationFrame(()=>$('xpFill').style.width=(currentXP/xpPerLevel*100)+'%');
+  $('xpFill').style.width=(currentXP/xpPerLevel*100)+'%';
   $('gameScore').textContent=`${score}/100`;
   $('gameBest').textContent=signedMoney(best);
-
   let streak=0,bestStreak=0;
   for(const p of pnls){if(p>0){streak++;bestStreak=Math.max(bestStreak,streak)}else streak=0}
   $('gameStreak').textContent=`${bestStreak} trades`;
   const hp=Math.max(0,Math.min(100,Math.round(100-dd*3)));
   $('gameHP').textContent=hp+'%';$('riskNum').textContent=hp;
-  $('riskCircle').style.background=`conic-gradient(${hp>=70?'var(--green)':hp>=45?'var(--yellow)':'var(--red)'} 0 ${hp}%,#182127 ${hp}% 100%)`;
+  $('riskCircle').style.background=`conic-gradient(${hp>=70?'var(--green)':hp>=45?'var(--yellow)':'var(--red)'} 0 ${hp}%,#e2e8f0 ${hp}% 100%)`;
   $('riskLabel').textContent=hp>=80?'STABLE RUN':hp>=55?'CAREFUL RUN':'HIGH DRAWDOWN';
-
-  const mission=net>0
-    ?`YOUR CAPITAL RUN: ${pct(roi)} historical return from ${money(capital)} starting capital.`
-    :`YOUR CAPITAL RUN: ${pct(roi)} historical return. Study where your ${size} ETH position hit drawdown.`;
-  $('missionText').innerHTML=`<strong>${mission}</strong> Position impact: best trade was ${bestCapitalImpact.toFixed(2)}% of your starting capital; average margin used ${marginLoad.toFixed(1)}% of starting capital.`;
-
+  $('missionText').innerHTML=`<strong>YOUR CAPITAL RUN: ${pct(roi)} historical return from ${money(capital)} starting capital.</strong>`;
   const capitalProgress=Math.max(0,Math.min(100,(finalBal/capital)*50));
-  const tradeProgress=trades.length ? Math.min(100,(trades.length/(trades.length))*100):0;
+  const tradeProgress=trades.length?100:0;
   const winProgress=Math.min(100,Math.max(0,winRate));
   $('qCapital').textContent=`${pct(roi)} vs ${money(capital)}`;
   $('qCapitalBar').style.width=capitalProgress+'%';
@@ -378,182 +217,50 @@ function gamify(d,trades,months){
   $('qTradesBar').style.width=tradeProgress+'%';
   $('qWin').textContent=winRate.toFixed(1)+'%';
   $('qWinBar').style.width=winProgress+'%';
-
   const n=trades.length;
   const signalCuts=[1,Math.max(1,Math.ceil(n*.25)),Math.max(1,Math.ceil(n*.5)),Math.max(1,Math.ceil(n*.75)),n].filter((v,i,a)=>a.indexOf(v)===i);
-  const milestoneNames=['FIRST SIGNAL','QUARTER PATH','HALF PATH','THREE-QUARTER PATH','FULL HISTORY'];
-  const ms=signalCuts.map((cut,i)=>[
-    ['bolt','target','diamond','trophy','shield'][Math.min(i,4)],
-    milestoneNames[Math.min(i,4)],
-    n>=cut
-  ]);
-  if(net>0) ms.push(['money','CAPITAL GREEN',finalBal>capital]);
-  $('milestones').innerHTML=ms.map(m=>`<div class="milestone ${m[2]?'done':''}"><div class="micon">${iconSVG(m[0])}</div><b>${m[1]}</b></div>`).join('');
-
-  const capitalGrowthTarget=Math.max(0,capitalImpact);
-  const avgWin=wins.length?wins.reduce((a,b)=>a+b,0)/wins.length:0;
+  const milestoneNames=['FIRST SIGNAL','QUARTER','HALF','THREE-QUARTER','FULL HISTORY'];
+  $('milestones').innerHTML=signalCuts.map((cut,i)=>`<div class="milestone ${n>=cut?'done':''}"><div class="micon">${iconSVG(['bolt','target','diamond','trophy','shield'][i]||'bolt')}</div><b>${milestoneNames[i]||'STEP'}</b></div>`).join('');
   const adaptiveAch=[
-    ['rocket','CAPITAL CLIMBER','Ending balance is above your starting capital',finalBal>capital],
-    ['trophy','WIN DOMINANCE','Winning signals exceed losing signals',wins.length>losses.length],
-    ['diamond','POSITION IMPACT','Best trade is at least 1% of your own starting capital',bestCapitalImpact>=1],
-    ['shield','DRAWDOWN SURVIVOR','Drawdown stayed below 15% of the scenario peak',dd<15],
-    ['bolt','FULL ARCHIVE','The complete returned signal history was processed',n>0],
-    ['flame','CAPITAL DOUBLER','Ending balance reached at least 2× your starting capital',finalBal>=capital*2],
-    ['compass','MONTHLY EXPLORER','Multiple monthly levels exist in this returned history',months.length>=Math.min(3,Math.max(1,months.length))],
-    ['target','POSITION DISCIPLINE','Average margin stayed below your starting capital',avgMargin<capital]
+    ['rocket','CAPITAL CLIMBER','Ending balance is above starting capital',finalBal>capital],
+    ['trophy','WIN DOMINANCE','Winning signals exceed losses',wins.length>losses.length],
+    ['diamond','POSITION IMPACT','Best trade is at least 1% of starting capital',bestCapitalImpact>=1],
+    ['shield','DRAWDOWN SURVIVOR','Drawdown stayed below 15%',dd<15],
+    ['bolt','FULL ARCHIVE','Processed complete signal history',n>0],
+    ['flame','CAPITAL DOUBLER','Ending balance reached 2x starting capital',finalBal>=capital*2],
+    ['compass','MONTHLY EXPLORER','Multiple monthly levels exist',months.length>=2],
+    ['target','POSITION DISCIPLINE','Average margin stayed below capital',avgMargin<capital]
   ];
-  $('achievements').innerHTML=adaptiveAch.map(a=>`<div class="achievement ${a[3]?'unlocked':'locked'}"><div class="icon">${iconSVG(a[0])}</div><b>${a[1]}</b><span>${a[2]}</span><div class="progress"><i style="width:${a[3]?100:Math.max(4,Math.min(94,Math.abs(capitalGrowthTarget)))}%"></i></div></div>`).join('');
-
-  const bm=months.reduce((a,b)=>!a||b.returnPct>a.returnPct?b:a,null);
-  const j=[
-    ['CAPITAL QUEST',money(capital),money(finalBal),Math.max(0,Math.min(100,capitalProgress))],
-    ['POSITION IMPACT',`${size} ETH`,`Best ${signedMoney(best)}`,Math.max(0,Math.min(100,bestCapitalImpact*10))],
+  $('achievements').innerHTML=adaptiveAch.map(a=>`<div class="achievement ${a[3]?'unlocked':'locked'}"><div class="icon">${iconSVG(a[0])}</div><b>${a[1]}</b><span>${a[2]}</span><div class="progress"><i style="width:${a[3]?100:25}%"></i></div></div>`).join('');
+  $('journey').innerHTML=[
+    ['CAPITAL QUEST',money(capital),money(finalBal),capitalProgress],
+    ['POSITION IMPACT',`${size} ETH`,`Best ${signedMoney(best)}`,Math.min(100,bestCapitalImpact*10)],
     ['SIGNAL MASTERY',`${n} signals`,`${winRate.toFixed(1)}% wins`,winProgress],
     ['DRAWDOWN HEALTH',`${dd.toFixed(2)}%`,`${hp}% HP`,hp]
-  ];
-  $('journey').innerHTML=j.map(x=>`<div class="journey-card"><div class="journey-head">${x[0]} <span>${x[3]>=50?'↑':'↓'}</span></div><div class="journey-bar"><i style="width:${x[3]}%"></i></div><div class="journey-meta"><span>${x[1]}</span><span>${x[2]}</span></div></div>`).join('');
+  ].map(x=>`<div class="journey-card"><div class="journey-head">${x[0]} <span>${x[3]>=50?'↑':'↓'}</span></div><div class="journey-bar"><i style="width:${x[3]}%"></i></div><div class="journey-meta"><span>${x[1]}</span><span>${x[2]}</span></div></div>`).join('');
 }
-function render(d){lastData=d;const trades=d.trades||[],months=groupMonths(trades,num(d.startingCapital));$('empty').style.display='none';$('results').style.display='block';$('scope').textContent=`${trades.length} returned trades • ALL HISTORY`;$('starting').textContent=money(d.startingCapital);$('final').textContent=money(d.finalBalance);$('finalMini').textContent=money(d.finalBalance);$('startingMini').textContent=money(d.startingCapital);$('pnl').textContent=signedMoney(d.netPnl);$('pnl').className=cls(d.netPnl);$('roi').textContent=pct(d.roiPercent);$('roi').className=cls(d.roiPercent);$('trades').textContent=d.executedTrades??0;$('winrate').textContent=num(d.winRate).toFixed(2)+'%';$('best').textContent=signedMoney(d.bestTradePnl);$('best').className=cls(d.bestTradePnl);$('dd').textContent=money(d.maxDrawdown)+' ('+num(d.maxDrawdownPercent).toFixed(2)+'%)';$('dd').className='neg';renderMonths(months);renderTrades(trades);gamify(d,trades,months);const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(125,140,152,.08)'},ticks:{color:'#a0adb8',maxTicksLimit:8}},y:{grid:{color:'rgba(125,140,152,.08)'},ticks:{color:'#a0adb8',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})}
+function render(d){lastData=d;const trades=d.trades||[],months=groupMonths(trades,num(d.startingCapital));$('empty').style.display='none';$('results').style.display='block';$('scope').textContent=`${trades.length} returned trades • ALL HISTORY`;$('starting').textContent=money(d.startingCapital);$('final').textContent=money(d.finalBalance);$('finalMini').textContent=money(d.finalBalance);$('startingMini').textContent=money(d.startingCapital);$('pnl').textContent=signedMoney(d.netPnl);$('pnl').className=cls(d.netPnl);$('roi').textContent=pct(d.roiPercent);$('roi').className=cls(d.roiPercent);$('trades').textContent=d.executedTrades??0;$('winrate').textContent=num(d.winRate).toFixed(2)+'%';$('best').textContent=signedMoney(d.bestTradePnl);$('best').className=cls(d.bestTradePnl);$('dd').textContent=money(d.maxDrawdown)+' ('+num(d.maxDrawdownPercent).toFixed(2)+'%)';$('dd').className='neg';renderMonths(months);renderTrades(trades);gamify(d,trades,months);const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,borderColor:'#0284c7',tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',maxTicksLimit:8}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})}
 async function runSimulation(){
   const btn=$('run'),err=$('error'),overlay=$('loadingOverlay');
-  err.style.display='none';
-  btn.disabled=true;
-  btn.textContent='RUNNING...';
-
-  const capital=num($('capital').value);
-  const size=num($('size').value);
-  const leverage=parseInt($('leverage').value,10);
-
-  if(capital<=0||size<=0||leverage<1){
-    err.innerHTML='<span class="err-title">⚠ INVALID SCENARIO</span><span class="err-copy">Enter valid capital, position size and leverage.</span>';
-    err.style.display='block';
-    btn.disabled=false;
-    btn.textContent='RUN FULL SIMULATION';
-    return;
-  }
-
+  err.style.display='none';btn.disabled=true;btn.textContent='RUNNING...';
+  const capital=num($('capital').value), size=num($('size').value), leverage=parseInt($('leverage').value,10);
+  if(capital<=0||size<=0||leverage<1){err.innerHTML='<span class="err-title">⚠ INVALID SCENARIO</span><span class="err-copy">Enter valid capital, position size and leverage.</span>';err.style.display='block';btn.disabled=false;btn.textContent='RUN FULL SIMULATION';return;}
   const payload={startingCapital:capital,positionSize:size,leverage:leverage,period:'all'};
-  const loadEmojis=['🚀','⚡','🔥','📊','💎','🏆','🎯'];
-  const loadStatuses=[
-    'Preparing your scenario...',
-    'Loading the real signal archive...',
-    'Replaying historical trades...',
-    'Calculating balance journey...',
-    'Checking drawdown & win streaks...',
-    'Building achievements & quest...',
-    'Finalizing your historical run...'
-  ];
-
   overlay.classList.add('show');
-  overlay.setAttribute('aria-hidden','false');
-
-  let progress=0, stopped=false, timer=null;
-  const startedAt=performance.now();
-  const minimumMs=2700;
-
-  function updateLoader(p){
-    progress=Math.max(0,Math.min(100,p));
-    $('loadingPercent').textContent=Math.round(progress)+'%';
-    $('loadingFill').style.width=progress+'%';
-    const idx=Math.min(loadStatuses.length-1,Math.floor(progress/16.7));
-    $('loadingStatus').textContent=loadStatuses[idx];
-    $('loadingEmoji').textContent=loadEmojis[Math.min(loadEmojis.length-1,Math.floor(progress/16.7))];
-  }
-
-  updateLoader(0);
-
-  timer=setInterval(()=>{
-    if(stopped)return;
-    const elapsed=performance.now()-startedAt;
-    const t=Math.min(1,elapsed/minimumMs);
-    const eased=1-Math.pow(1-t,1.65);
-    updateLoader(Math.min(98,eased*98));
-  },80);
-
+  let progress=0, stopped=false, timer=null, startedAt=performance.now();
+  timer=setInterval(()=>{if(stopped)return;let t=Math.min(1,(performance.now()-startedAt)/2700);progress=(1-Math.pow(1-t,1.65))*98;$('loadingPercent').textContent=Math.round(progress)+'%';$('loadingFill').style.width=progress+'%';},80);
   try{
-    const fetchPromise=fetch('/api/simulate',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
-
-    const [r]=await Promise.all([
-      fetchPromise,
-      new Promise(resolve=>setTimeout(resolve,minimumMs))
-    ]);
-
-    const raw=await r.text();
-    let d=null;
-    const ct=r.headers.get('content-type')||'';
-
-    if(!r.ok){
-      if(ct.includes('application/json')){
-        try{d=JSON.parse(raw)}catch(_){}
-      }
-      throw new Error((d&&(d.detail||d.message))||`Simulator backend returned HTTP ${r.status}.`);
-    }
-
-    try{d=JSON.parse(raw)}
-    catch(_){
-      throw new Error('Simulator backend is not connected in this preview. Deploy this app to Vercel to activate the /api/simulate connection.');
-    }
-
-    stopped=true;
-    clearInterval(timer);
-    updateLoader(100);
-
+    let r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    let raw=await r.text(); let d=JSON.parse(raw);
+    stopped=true;clearInterval(timer);$('loadingPercent').textContent='100%';$('loadingFill').style.width='100%';
     await new Promise(resolve=>setTimeout(resolve,220));
-    overlay.classList.remove('show');
-    overlay.setAttribute('aria-hidden','true');
-
-    render(d);
-    $('results').classList.remove('results-reveal');
-    void $('results').offsetWidth;
-    $('results').classList.add('results-reveal');
-
-    window.scrollTo({top:0,behavior:'smooth'});
+    overlay.classList.remove('show');render(d);
   }catch(e){
-    stopped=true;
-    clearInterval(timer);
-    overlay.classList.remove('show');
-    overlay.setAttribute('aria-hidden','true');
-
-    err.innerHTML='<span class="err-title">⚠ SIMULATOR CONNECTION</span><span class="err-copy"></span>';
-    const ec=err.querySelector('.err-copy');
-    if(ec)ec.textContent=e.message||'Unable to reach the simulator backend.';
-    err.style.display='block';
-  }finally{
-    btn.disabled=false;
-    btn.textContent='RUN FULL SIMULATION';
-  }
+    stopped=true;clearInterval(timer);overlay.classList.remove('show');
+    err.innerHTML='<span class="err-title">⚠ SIMULATOR CONNECTION</span><span class="err-copy">'+e.message+'</span>';err.style.display='block';
+  }finally{btn.disabled=false;btn.textContent='RUN FULL SIMULATION';}
 }
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
-}
-let deferredInstallPrompt = null;
-const installBtn = document.getElementById("installBtn");
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  if (installBtn) installBtn.style.display = "block";
-});
-if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    installBtn.style.display = "none";
-  });
-}
-window.addEventListener("appinstalled", () => {
-  if (installBtn) installBtn.style.display = "none";
-});
-</script>
-
 </body>
 </html>
