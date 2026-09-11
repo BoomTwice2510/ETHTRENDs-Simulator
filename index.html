@@ -262,5 +262,29 @@ async function runSimulation(){
 }
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+}
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (installBtn) installBtn.style.display = "block";
+});
+if (installBtn) {
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.style.display = "none";
+  });
+}
+window.addEventListener("appinstalled", () => {
+  if (installBtn) installBtn.style.display = "none";
+});
+</script>
 </body>
 </html>
