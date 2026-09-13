@@ -40,3 +40,138 @@
 @media(max-width:1000px){.sip-layout{grid-template-columns:1fr}.sip-input-card{position:relative;top:auto}}
 @media(max-width:760px){.sip-scenario-list{grid-template-columns:1fr}.sip-summary,.sip-detail-summary,.sip-risk-grid{grid-template-columns:1fr 1fr}.sip-selected-head{flex-direction:column;gap:6px}.sip-selected-detail{padding:11px}}
 @media(max-width:520px){.sip-summary,.sip-detail-summary,.sip-risk-grid{grid-template-columns:1fr}.sip-position-row{grid-template-columns:repeat(3,minmax(0,1fr))}.sip-selected-head h3{font-size:28px}.sip-monthly-body{padding:0 6px 10px}.sip-risk-head{flex-direction:column}.sip-risk-badge{align-self:flex-start}.sip-table{min-width:700px}}
+
+
+/* ===== FINAL MOBILE APP LAYOUT / PWA RESPONSIVENESS ===== */
+@media (max-width: 760px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .app {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px 10px 40px !important;
+  }
+
+  .main-grid,
+  .sip-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .input-card,
+  .main-grid > main,
+  .sip-input-card,
+  .sip-results-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 300px !important;
+  }
+
+  .hero-copy,
+  .hero-pills {
+    max-width: 74% !important;
+  }
+
+  /* Keep the ETH badge inside the hero and away from text/buttons. */
+  .hero-coin {
+    width: 64px !important;
+    height: 64px !important;
+    right: 10px !important;
+    bottom: 12px !important;
+    transform: none !important;
+  }
+
+  .hero-coin:before {
+    font-size: 17px !important;
+  }
+
+  .sip-scenario-list,
+  .sip-scenarios,
+  .scenario-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .sip-scenario-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .sip-selected-detail,
+  .sip-detail,
+  .sip-detail-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .sip-summary,
+  .sip-detail-summary {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .sip-risk-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .sip-table-wrap,
+  .sip-monthly-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sip-table-wrap table,
+  .sip-monthly-table-wrap table {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .sip-summary,
+  .sip-detail-summary,
+  .sip-risk-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero {
+    border-radius: 18px !important;
+  }
+
+  .hero-coin {
+    width: 58px !important;
+    height: 58px !important;
+    right: 8px !important;
+    bottom: 10px !important;
+  }
+
+  .hero-copy,
+  .hero-pills {
+    max-width: 70% !important;
+  }
+}
