@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <title>ETHTRENDs — Historical Simulator</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="/css/sip.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
@@ -61,6 +62,64 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .loading-status{margin-top:10px;min-height:16px;color:#475569;font:700 9px "JetBrains Mono"}
 @keyframes loaderEmoji{0%,100%{transform:translateY(0) rotate(-5deg) scale(1)}50%{transform:translateY(-10px) rotate(5deg) scale(1.12)}}
 @keyframes loadFadeIn{from{opacity:0}to{opacity:1}}
+
+/* ===== SIP MODE — MATCHES HISTORICAL SIMULATOR UI ===== */
+.sim-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px;padding:5px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:14px}
+.sim-mode-btn{border:1px solid transparent;border-radius:10px;padding:11px 12px;background:transparent;color:#475569;font:800 10px "JetBrains Mono";letter-spacing:.07em;cursor:pointer}
+.sim-mode-btn.active{color:#fff;background:var(--cyan);border-color:var(--cyan)}
+.sip-mode-panel{margin-top:14px}
+.sip-layout{display:grid;grid-template-columns:300px 1fr;gap:14px}
+.sip-input-card{position:sticky;top:10px;align-self:start}
+.sip-results-card{min-height:500px}
+.sip-fixed-rule{display:flex;align-items:center;justify-content:space-between;margin:12px 0;padding:11px;border:1px solid rgba(2,132,199,.22);background:#f8fafc;border-radius:10px}
+.sip-fixed-rule span{color:#475569;font:700 9px "JetBrains Mono"}
+.sip-fixed-rule strong{color:var(--cyan);font:800 12px "JetBrains Mono"}
+.sip-position-preview{margin-top:12px}
+.sip-position-preview-title{color:#475569;font:700 9px "JetBrains Mono";letter-spacing:.06em;margin-bottom:7px}
+.sip-position-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.sip-position-item{border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:8px 3px;text-align:center}
+.sip-position-item span{display:block;color:#475569;font:700 7px "JetBrains Mono"}
+.sip-position-item strong{display:block;margin-top:4px;color:#111;font:800 9px "JetBrains Mono"}
+.sip-status{margin-top:9px;border-radius:10px;padding:9px;background:#f8fafc;border:1px solid #cbd5e1;color:#475569;font:600 9px/1.5 "Inter"}
+.sip-status.success{border-color:rgba(5,150,105,.35);color:#047857;background:rgba(5,150,105,.05)}
+.sip-status.error{border-color:rgba(220,38,38,.3);color:#b91c1c;background:rgba(220,38,38,.06)}
+.sip-results-heading{margin-bottom:12px}
+.sip-results-heading .result-label{color:#db2777}
+.sip-results-heading h2{margin:5px 0;color:#111;font:800 clamp(22px,4vw,30px) "Inter"}
+.sip-results-heading p{margin:0;color:#475569;font:600 10px/1.6 "Inter"}
+.sip-scenario-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.sip-scenario-card{border:1px solid #cbd5e1;background:#f8fafc;border-radius:12px;padding:12px}
+.sip-scenario-card.base{border-color:rgba(2,132,199,.45);background:linear-gradient(145deg,#f0f9ff,#f8fafc)}
+.sip-scenario-header{display:flex;justify-content:space-between;gap:8px}
+.sip-scenario-name{font:800 11px "JetBrains Mono";color:#111}
+.sip-scenario-description{margin-top:3px;color:#475569;font:600 8px "Inter"}
+.sip-scenario-roi{font:800 12px "JetBrains Mono"}
+.sip-scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:10px}
+.sip-scenario-grid>div{border:1px solid #cbd5e1;background:#fff;border-radius:7px;padding:7px}
+.sip-scenario-grid span{display:block;color:#475569;font:700 7px "JetBrains Mono"}
+.sip-scenario-grid strong{display:block;margin-top:3px;color:#111;font:800 10px "JetBrains Mono"}
+.sip-primary-projection{margin-top:14px}
+.sip-section-title{font:800 10px "JetBrains Mono";letter-spacing:.08em;color:#111;margin-bottom:7px}
+.sip-result-card{border:1px solid rgba(219,39,119,.3);border-radius:14px;background:linear-gradient(145deg,#fdf2f8,#f8fafc);padding:15px}
+.sip-result-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.sip-result-kicker{color:#db2777;font:800 9px "JetBrains Mono";letter-spacing:.1em}
+.sip-result-title{margin-top:5px;color:#111;font:800 clamp(28px,4vw,40px) "Inter"}
+.sip-result-subtitle{margin-top:3px;color:#475569;font:600 9px "JetBrains Mono"}
+.sip-result-roi{font:800 16px "JetBrains Mono"}
+.sip-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.sip-summary-box{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px}
+.sip-summary-box span{display:block;color:#475569;font:700 7px "JetBrains Mono"}
+.sip-summary-box strong{display:block;margin-top:5px;color:#111;font:800 12px "JetBrains Mono"}
+.sip-table-wrap{overflow-x:auto;margin-top:12px}
+.sip-table{width:100%;border-collapse:collapse;min-width:580px}
+.sip-table th,.sip-table td{padding:8px;border-bottom:1px solid #e2e8f0;text-align:left}
+.sip-table th{color:#475569;font:700 7px "JetBrains Mono";letter-spacing:.05em}
+.sip-table td{color:#334155;font:700 9px "JetBrains Mono"}
+.sip-disclaimer{margin-top:12px;color:#475569;font:600 8px/1.6 "Inter"}
+.sip-positive{color:var(--green)!important}.sip-negative{color:var(--red)!important}
+@media(max-width:900px){.sip-layout{grid-template-columns:1fr}.sip-input-card{position:relative;top:auto}.sip-scenario-list{grid-template-columns:1fr}.sip-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.sim-mode-btn{font-size:9px;padding:10px 6px}.sip-position-row{grid-template-columns:repeat(3,1fr)}.sip-summary{grid-template-columns:1fr 1fr}.sip-result-header{flex-direction:column}}
+
 </style>
 </head>
 <body>
@@ -77,7 +136,58 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 </div>
 <div class="app">
 <header class="top"><div class="brand"><img src="/icons/icon-192.png" alt="ETHTRENDs logo">ETHTRENDs / SIMULATOR</div><div class="top-right"><button id="installBtn" class="install">INSTALL APP</button><div class="live">● REAL BOT DATA</div></div></header>
-<section class="hero"><div class="eyebrow">01 — HISTORICAL SIGNAL QUEST</div><h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1><p class="hero-copy">Run your own scenario through the real ETHTRENDs completed signal-to-signal trade record. Change the capital, position size and leverage — then explore the journey.</p><div class="hero-pills"><div class="pill"><b>REAL</b> TRADE RECORD</div><div class="pill"><b>129+</b> COMPLETED SIGNALS</div><div class="pill"><b>0</b> HARD-CODED RESULTS</div></div><div class="hero-coin"></div></section>
+<section class="hero"><div class="eyebrow">01 — HISTORICAL SIGNAL QUEST</div><h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1><p class="hero-copy">Run your own scenario through the real ETHTRENDs completed signal-to-signal trade record. Change the capital, position size and leverage — then explore the journey.</p><div class="hero-pills"><div class="pill"><b>REAL</b> TRADE RECORD</div><div class="pill"><b>133+</b> COMPLETED SIGNALS</div><div class="pill"><b>0</b> HARD-CODED RESULTS</div></div><div class="hero-coin"></div></section>
+
+<div class="sim-mode-switch" role="tablist" aria-label="Simulator mode">
+  <button id="historicalModeBtn" class="sim-mode-btn active" type="button" onclick="switchSimulatorMode('historical')">HISTORICAL SIMULATOR</button>
+  <button id="sipModeBtn" class="sim-mode-btn" type="button" onclick="switchSimulatorMode('sip')">SIP PROJECTION</button>
+</div>
+
+<section id="sipModePanel" class="sip-mode-panel" style="display:none">
+  <div class="sip-layout">
+    <aside class="card input-card sip-input-card">
+      <div class="card-title">BUILD YOUR SIP PLAN <span class="mini">YOUR RULES</span></div>
+
+      <div class="field">
+        <label>MONTHLY SIP · INR</label>
+        <input id="sipAmount" type="number" min="2000" step="1000" value="5000">
+        <div class="hint">Minimum ₹2,000 · ₹1,000 multiples only</div>
+      </div>
+
+      <div class="field">
+        <label>DISPLAY CURRENCY</label>
+        <div class="currency">
+          <button id="sipUsd" type="button" onclick="setSipCurrency('USD')">$ USD</button>
+          <button id="sipInr" class="active" type="button" onclick="setSipCurrency('INR')">₹ INR</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>USD → INR RATE</label>
+        <input id="sipFx" type="number" min="1" step="0.01" value="102">
+      </div>
+
+      <div class="sip-fixed-rule">
+        <span>LEVERAGE</span>
+        <strong>10× FIXED</strong>
+      </div>
+
+      <div id="sipPositionPreview" class="sip-position-preview"></div>
+
+      <button id="sipRunBtn" class="run" type="button" onclick="runSIPProjection()">⚡ RUN SIP PROJECTION</button>
+      <div id="sipStatus" class="sip-status" style="display:none"></div>
+    </aside>
+
+    <main class="card sip-results-card">
+      <div id="sipEmpty" class="empty">
+        ⚡ Build your SIP plan on the left<br>
+        then launch the projection.
+      </div>
+      <div id="sipResults"></div>
+    </main>
+  </div>
+</section>
+
 <div class="main-grid">
 <aside class="card input-card"><div class="card-title">BUILD YOUR SCENARIO <span class="mini">YOUR RULES</span></div>
 <div class="field"><label>Starting Capital · USD</label><input id="capital" type="number" min="0.01" step="0.01" value="100"></div>
@@ -91,11 +201,11 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <div class="result-top"><div class="result-card"><div class="result-label">YOUR HISTORICAL JOURNEY ENDS AT</div><div id="final" class="big-money green"></div><div class="result-sub">Starting from <span id="starting"></span> · <span id="scope"></span></div></div><div class="result-card accent"><div class="score-wrap"><div class="score-ring" id="scoreRing"><div class="score-num"><span id="score">0</span><small>QUEST SCORE</small></div></div><div class="score-copy"><h3 id="verdict">SCENARIO COMPLETE</h3><p id="verdictCopy">Your score is based only on the historical result you just simulated.</p></div></div></div></div>
 <div class="summary"><div class="metric"><small>NET P&L</small><strong id="pnl"></strong></div><div class="metric"><small>TOTAL ROI</small><strong id="roi"></strong></div><div class="metric"><small>TRADES</small><strong id="trades"></strong></div><div class="metric"><small>WIN RATE</small><strong id="winrate"></strong></div><div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div><div class="metric"><small>FINAL BALANCE</small><strong id="finalMini"></strong></div><div class="metric"><small>STARTING CAPITAL</small><strong id="startingMini"></strong></div></div>
 <section class="section"><div class="section-head"><div class="section-title"><b>02</b> · BALANCE JOURNEY</div><span class="badge">HISTORICAL EQUITY</span></div><div class="chartbox"><canvas id="equity"></canvas></div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>06</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>07</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head" onclick="toggle(this)"><div><div class="acc-main">ALL TRADES</div><div class="acc-sub">Open the complete signal-by-signal record</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body"><div id="tradeLog" class="list"></div></div></div><div class="footer-note">Tap a signal to inspect entry, exit, P&L, balance and margin.</div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>03</b> · ACHIEVEMENTS UNLOCKED</div><span class="badge">PLAY THE DATA</span></div><div id="achievements" class="achievements"></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>03</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>04</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head" onclick="toggle(this)"><div><div class="acc-main">ALL TRADES</div><div class="acc-sub">Open the complete signal-by-signal record</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body"><div id="tradeLog" class="list"></div></div></div><div class="footer-note">Tap a signal to inspect entry, exit, P&L, balance and margin.</div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>05</b> · ACHIEVEMENTS UNLOCKED</div><span class="badge">PLAY THE DATA</span></div><div id="achievements" class="achievements"></div></section>
 <section id="gameShell" class="game-shell">
-  <div class="section-head"><div class="section-title"><b>04</b> · YOUR SIGNAL QUEST</div><span class="badge">ADAPTIVE TO YOUR CAPITAL • POSITION • REAL TRADES</span></div>
+  <div class="section-head"><div class="section-title"><b>06</b> · YOUR SIGNAL QUEST</div><span class="badge">ADAPTIVE TO YOUR CAPITAL • POSITION • REAL TRADES</span></div>
   <div class="game-console">
     <div class="game-kicker">HISTORICAL RUN COMPLETE</div>
     <div class="game-top">
@@ -122,7 +232,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
     </div>
   </div>
 </section>
-<section class="section"><div class="section-head"><div class="section-title"><b>08</b> · PROGRESS MAP</div><span class="badge">YOUR SCENARIO</span></div><div id="journey" class="journey"></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>07</b> · PROGRESS MAP</div><span class="badge">YOUR SCENARIO</span></div><div id="journey" class="journey"></div></section>
 <div class="disclaimer-card"><div class="disclaimer-title">⚠ HISTORICAL PERFORMANCE ≠ FUTURE RESULTS</div><div class="disclaimer-text">This simulator shows how the <strong>ETHTRENDs historical signal record</strong> would have performed under the assumptions you entered. It is a <strong>historical scenario only</strong> — not a prediction, promise, or guarantee of future returns.</div><div class="disclaimer-text">Past performance does not guarantee future performance. Actual results may differ materially because of market conditions, volatility, liquidity, fees, funding, slippage, execution price, leverage, position sizing, missed trades and other factors.</div><div class="disclaimer-warning">NO GUARANTEED RETURNS · NOT FINANCIAL ADVICE · HISTORICAL DATA ONLY</div></div>
 </div></main></div></div>
 <script>
@@ -262,5 +372,116 @@ async function runSimulation(){
 }
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
+
+<script src="/js/sip.js"></script>
+<script src="/js/sip-ui.js"></script>
+<script>
+/* ===== SIP INTEGRATION ===== */
+let simulatorMode='historical',sipCurrency='INR',sipLastResult=null;
+
+function switchSimulatorMode(mode){
+  simulatorMode=mode;
+  $('historicalModeBtn').classList.toggle('active',mode==='historical');
+  $('sipModeBtn').classList.toggle('active',mode==='sip');
+  document.querySelector('.main-grid').style.display=mode==='historical'?'grid':'none';
+  $('sipModePanel').style.display=mode==='sip'?'block':'none';
+  if(mode==='sip') updateSIPPositionPreview();
+}
+
+function setSipCurrency(c){
+  sipCurrency=c;
+  $('sipUsd').classList.toggle('active',c==='USD');
+  $('sipInr').classList.toggle('active',c==='INR');
+  updateSIPPositionPreview();
+  if(sipLastResult && window.ETHTRENDsSIPUI){
+    ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
+  }
+}
+
+function sipFx(){return num($('sipFx').value)||102}
+
+function updateSIPPositionPreview(){
+  if(!window.ETHTRENDsSIP)return;
+  const amount=num($('sipAmount').value);
+  if(!amount)return;
+  try{
+    const schedule=ETHTRENDsSIP.buildPositionSchedule(amount);
+    $('sipPositionPreview').innerHTML=
+      '<div class="sip-position-preview-title">YEAR 1 POSITION SCALING</div>'+
+      '<div class="sip-position-row">'+
+      schedule.slice(0,5).map(x=>'<div class="sip-position-item"><span>MONTH '+x.month+'</span><strong>'+Number(x.positionEth).toFixed(4)+' ETH</strong></div>').join('')+
+      '</div>'+
+      '<div class="hint">M5–M12 stays at 5× base. Y2 / Y3 / Y4 / Y5 = 10× / 20× / 30× / 40× base.</div>';
+  }catch(e){$('sipPositionPreview').innerHTML='';}
+}
+
+/* Works on Vercel through /api/simulate. When opened directly as file://,
+   use the Railway API URL so the user gets a meaningful local test path. */
+function simulatorApiUrl(){
+  return location.protocol==='file:'
+    ? 'https://ethtrends-backend.up.railway.app/api/v1/simulator'
+    : '/api/simulate';
+}
+
+async function runSIPProjection(){
+  const btn=$('sipRunBtn'),status=$('sipStatus'),empty=$('sipEmpty');
+  const amount=num($('sipAmount').value);
+  status.style.display='none';
+  btn.disabled=true;
+  btn.textContent='LOADING REAL BOT DATA...';
+
+  try{
+    if(!window.ETHTRENDsSIP)throw new Error('SIP engine is not loaded. Check js/sip.js.');
+    if(amount<2000||amount%1000!==0)throw new Error('Monthly SIP must be at least ₹2,000 and in ₹1,000 multiples.');
+
+    const r=await fetch(simulatorApiUrl(),{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({startingCapital:1000000,positionSize:1,leverage:10,period:'all'})
+    });
+
+    const raw=await r.text();
+    if(!r.ok)throw new Error('Simulator API returned HTTP '+r.status+'.');
+
+    let data;
+    try{data=JSON.parse(raw)}catch{throw new Error('Simulator API returned invalid JSON.')}
+
+    const trades=data.trades||[];
+    if(!trades.length)throw new Error('No completed trades were returned by the simulator API.');
+
+    /* sip.js remains the calculation source; API data remains the trade source. */
+    sipLastResult=ETHTRENDsSIP.run({
+      monthlySip:amount,
+      trades:trades,
+      fxRate:sipFx()
+    });
+
+    if(!sipLastResult)throw new Error('SIP engine returned no projection.');
+
+    empty.style.display='none';
+    ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
+
+    status.className='sip-status success';
+    status.textContent='REAL BOT DATA · '+trades.length+' completed trades processed.';
+    status.style.display='block';
+
+  }catch(e){
+    status.className='sip-status error';
+    status.textContent='⚠ '+(e.message||'Unable to load simulator data.');
+    status.style.display='block';
+  }finally{
+    btn.disabled=false;
+    btn.textContent='⚡ RUN SIP PROJECTION';
+  }
+}
+
+$('sipAmount').addEventListener('input',updateSIPPositionPreview);
+$('sipFx').addEventListener('input',()=>{
+  if(sipLastResult && window.ETHTRENDsSIPUI){
+    ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
+  }
+});
+</script>
+
 </body>
 </html>

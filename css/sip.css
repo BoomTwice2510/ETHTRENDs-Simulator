@@ -1,0 +1,500 @@
+/* =========================================================
+   ETHTRENDs SIP MODE
+   SIP-only styles — existing simulator styles untouched
+   ========================================================= */
+
+.sip-hidden {
+  display: none !important;
+}
+
+/* ---------- SIP MODE CONTAINER ---------- */
+
+.sip-mode {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.sip-panel {
+  width: 100%;
+  background: #050505;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  border-radius: 18px;
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+/* ---------- HEADER ---------- */
+
+.sip-header {
+  margin-bottom: 22px;
+}
+
+.sip-kicker,
+.sip-section-title,
+.sip-result-kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+.sip-header h2 {
+  margin: 7px 0 6px;
+  font-size: clamp(22px, 4vw, 32px);
+  line-height: 1.1;
+  color: #fff;
+}
+
+.sip-header p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ---------- INPUT GRID ---------- */
+
+.sip-input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sip-input-box {
+  background: #030303;
+  border: 1px solid rgba(255, 105, 180, 0.42);
+  border-radius: 14px;
+  padding: 15px;
+}
+
+.sip-input-box label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.sip-input-box input,
+.sip-input-box select {
+  width: 100%;
+  box-sizing: border-box;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  padding: 11px 12px;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+}
+
+.sip-input-box input:focus,
+.sip-input-box select:focus {
+  border-color: #00e5ff;
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.08);
+}
+
+.sip-input-help {
+  margin-top: 7px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.38);
+  line-height: 1.4;
+}
+
+/* ---------- POSITION INFO ---------- */
+
+.sip-position-preview {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  background: #020202;
+}
+
+.sip-position-preview-title {
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.sip-position-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sip-position-item {
+  padding: 10px 8px;
+  border: 1px solid rgba(255, 105, 180, 0.25);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.sip-position-item span {
+  display: block;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+  margin-bottom: 5px;
+}
+
+.sip-position-item strong {
+  color: #fff;
+  font-size: 12px;
+}
+
+/* ---------- RUN BUTTON ---------- */
+
+.sip-run-button {
+  width: 100%;
+  margin-top: 16px;
+  border: 1px solid #00e5ff;
+  border-radius: 12px;
+  padding: 13px 16px;
+  background: #000;
+  color: #00e5ff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.sip-run-button:hover {
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.12);
+}
+
+.sip-run-button:active {
+  transform: scale(0.99);
+}
+
+.sip-run-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- ERROR / STATUS ---------- */
+
+.sip-status {
+  margin-top: 12px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 105, 180, 0.35);
+  background: #030303;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sip-status.error {
+  border-color: rgba(255, 105, 180, 0.65);
+  color: #ff9dcc;
+}
+
+.sip-status.success {
+  border-color: rgba(0, 229, 255, 0.55);
+  color: #8ff4ff;
+}
+
+/* ---------- RESULTS ---------- */
+
+.sip-results {
+  margin-top: 24px;
+}
+
+.sip-results-heading {
+  margin-bottom: 18px;
+}
+
+.sip-results-heading h2 {
+  margin: 6px 0;
+  color: #fff;
+  font-size: clamp(20px, 3.5vw, 28px);
+}
+
+.sip-results-heading p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ---------- SCENARIO CARDS ---------- */
+
+.sip-scenario-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sip-scenario-card {
+  background: #020202;
+  border: 1px solid rgba(255, 105, 180, 0.35);
+  border-radius: 15px;
+  padding: 17px;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.sip-scenario-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 229, 255, 0.55);
+}
+
+.sip-scenario-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.sip-scenario-name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sip-scenario-description {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+}
+
+.sip-scenario-roi {
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.sip-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sip-scenario-grid > div {
+  padding: 10px;
+  border-radius: 9px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sip-scenario-grid span {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sip-scenario-grid strong {
+  color: #fff;
+  font-size: 12px;
+}
+
+/* ---------- PRIMARY PROJECTION ---------- */
+
+.sip-primary-projection {
+  margin-top: 24px;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 16px;
+  padding: 18px;
+  background: #020202;
+}
+
+.sip-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.sip-result-title {
+  margin-top: 5px;
+  color: #fff;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.sip-result-subtitle {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.sip-result-roi {
+  font-size: 22px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* ---------- SUMMARY ---------- */
+
+.sip-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.sip-summary-box {
+  padding: 13px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 105, 180, 0.25);
+  background: #000;
+}
+
+.sip-summary-box span {
+  display: block;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.sip-summary-box strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+/* ---------- YEAR TABLE ---------- */
+
+.sip-year-table-wrap,
+.sip-monthly-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.sip-year-table,
+.sip-monthly-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.sip-year-table th,
+.sip-year-table td,
+.sip-monthly-table th,
+.sip-monthly-table td {
+  padding: 11px 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sip-year-table th,
+.sip-monthly-table th {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.sip-year-table td,
+.sip-monthly-table td {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+}
+
+.sip-year-table tr:hover td,
+.sip-monthly-table tr:hover td {
+  background: rgba(0, 229, 255, 0.025);
+}
+
+/* ---------- MONTHLY SECTION ---------- */
+
+.sip-monthly-section {
+  margin-top: 25px;
+}
+
+.sip-monthly-section .sip-section-title {
+  margin-bottom: 2px;
+}
+
+/* ---------- COLORS ---------- */
+
+.positive {
+  color: #00e5ff !important;
+}
+
+.negative {
+  color: #ff9dcc !important;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+  .sip-scenario-list {
+    grid-template-columns: 1fr;
+  }
+
+  .sip-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sip-position-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .sip-panel {
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  .sip-input-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sip-position-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sip-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sip-result-header {
+    flex-direction: column;
+  }
+
+  .sip-result-roi {
+    font-size: 18px;
+  }
+
+  .sip-primary-projection {
+    padding: 13px;
+  }
+
+  .sip-result-title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 400px) {
+  .sip-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sip-position-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
