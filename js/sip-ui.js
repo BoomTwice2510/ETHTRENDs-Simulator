@@ -67,12 +67,27 @@
     </div>`;
   }
 
-  function disclaimer(){return `<div class="sip-disclaimer"><div class="sip-disclaimer-title">⚠ CONSERVATIVE HISTORICAL PROJECTION</div><div>Future returns are modeled at <strong>25% / 50% / 80%</strong> of historical performance for Worst / Base / Best scenarios. Losses are included and compounded normally. This is a mathematical scenario based on historical data, <strong>not a return guarantee.</strong></div><div>Actual results can differ materially because of market conditions, volatility, fees, funding, slippage, execution, leverage, liquidity, position sizing, missed trades and other factors.</div><div class="sip-disclaimer-warning">NO GUARANTEED RETURNS · NOT FINANCIAL ADVICE · HISTORICAL DATA ONLY</div></div>`}
+  function disclaimer(){return ``}
 
   function scenarioCard(s,key,label,desc,currency,selected){
     const fx=s.fxRate;
     return `<button class="sip-scenario-card ${selected?"selected":""}" type="button" data-scenario="${key}" aria-pressed="${selected}">
-      <div class="sip-scenario-top"><div><div class="sip-scenario-name">${label}</div><div class="sip-scenario-description">${desc}</div></div><div class="sip-scenario-arrow">${selected?"●":"○"}</div></div>
+      
+<div class="sip-conservative-disclaimer">
+  <div class="sip-conservative-title">CONSERVATIVE HISTORICAL PROJECTION</div>
+  <div class="sip-conservative-copy">
+    Future returns are modeled at
+    <span class="projection-rate rate-20">20%</span> /
+    <span class="projection-rate rate-40">40%</span> /
+    <span class="projection-rate rate-60">60%</span>
+    of historical performance for Worst / Base / Best scenarios.
+    Losses are included and compounded normally.
+    This is a mathematical scenario based on historical data,
+    <strong>not a return guarantee.</strong>
+  </div>
+</div>
+
+<div class="sip-scenario-top"><div><div class="sip-scenario-name">${label}</div><div class="sip-scenario-description">${desc}</div></div><div class="sip-scenario-arrow">${selected?"●":"○"}</div></div>
       <div class="sip-scenario-summary">
         <div><span>FINAL CORPUS</span><strong>${money(s.finalCorpusINR,currency,fx)}</strong></div>
         <div><span>NET P&amp;L</span><strong class="${cls(s.netPnlINR)}">${signed(s.netPnlINR,currency,fx)}</strong></div>
@@ -87,7 +102,7 @@
     const s=result.scenarios[key],fx=s.fxRate,detail=target.querySelector("#sipSelectedDetail");
     if(!detail)return;
     detail.innerHTML=`<section class="sip-selected-detail">
-      <div class="sip-selected-head"><div><div class="sip-selected-kicker">${key==="base"?"BASE · 50%":key==="worst"?"WORST · 25%":"BEST · 80%"} SCENARIO</div><h3>${money(s.finalCorpusINR,currency,fx)}</h3><p>${result.years}-year projection · ${money(s.investedINR,currency,fx)} total SIP contributions · ${pct(s.roiPercent)} modeled return</p></div><div class="sip-selected-roi ${cls(s.roiPercent)}">${pct(s.roiPercent)}</div></div>
+      <div class="sip-selected-head"><div><div class="sip-selected-kicker">${key==="base"?"BASE · 40%":key==="worst"?"WORST · 20%":"BEST · 60%"} SCENARIO</div><h3>${money(s.finalCorpusINR,currency,fx)}</h3><p>${result.years}-year projection · ${money(s.investedINR,currency,fx)} total SIP contributions · ${pct(s.roiPercent)} modeled return</p></div><div class="sip-selected-roi ${cls(s.roiPercent)}">${pct(s.roiPercent)}</div></div>
       <div class="sip-detail-summary">
         <div><span>NET TRADING P&amp;L</span><strong class="${cls(s.netPnlINR)}">${signed(s.netPnlINR,currency,fx)}</strong></div>
         <div><span>FINAL POSITION</span><strong>${s.monthly[s.monthly.length-1].positionEth.toFixed(4)} ETH</strong></div>
@@ -107,7 +122,7 @@
       const base=result.scenarios.base,fx=base.fxRate;
       target.innerHTML=`<div class="sip-results-heading"><div class="result-label">REAL BOT DATA · SIP PROJECTION</div><h2>${money(base.finalCorpusINR,currency,fx)} projected corpus</h2><p>${result.years}-year model · latest ${result.baselineMonths.length} completed historical months (${result.baselineMonths[0].month} → ${result.baselineMonths[result.baselineMonths.length-1].month}) from the simulator API. Historical monthly points are reused cyclically for the selected horizon.</p></div>
       <div class="sip-summary"><div class="sip-summary-box"><span>MONTHLY SIP</span><strong>${inr(result.monthlySip)}</strong></div><div class="sip-summary-box"><span>BASE POSITION</span><strong>${result.basePositionEth.toFixed(4)} ETH</strong></div><div class="sip-summary-box"><span>LEVERAGE</span><strong>10× FIXED</strong></div><div class="sip-summary-box"><span>HORIZON</span><strong>${result.years} YEARS</strong></div></div>
-      <div class="sip-scenario-list">${scenarioCard(result.scenarios.base,"base","BASE · 50%","Historical monthly performance at 50% scale.",currency,selected==="base")}${scenarioCard(result.scenarios.worst,"worst","WORST · 25%","Historical monthly performance at 25% scale.",currency,selected==="worst")}${scenarioCard(result.scenarios.best,"best","BEST · 80%","Historical monthly performance at 80% scale.",currency,selected==="best")}</div>
+      <div class="sip-scenario-list">${scenarioCard(result.scenarios.base,"base","BASE · 40%","Historical monthly performance at 40% scale.",currency,selected==="base")}${scenarioCard(result.scenarios.worst,"worst","WORST · 20%","Historical monthly performance at 20% scale.",currency,selected==="worst")}${scenarioCard(result.scenarios.best,"best","BEST · 60%","Historical monthly performance at 60% scale.",currency,selected==="best")}</div>
       <div id="sipSelectedDetail"></div>`;
       target.querySelectorAll(".sip-scenario-card").forEach(card=>card.addEventListener("click",()=>{selected=card.dataset.scenario;draw();requestAnimationFrame(()=>target.querySelector("#sipSelectedDetail")?.scrollIntoView({behavior:"smooth",block:"start"}))}));
       renderSelected(result,target,currency,selected);

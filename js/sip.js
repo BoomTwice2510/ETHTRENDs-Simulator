@@ -2,11 +2,20 @@
    Source of truth: simulator API trade record.
    No hard-coded historical P&L.
 */
+// User-selectable SIP leverage (5X or 10X). Default remains 10X.
+let selectedLeverage = 10;
+function setSIPLeverage(value){
+  const n = Number(value);
+  if (n === 5 || n === 10) selectedLeverage = n;
+  return selectedLeverage;
+}
+function getSIPLeverage(){ return selectedLeverage; }
+
 (function () {
   "use strict";
 
   const CONFIG = Object.freeze({
-    MIN_SIP: 2000,
+    MIN_SIP: 1000,
     SIP_UNIT_INR: 1000,
     ETH_PER_SIP_UNIT: 0.01,
     LEVERAGE: 10,
@@ -21,9 +30,9 @@
       5: 40
     }),
     SCENARIOS: Object.freeze({
-      worst: 0.25,
-      base: 0.50,
-      best: 0.80
+      worst: 0.20,
+      base: 0.40,
+      best: 0.60
     })
   });
 
@@ -35,7 +44,7 @@
   function validateSip(monthlySip) {
     const sip = n(monthlySip);
     if (sip < CONFIG.MIN_SIP || sip % CONFIG.SIP_UNIT_INR !== 0) {
-      throw new Error("Monthly SIP must be at least ₹2,000 and in ₹1,000 multiples.");
+      throw new Error("Monthly SIP must be at least ₹1,000 and in ₹1,000 multiples.");
     }
     return sip;
   }
@@ -51,7 +60,6 @@
     if (m <= 12) return base * 5;
 
     const year = Math.ceil(m / 12);
-    // No cap after Year 5: Y6=50×, Y7=60× ... Y25=240× base.
     const multiplier = year <= 5
       ? CONFIG.YEAR_MULTIPLIERS[year]
       : 40 + ((year - 5) * 10);
@@ -110,7 +118,6 @@
 
     if (!keys.length) return [];
 
-    // Never use the current partial calendar month as a historical baseline.
     const now = new Date();
     const currentKey = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
     const completed = keys.filter(k => k < currentKey);
@@ -240,7 +247,7 @@
       monthlySip: sip,
       years,
       basePositionEth: basePosition(sip),
-      leverage: CONFIG.LEVERAGE,
+      leverage: selectedLeverage,
       baselineMonths,
       baselineAveragePoints:
         baselineMonths.reduce((s, x) => s + x.points, 0) / baselineMonths.length,

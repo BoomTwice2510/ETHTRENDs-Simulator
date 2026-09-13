@@ -333,8 +333,16 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 
       <div class="field">
         <label>MONTHLY SIP · INR</label>
-        <input id="sipAmount" type="number" min="2000" step="1000" value="5000">
-        <div class="hint">Minimum ₹2,000 · ₹1,000 multiples only</div>
+        <input id="sipAmount" type="number" min="1000" step="1000" value="5000">
+        <div class="hint">Minimum ₹1,000 · ₹1,000 multiples only</div>
+<div class="sip-leverage-control" id="sipLeverageToggle" aria-label="SIP leverage">
+  <span class="sip-control-label">LEVERAGE</span>
+  <div class="sip-leverage-options" role="group" aria-label="Select leverage">
+    <button type="button" class="sip-leverage-btn" data-leverage="5">5X</button>
+    <button type="button" class="sip-leverage-btn active" data-leverage="10">10X</button>
+  </div>
+</div>
+
       </div>
 
       <div class="field">
@@ -649,7 +657,7 @@ async function runSIPProjection(){
 
   try{
     if(!window.ETHTRENDsSIP)throw new Error('SIP engine is not loaded. Check js/sip.js.');
-    if(amount<2000||amount%1000!==0)throw new Error('Monthly SIP must be at least ₹2,000 and in ₹1,000 multiples.');
+    if(amount<2000||amount%1000!==0)throw new Error('Monthly SIP must be at least ₹1,000 and in ₹1,000 multiples.');
 
     const r=await fetch(simulatorApiUrl(),{
       method:'POST',
@@ -787,6 +795,27 @@ window.addEventListener("appinstalled", () => {
       <span class="footer-sparkle">✦</span>
     </div>
   </footer>
+
+
+<script>
+(function(){
+  function syncSIPLeverage(value){
+    if (typeof setSIPLeverage === 'function') setSIPLeverage(value);
+    document.querySelectorAll('.sip-leverage-btn').forEach(function(btn){
+      btn.classList.toggle('active', Number(btn.dataset.leverage) === Number(value));
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.sip-leverage-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        syncSIPLeverage(Number(this.dataset.leverage));
+        if (typeof updateSIPPositionPreview === 'function') updateSIPPositionPreview();
+      });
+    });
+    syncSIPLeverage(10);
+  });
+})();
+</script>
 
 </body>
 </html>

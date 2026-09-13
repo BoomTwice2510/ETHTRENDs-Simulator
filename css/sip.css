@@ -287,3 +287,107 @@
 .main-grid.sip-hidden {
   display: none !important;
 }
+
+/* Conservative projection notice */
+.sip-conservative-disclaimer {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 14px 0 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 229, 255, .32);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .22);
+  text-align: center;
+}
+
+.sip-conservative-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  margin-bottom: 6px;
+}
+
+.sip-conservative-copy {
+  font-size: 10px;
+  line-height: 1.5;
+  opacity: .78;
+}
+
+.projection-rate {
+  display: inline-block;
+  font-weight: 900;
+  animation: projectionBreath 2.2s ease-in-out infinite;
+}
+
+.rate-20 { animation-delay: 0s; }
+.rate-40 { animation-delay: .35s; }
+.rate-60 { animation-delay: .7s; }
+
+@keyframes projectionBreath {
+  0%, 100% { opacity: .58; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+/* Selected scenario's large total amount */
+.sip-scenario-card.active .total-amount,
+.sip-scenario-card.selected .total-amount,
+.scenario-card.active .total-amount,
+.scenario-card.selected .total-amount {
+  animation: totalAmountBreath 2s ease-in-out infinite;
+}
+
+@keyframes totalAmountBreath {
+  0%, 100% { opacity: .88; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.025); }
+}
+
+@media (max-width: 760px) {
+  .sip-conservative-disclaimer {
+    margin: 10px 0 9px;
+    padding: 10px 11px;
+  }
+
+  .sip-conservative-title {
+    font-size: 10px;
+  }
+
+  .sip-conservative-copy {
+    font-size: 9px;
+  }
+}
+
+/* SIP leverage selector */
+.sip-leverage-control {
+  margin-top: 10px;
+}
+
+.sip-control-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .12em;
+  font-weight: 800;
+  margin-bottom: 5px;
+  opacity: .72;
+}
+
+.sip-leverage-options {
+  display: flex;
+  gap: 6px;
+}
+
+.sip-leverage-btn {
+  appearance: none;
+  border: 1px solid rgba(0, 229, 255, .35);
+  background: transparent;
+  color: inherit;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sip-leverage-btn.active {
+  border-color: rgba(0, 229, 255, .9);
+  box-shadow: 0 0 12px rgba(0, 229, 255, .12);
+}
