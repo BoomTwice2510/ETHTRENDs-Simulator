@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <title>ETHTRENDs — Historical Simulator</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="/css/sip.css">
+<link rel="stylesheet" href="/css/sip.css?v=9">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
@@ -381,8 +381,8 @@ async function runSimulation(){
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 
-<script src="/js/sip.js"></script>
-<script src="/js/sip-ui.js"></script>
+<script src="/js/sip.js?v=9"></script>
+<script src="/js/sip-ui.js?v=9"></script>
 <script>
 /* ===== SIP INTEGRATION ===== */
 let simulatorMode='historical',sipCurrency='INR',sipLastResult=null;
@@ -419,7 +419,7 @@ function updateSIPPositionPreview(){
       '<div class="sip-position-row">'+
       schedule.slice(0,5).map(x=>'<div class="sip-position-item"><span>MONTH '+x.month+'</span><strong>'+Number(x.positionEth).toFixed(4)+' ETH</strong></div>').join('')+
       '</div>'+
-      '<div class="hint">M5–M12 stays at 5× base. Y2 / Y3 / Y4 / Y5 = 10× / 20× / 30× / 40× base.</div>';
+      '<div class="hint">M5–M12 stays at 5× base. Y2 / Y3 / Y4 / Y5 = 10× / 20× / 30× / 40× base. After Y5, +10× base every year.</div>';
   }catch(e){$('sipPositionPreview').innerHTML='';}
 }
 
@@ -489,6 +489,38 @@ $('sipFx').addEventListener('input',()=>{
   if(sipLastResult && window.ETHTRENDsSIPUI){
     ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
   }
+});
+</script>
+
+
+<script>
+/* ===== PWA / INSTALL APP ===== */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (installBtn) installBtn.style.display = "block";
+});
+
+if (installBtn) {
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    installBtn.style.display = "none";
+  });
+}
+
+window.addEventListener("appinstalled", () => {
+  if (installBtn) installBtn.style.display = "none";
 });
 </script>
 

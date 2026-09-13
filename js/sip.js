@@ -51,10 +51,10 @@
     if (m <= 12) return base * 5;
 
     const year = Math.ceil(m / 12);
-    // Position keeps increasing every year. Y1=5×, Y2=10×,
-    // Y3=20×, Y4=30×, Y5=40×, Y6=50× ... Y25=240×.
-    // There is intentionally NO 40× cap after Year 5.
-    const multiplier = year === 1 ? 5 : year * 10 - 10;
+    // No cap after Year 5: Y6=50×, Y7=60× ... Y25=240× base.
+    const multiplier = year <= 5
+      ? CONFIG.YEAR_MULTIPLIERS[year]
+      : 40 + ((year - 5) * 10);
     return base * multiplier;
   }
 
