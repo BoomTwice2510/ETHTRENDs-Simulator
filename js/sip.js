@@ -21,9 +21,9 @@
       5: 40
     }),
     SCENARIOS: Object.freeze({
-      worst: 0.50,
-      base: 1.00,
-      best: 1.50
+      worst: 0.25,
+      base: 0.50,
+      best: 0.80
     })
   });
 
