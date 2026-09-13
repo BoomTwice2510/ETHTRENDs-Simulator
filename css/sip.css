@@ -176,6 +176,95 @@
 }
 
 
+
+/* Compact historical hero on phones: reduce vertical dead space without changing desktop. */
+@media (max-width: 760px) {
+  .hero {
+    min-height: 235px !important;
+    padding: 20px 18px 18px !important;
+    border-radius: 18px !important;
+  }
+
+  .eyebrow {
+    font-size: 9px !important;
+    letter-spacing: .12em !important;
+    margin-bottom: 9px !important;
+  }
+
+  .hero h1 {
+    font-size: 34px !important;
+    line-height: .94 !important;
+    letter-spacing: -.035em !important;
+    max-width: 82% !important;
+  }
+
+  .hero-copy {
+    max-width: 78% !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+    margin: 11px 0 !important;
+  }
+
+  .hero-pills {
+    max-width: 80% !important;
+    gap: 5px !important;
+  }
+
+  .pill {
+    padding: 5px 8px !important;
+    font-size: 8px !important;
+  }
+
+  .hero-coin {
+    width: 54px !important;
+    height: 54px !important;
+    right: 9px !important;
+    bottom: 9px !important;
+  }
+
+  .hero-coin:before {
+    font-size: 15px !important;
+  }
+
+  .hero-coin:after {
+    font-size: 17px !important;
+    right: 4px !important;
+    top: 2px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 225px !important;
+    padding: 18px 16px 16px !important;
+  }
+
+  .hero h1 {
+    font-size: 32px !important;
+  }
+
+  .hero-copy {
+    max-width: 80% !important;
+    font-size: 10.5px !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-pills {
+    max-width: 82% !important;
+  }
+
+  .hero-coin {
+    width: 50px !important;
+    height: 50px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+  }
+
+  .hero-coin:before {
+    font-size: 14px !important;
+  }
+}
+
 /* SIP mode: keep the historical simulator hidden on mobile and desktop. */
 .main-grid.sip-hidden {
   display: none !important;
