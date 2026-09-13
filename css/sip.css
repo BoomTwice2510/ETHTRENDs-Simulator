@@ -1,365 +1,182 @@
-/* ===================================================
-   SIP CALCULATOR STYLES
-   =================================================== */
+/* ETHTRENDs SIP — full-width scenario details + mobile safe */
+.sip-mode-panel{margin-top:14px}
+.sip-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px}
+.sip-input-card{position:sticky;top:10px;align-self:start}
+.sip-results-card{min-height:500px;background:#fff}
+.sip-fixed-rule{display:flex;align-items:center;justify-content:space-between;margin:12px 0;padding:11px;border:1px solid rgba(2,132,199,.22);background:#f8fafc;border-radius:10px}
+.sip-fixed-rule span{color:#475569;font:700 9px "JetBrains Mono",monospace}.sip-fixed-rule strong{color:#0284c7;font:800 12px "JetBrains Mono",monospace}
+.sip-position-preview{margin-top:12px;background:transparent!important;border:0!important;box-shadow:none!important}
+.sip-position-preview-title{color:#475569;font:700 9px "JetBrains Mono",monospace;letter-spacing:.06em;margin-bottom:7px}
+.sip-position-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.sip-position-item{border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;padding:8px 3px;text-align:center}
+.sip-position-item span{display:block;color:#475569;font:700 7px "JetBrains Mono",monospace}.sip-position-item strong{display:block;margin-top:4px;color:#111;font:800 9px "JetBrains Mono",monospace}
+.sip-position-preview .hint{margin-top:8px;color:#475569;font:600 9px/1.55 "Inter",sans-serif}
+.sip-status{margin-top:9px;border-radius:10px;padding:9px;background:#f8fafc;border:1px solid #cbd5e1;color:#475569;font:600 9px/1.5 "Inter",sans-serif}
+.sip-status.success{border-color:rgba(5,150,105,.35);color:#047857;background:rgba(5,150,105,.05)}.sip-status.error{border-color:rgba(220,38,38,.3);color:#b91c1c;background:rgba(220,38,38,.06)}
+.sip-results-heading{margin-bottom:12px}.sip-results-heading .result-label{color:#db2777}
+.sip-results-heading h2{margin:5px 0;color:#111;font:800 clamp(22px,4vw,30px) "Inter",sans-serif}.sip-results-heading p{margin:0;color:#475569;font:600 10px/1.6 "Inter",sans-serif}
+.sip-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}.sip-summary-box{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px}.sip-summary-box span{display:block;color:#475569;font:700 7px "JetBrains Mono",monospace}.sip-summary-box strong{display:block;margin-top:5px;color:#111;font:800 12px "JetBrains Mono",monospace;overflow-wrap:anywhere}
 
-:root {
-  --sip-bg: #0b0e14;
-  --sip-card-bg: #121722;
-  --sip-surface: #182030;
-  --sip-border: #1e293b;
-  --sip-accent: #2563eb;
-  --sip-accent-glow: rgba(37, 99, 235, 0.2);
-  --sip-eth: #627eea;
-  --sip-green: #10b981;
-  --sip-text: #f1f5f9;
-  --sip-muted: #94a3b8;
-  --sip-gold: #f59e0b;
-  --sip-radius: 12px;
-}
+/* Three compact cards stay together. Full details are rendered after all three cards. */
+.sip-scenario-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.sip-scenario-card{width:100%;min-width:0;text-align:left;cursor:pointer;border:1px solid #cbd5e1;background:#f8fafc;border-radius:13px;padding:12px;color:#111;transition:border-color .18s,box-shadow .18s,transform .18s}
+.sip-scenario-card:hover{border-color:rgba(2,132,199,.5);transform:translateY(-1px)}
+.sip-scenario-card.selected{border:2px solid #0284c7;background:linear-gradient(145deg,#eaf7ff,#fff);box-shadow:0 0 0 2px rgba(2,132,199,.08)}
+.sip-scenario-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.sip-scenario-name{font:800 11px "JetBrains Mono",monospace}.sip-scenario-description{margin-top:3px;color:#475569;font:600 8px/1.35 "Inter",sans-serif}.sip-scenario-arrow{color:#0284c7;font:800 12px "JetBrains Mono",monospace}
+.sip-scenario-summary{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:10px}.sip-scenario-summary>div{border:1px solid #cbd5e1;background:#fff;border-radius:7px;padding:7px;min-width:0}.sip-scenario-summary span{display:block;color:#475569;font:700 7px "JetBrains Mono",monospace}.sip-scenario-summary strong{display:block;margin-top:3px;color:#111;font:800 10px "JetBrains Mono",monospace;overflow-wrap:anywhere}.sip-card-hint{margin-top:8px;color:#0284c7;font:800 7px "JetBrains Mono",monospace;letter-spacing:.04em}
 
-/* Base modal container */
-.sip-view {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--sip-bg);
-  z-index: 9999;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
+/* Full-width detail panel below all three cards. */
+.sip-selected-detail{margin-top:12px;border:1px solid rgba(2,132,199,.35);border-radius:14px;background:linear-gradient(145deg,#f8fcff,#fff);padding:15px}
+.sip-selected-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}.sip-selected-kicker{color:#0284c7;font:800 9px "JetBrains Mono",monospace;letter-spacing:.1em}.sip-selected-head h3{margin:5px 0 2px;color:#111;font:800 clamp(27px,4vw,40px) "Inter",sans-serif}.sip-selected-head p{margin:0;color:#475569;font:600 9px/1.5 "Inter",sans-serif}.sip-selected-roi{font:800 16px "JetBrains Mono",monospace;white-space:nowrap}
+.sip-detail-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}.sip-detail-summary>div{border:1px solid #cbd5e1;background:#fff;border-radius:9px;padding:9px;min-width:0}.sip-detail-summary span{display:block;color:#475569;font:700 7px "JetBrains Mono",monospace}.sip-detail-summary strong{display:block;margin-top:5px;color:#111;font:800 11px "JetBrains Mono",monospace;overflow-wrap:anywhere}
+.sip-detail-section{margin-top:15px}.sip-section-title{font:800 10px "JetBrains Mono",monospace;letter-spacing:.08em;color:#111;margin:0 0 7px}.sip-table-wrap{overflow-x:auto;margin-top:7px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;-webkit-overflow-scrolling:touch}.sip-table{width:100%;border-collapse:collapse;min-width:760px}.sip-table th,.sip-table td{padding:8px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}.sip-table th{color:#475569;font:700 7px "JetBrains Mono",monospace;letter-spacing:.05em;background:#f8fafc}.sip-table td{color:#334155;font:700 9px "JetBrains Mono",monospace}.sip-table tr:last-child td{border-bottom:0}
 
-.sip-wrapper {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 24px 16px 80px 16px;
-  box-sizing: border-box;
-}
+.sip-monthly-accordion{margin-top:14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;overflow:hidden}.sip-monthly-toggle{width:100%;border:0;background:#f8fafc;color:#111;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:12px;cursor:pointer}.sip-monthly-toggle:hover{background:#f1f5f9}.sip-monthly-toggle b{display:block;font:800 10px "JetBrains Mono",monospace;letter-spacing:.06em}.sip-monthly-toggle small{display:block;margin-top:3px;color:#475569;font:600 8px "Inter",sans-serif}.sip-monthly-toggle>strong{color:#0284c7;font:900 18px "JetBrains Mono",monospace}.sip-monthly-body{display:none;padding:0 10px 12px}.sip-monthly-accordion.open .sip-monthly-body{display:block}.sip-month-group{margin-top:12px}.sip-month-group-title{display:flex;justify-content:space-between;gap:10px;margin:0 2px 5px;color:#111;font:800 9px "JetBrains Mono",monospace}.sip-month-group-title span:last-child{color:#0284c7}
 
-/* Header */
-.sip-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--sip-border);
-  padding-bottom: 16px;
-  margin-bottom: 24px;
-}
+.sip-risk-card{margin-top:14px;border:1px solid rgba(219,39,119,.28);border-radius:12px;background:linear-gradient(145deg,#fff7fb,#f8fafc);padding:13px}.sip-risk-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.sip-risk-head p{margin:3px 0 0;color:#475569;font:600 8px/1.55 "Inter",sans-serif}.sip-risk-badge{white-space:nowrap;border-radius:999px;padding:6px 9px;font:800 8px "JetBrains Mono",monospace;border:1px solid #cbd5e1}.sip-risk-badge.low{color:#047857;border-color:rgba(5,150,105,.3);background:rgba(5,150,105,.05)}.sip-risk-badge.moderate{color:#b45309;border-color:rgba(217,119,6,.3);background:rgba(217,119,6,.06)}.sip-risk-badge.high{color:#b91c1c;border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.06)}
+.sip-risk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}.sip-risk-grid>div{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:9px;min-width:0}.sip-risk-grid span{display:block;color:#475569;font:700 7px "JetBrains Mono",monospace}.sip-risk-grid strong{display:block;margin-top:4px;color:#111;font:800 11px "JetBrains Mono",monospace;overflow-wrap:anywhere}.sip-risk-grid small{display:block;margin-top:4px;color:#64748b;font:600 8px/1.4 "Inter",sans-serif}.sip-risk-note{margin-top:9px;border:1px dashed rgba(2,132,199,.35);border-radius:8px;padding:9px;color:#475569;background:rgba(2,132,199,.035);font:600 8px/1.55 "Inter",sans-serif}.sip-risk-note b{color:#111}
+.sip-disclaimer{margin-top:14px;padding:11px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;color:#475569;font:600 8px/1.6 "Inter",sans-serif}.sip-disclaimer-title{color:#b91c1c;font:800 9px "JetBrains Mono",monospace;margin-bottom:4px}.sip-disclaimer-warning{margin-top:5px;color:#b91c1c;font:800 8px "JetBrains Mono",monospace}.sip-positive{color:#059669!important}.sip-negative{color:#dc2626!important}
 
-.sip-header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+@media(max-width:1000px){.sip-layout{grid-template-columns:1fr}.sip-input-card{position:relative;top:auto}}
+@media(max-width:760px){.sip-scenario-list{grid-template-columns:1fr}.sip-summary,.sip-detail-summary,.sip-risk-grid{grid-template-columns:1fr 1fr}.sip-selected-head{flex-direction:column;gap:6px}.sip-selected-detail{padding:11px}}
+@media(max-width:520px){.sip-summary,.sip-detail-summary,.sip-risk-grid{grid-template-columns:1fr}.sip-position-row{grid-template-columns:repeat(3,minmax(0,1fr))}.sip-selected-head h3{font-size:28px}.sip-monthly-body{padding:0 6px 10px}.sip-risk-head{flex-direction:column}.sip-risk-badge{align-self:flex-start}.sip-table{min-width:700px}}
 
-.sip-back-btn {
-  background: var(--sip-surface);
-  border: 1px solid var(--sip-border);
-  color: var(--sip-text);
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
 
-.sip-back-btn:hover {
-  background: var(--sip-border);
-  border-color: var(--sip-accent);
-}
-
-.sip-title-group h1 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--sip-text);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sip-title-group p {
-  margin: 2px 0 0 0;
-  font-size: 12px;
-  color: var(--sip-muted);
-}
-
-/* Grid Layout */
-.sip-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-/* Card */
-.sip-card {
-  background: var(--sip-card-bg);
-  border: 1px solid var(--sip-border);
-  border-radius: var(--sip-radius);
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.sip-card-header {
-  border-bottom: 1px solid var(--sip-border);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sip-card-header h2 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--sip-text);
-  margin: 0;
-}
-
-/* Input Styles */
-.sip-field {
-  margin-bottom: 16px;
-}
-
-.sip-field label {
-  display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--sip-muted);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.sip-input-group {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.sip-input-prefix {
-  position: absolute;
-  left: 12px;
-  color: var(--sip-muted);
-  font-size: 14px;
-  font-weight: 600;
-  pointer-events: none;
-}
-
-.sip-input {
-  width: 100%;
-  background: var(--sip-surface);
-  border: 1px solid var(--sip-border);
-  border-radius: 8px;
-  padding: 10px 12px 10px 28px;
-  color: var(--sip-text);
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-}
-
-.sip-input:focus {
-  border-color: var(--sip-accent);
-}
-
-.sip-select {
-  width: 100%;
-  background: var(--sip-surface);
-  border: 1px solid var(--sip-border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--sip-text);
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.sip-select:focus {
-  border-color: var(--sip-accent);
-}
-
-/* Presets */
-.sip-preset-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.sip-chip {
-  background: var(--sip-surface);
-  border: 1px solid var(--sip-border);
-  color: var(--sip-muted);
-  border-radius: 16px;
-  padding: 4px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sip-chip:hover, .sip-chip.active {
-  background: var(--sip-accent);
-  color: #fff;
-  border-color: var(--sip-accent);
-}
-
-/* Button */
-.sip-btn-primary {
-  width: 100%;
-  background: var(--sip-accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 8px;
-  transition: background 0.2s ease;
-}
-
-.sip-btn-primary:hover {
-  background: #1d4ed8;
-}
-
-/* Stat Metrics */
-.sip-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.sip-kpi-card {
-  background: var(--sip-surface);
-  border: 1px solid var(--sip-border);
-  border-radius: 10px;
-  padding: 14px;
-}
-
-.sip-kpi-card .label {
-  font-size: 11px;
-  color: var(--sip-muted);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sip-kpi-card .value {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--sip-text);
-  margin-bottom: 2px;
-}
-
-.sip-kpi-card .subtext {
-  font-size: 11px;
-  color: var(--sip-muted);
-}
-
-.sip-kpi-card.highlight {
-  border-color: var(--sip-eth);
-  background: rgba(98, 126, 234, 0.05);
-}
-
-.sip-kpi-card.highlight .value {
-  color: var(--sip-eth);
-}
-
-.sip-kpi-card.profit .value {
-  color: var(--sip-green);
-}
-
-/* Chart Card */
-.sip-chart-container {
-  height: 320px;
-  width: 100%;
-  position: relative;
-  margin-bottom: 16px;
-}
-
-/* Table Card */
-.sip-table-wrap {
-  max-height: 280px;
-  overflow-y: auto;
-  border: 1px solid var(--sip-border);
-  border-radius: 8px;
-}
-
-.sip-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.sip-table th {
-  background: var(--sip-surface);
-  color: var(--sip-muted);
-  font-weight: 600;
-  text-align: left;
-  padding: 10px 12px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.sip-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--sip-border);
-  color: var(--sip-text);
-}
-
-.sip-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* ===================================================
-   RESPONSIVE / MOBILE FIXES (FIXES OVERLAPPING SCREEN)
-   =================================================== */
-@media (max-width: 768px) {
-  /* CRITICAL FIX: Jab SIP open ho, simulator screen/desktop view completely hide ho */
-  body.sip-active .desktop-view,
-  body.sip-active .desktop-simulator,
-  body.sip-active [data-view="simulator"] {
-    display: none !important;
+/* ===== FINAL MOBILE APP LAYOUT / PWA RESPONSIVENESS ===== */
+@media (max-width: 760px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
-  .sip-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  body {
+    -webkit-text-size-adjust: 100%;
   }
 
-  .sip-kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .app {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px 10px 40px !important;
   }
 
-  .sip-wrapper {
-    padding: 12px 12px 60px 12px;
+  .main-grid,
+  .sip-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 10px !important;
   }
 
-  .sip-chart-container {
-    height: 240px;
+  .input-card,
+  .main-grid > main,
+  .sip-input-card,
+  .sip-results-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
   }
 
-  .sip-card {
-    padding: 16px;
+  .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 300px !important;
   }
+
+  .hero-copy,
+  .hero-pills {
+    max-width: 74% !important;
+  }
+
+  /* Keep the ETH badge inside the hero and away from text/buttons. */
+  .hero-coin {
+    width: 64px !important;
+    height: 64px !important;
+    right: 10px !important;
+    bottom: 12px !important;
+    transform: none !important;
+  }
+
+  .hero-coin:before {
+    font-size: 17px !important;
+  }
+
+  .sip-scenario-list,
+  .sip-scenarios,
+  .scenario-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .sip-scenario-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .sip-selected-detail,
+  .sip-detail,
+  .sip-detail-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .sip-summary,
+  .sip-detail-summary {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .sip-risk-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .sip-table-wrap,
+  .sip-monthly-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sip-table-wrap table,
+  .sip-monthly-table-wrap table {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .sip-summary,
+  .sip-detail-summary,
+  .sip-risk-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero {
+    border-radius: 18px !important;
+  }
+
+  .hero-coin {
+    width: 58px !important;
+    height: 58px !important;
+    right: 8px !important;
+    bottom: 10px !important;
+  }
+
+  .hero-copy,
+  .hero-pills {
+    max-width: 70% !important;
+  }
+}
+
+
+/* SIP mode: keep the historical simulator hidden on mobile and desktop. */
+.main-grid.sip-hidden {
+  display: none !important;
 }
