@@ -28,7 +28,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.metric{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:11px}.metric small{display:block;color:#475569;font:700 9px "JetBrains Mono"}.metric strong{display:block;margin-top:6px;font:800 16px "JetBrains Mono";white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111}
 .section{margin-top:14px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 9px}.section-title{font:800 12px "JetBrains Mono";letter-spacing:.08em;color:#111}.section-title b{color:var(--pink)}.badge{color:var(--pink);border:1px solid rgba(219,39,119,0.3);border-radius:999px;padding:5px 9px;font:700 9px "JetBrains Mono";background:rgba(219,39,119,0.05)}.chartbox{height:285px;border:1px solid #cbd5e1;border-radius:13px;padding:6px;background:linear-gradient(180deg,rgba(2,132,199,0.03),transparent)}
 .achievements{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.achievement{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;padding:12px}.achievement.unlocked{border-color:rgba(5,150,105,0.4);background:linear-gradient(135deg,rgba(5,150,105,0.05),#f8fafc)}.achievement .icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:9px;border:1px solid #cbd5e1;border-radius:11px;background:#ffffff;color:var(--cyan);font-size:0}.achievement b{display:block;font:800 11px "Inter";color:#111}.achievement span{display:block;color:#475569;font:600 9px/1.5 "Inter";margin-top:3px}.achievement.locked{opacity:.5}.progress{height:5px;background:#e2e8f0;border-radius:99px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}
-.journey{display:grid;grid-template-columns:1fr 1fr;gap:8px}.journey-card{border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:12px}.journey-head{display:flex;justify-content:space-between;font:800 11px "JetBrains Mono";color:#111}.journey-head span{color:var(--green)}.journey-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0 5px}.journey-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey-meta{display:flex;justify-content:space-between;color:#475569;font:700 9px "JetBrains Mono"}
+.journey{display:grid;grid-template-columns:1fr 1fr;gap:8px}.journey-card{border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:12px}.journey-head{display:flex;justify-content:space-between;font:800 11px "JetBrains Mono";color:#111}.journey-head span{color:var(--green)}.journey-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-lo:10px 0 5px}.journey-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey-meta{display:flex;justify-content:space-between;color:#475569;font:700 9px "JetBrains Mono"}
 .list{display:flex;flex-direction:column;gap:7px}.accordion{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;overflow:hidden}.accordion:hover{border-color:rgba(219,39,119,0.4)}.acc-head{width:100%;display:grid;grid-template-columns:1.3fr 1fr 25px;gap:8px;align-items:center;text-align:left;background:transparent;color:var(--text);border:0;padding:12px 11px;cursor:pointer}.acc-main{font:800 12px "Inter";color:#111}.acc-sub{color:#475569;font:600 9px "JetBrains Mono";margin-top:3px}.acc-value{text-align:right;font:800 12px "JetBrains Mono";color:#111}.chev{color:var(--pink);text-align:right;font-size:16px;transition:.2s}.accordion.open .chev{transform:rotate(180deg);color:var(--cyan)}.acc-body{display:none;border-top:1px solid #cbd5e1;padding:10px;background:#ffffff}.accordion.open .acc-body{display:block;animation:drop .18s ease}@keyframes drop{from{opacity:.3;transform:translateY(-3px)}to{opacity:1;transform:none}}
 .details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.detail{background:#f8fafc;border:1px solid #cbd5e1;border-radius:8px;padding:8px}.detail small{display:block;color:#475569;font:700 8px "JetBrains Mono"}.detail b{display:block;margin-top:5px;font:800 11px "JetBrains Mono";color:#111}.trade-head{grid-template-columns:46px 1fr auto 24px}.side{font:900 11px "JetBrains Mono"}.side.long{color:var(--green)}.side.short{color:var(--red)}.trade-pnl{font:900 11px "JetBrains Mono"}.trade-times{color:#475569;font:600 9px/1.45 "JetBrains Mono"}
 .disclaimer-card{margin-top:14px;padding:13px;border:1px solid rgba(219,39,119,0.3);border-left:3px solid var(--cyan);border-radius:11px;background:#f8fafc}.disclaimer-title{color:var(--pink);font:800 11px "JetBrains Mono"}.disclaimer-text{color:#334155;font:600 10px/1.7 "Inter";margin-top:7px}.disclaimer-text strong{color:#111}.disclaimer-warning{color:var(--cyan);font:800 9px/1.6 "JetBrains Mono";margin-top:8px;padding-top:8px;border-top:1px solid #cbd5e1}
@@ -142,6 +142,159 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
   .etht-horizon-menu{max-height:230px}
 }
 
+/* ========================================================
+   SEXY ANIMATED FULL-TIME BREATHING FOOTER
+   ======================================================== */
+.site-footer {
+  margin: 46px auto 20px auto;
+  max-width: 900px;
+  width: calc(100% - 24px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  perspective: 1000px;
+  z-index: 10;
+}
+
+.footer-glow-aura {
+  position: absolute;
+  inset: -6px -12px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, rgba(2,132,199,0.3), rgba(219,39,119,0.25), rgba(5,150,105,0.25), rgba(2,132,199,0.3));
+  background-size: 300% 300%;
+  filter: blur(14px);
+  opacity: 0.75;
+  animation: glowRotate 7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.footer-capsule {
+  position: relative;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(2, 132, 199, 0.28);
+  border-radius: 999px;
+  padding: 14px 24px;
+  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  animation: footerBreath 4.5s ease-in-out infinite;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-capsule:hover {
+  transform: translateY(-2px) scale(1.015);
+  border-color: rgba(219, 39, 119, 0.45);
+  box-shadow: 0 16px 36px rgba(219, 39, 119, 0.12), 0 4px 12px rgba(2, 132, 199, 0.1);
+}
+
+.footer-beacon {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #059669;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px #059669;
+}
+
+.footer-beacon:before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #059669;
+  animation: pulseBeacon 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+.footer-sparkle {
+  color: var(--pink);
+  font-size: 15px;
+  line-height: 1;
+  animation: sparkleTwinkle 3s ease-in-out infinite;
+  user-select: none;
+  display: inline-block;
+}
+
+.transparency-footer-note {
+  margin: 0;
+  color: #1e293b;
+  font: 700 11px/1.6 "JetBrains Mono", monospace;
+  letter-spacing: 0.02em;
+}
+
+.transparency-footer-note strong {
+  background: linear-gradient(110deg, #0284c7, #db2777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+@keyframes footerBreath {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.15);
+  }
+  50% {
+    transform: scale(1.02) translateY(-3px);
+    box-shadow: 0 18px 40px rgba(2, 132, 199, 0.18), 0 0 18px rgba(219, 39, 119, 0.18);
+    border-color: rgba(2, 132, 199, 0.55);
+  }
+}
+
+@keyframes glowRotate {
+  0% {
+    background-position: 0% 50%;
+    transform: scale(0.96);
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: scale(1.04);
+    opacity: 0.9;
+  }
+  100% {
+    background-position: 0% 50%;
+    transform: scale(0.96);
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { transform: scale(0.9) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.25) rotate(45deg); opacity: 1; }
+}
+
+@media (max-width: 680px) {
+  .site-footer {
+    margin: 32px auto 16px auto;
+    width: calc(100% - 16px);
+  }
+  .footer-capsule {
+    border-radius: 16px;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  .footer-glow-aura {
+    border-radius: 20px;
+    inset: -4px -6px;
+  }
+  .transparency-footer-note {
+    font-size: 9.5px;
+    line-height: 1.5;
+  }
+}
 </style>
 </head>
 <body>
@@ -619,8 +772,17 @@ window.addEventListener("appinstalled", () => {
 })();
 </script>
 
+  <!-- SEXY ANIMATED BREATHING FOOTER -->
   <footer class="site-footer">
-    <p class="transparency-footer-note">Don't hide the losses. Don't manufacture smooth returns. Show the full journey and let the final outcome speak.</p>
+    <div class="footer-glow-aura"></div>
+    <div class="footer-capsule">
+      <div class="footer-beacon"></div>
+      <span class="footer-sparkle">✦</span>
+      <p class="transparency-footer-note">
+        Don't hide the losses. Don't manufacture smooth returns. <strong>Show the full journey and let the final outcome speak.</strong>
+      </p>
+      <span class="footer-sparkle">✦</span>
+    </div>
   </footer>
 
 </body>
