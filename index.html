@@ -24,6 +24,14 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 2px 14px}.brand{display:flex;align-items:center;gap:9px;font:800 15px "Inter";letter-spacing:.08em;color:#111}.brand img{width:34px!important;height:34px!important;border-radius:10px!important;box-shadow:0 4px 12px rgba(0,0,0,0.08)}.top-right{display:flex;align-items:center;gap:6px}.live,.install{font:700 10px "JetBrains Mono";letter-spacing:.06em;border-radius:999px;padding:7px 11px}.live{color:#059669;border:1px solid rgba(5,150,105,0.3);background:rgba(5,150,105,0.08)}.install{display:none;color:#0284c7;border:1px solid rgba(2,132,199,0.3);background:rgba(2,132,199,0.08);cursor:pointer}
 .hero{position:relative;overflow:hidden;min-height:330px;border:1px solid #cbd5e1;border-radius:24px;background:linear-gradient(135deg,#f8fafc,#f1f5f9 58%,#e2e8f0);padding:34px;box-shadow:0 12px 30px rgba(0,0,0,0.04)}.hero:before{content:"";position:absolute;width:430px;height:430px;right:-170px;top:-210px;border-radius:50%;background:rgba(2,132,199,0.06)}.eyebrow{position:relative;color:var(--pink);font:700 11px "JetBrains Mono";letter-spacing:.16em;margin-bottom:16px}.hero h1{position:relative;max-width:820px;margin:0;font:800 clamp(36px,6vw,66px)/.98 "Inter";letter-spacing:-.035em;color:#111}.hero h1 span{color:var(--cyan)}.hero-copy{position:relative;max-width:650px;color:#334155;font:600 14px/1.7 "Inter";margin:18px 0}.hero-pills{position:relative;display:flex;flex-wrap:wrap;gap:7px}.pill{border:1px solid #cbd5e1;background:#ffffff;border-radius:999px;padding:7px 11px;color:#1e293b;font:700 10px "JetBrains Mono";box-shadow:0 2px 5px rgba(0,0,0,0.03)}.pill b{color:var(--cyan)}
 
+/* TELEGRAM STRIP & PILL */
+.hero-action-strip{position:relative;margin-top:14px;display:flex;align-items:center;z-index:2}
+.telegram-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#0284c7,#229ED9);color:#ffffff;text-decoration:none;border-radius:999px;font:700 11px/1 "JetBrains Mono",monospace;letter-spacing:.04em;box-shadow:0 4px 14px rgba(2,132,199,0.28);border:1px solid rgba(255,255,255,0.25);transition:transform .2s ease,box-shadow .2s ease}
+.telegram-pill:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 6px 20px rgba(2,132,199,0.42);color:#ffffff}
+.telegram-pill svg{width:15px;height:15px;fill:#ffffff;flex-shrink:0}
+.telegram-pulse{width:6px;height:6px;border-radius:50%;background:#a7f3d0;box-shadow:0 0 8px #a7f3d0;animation:tgDotPulse 1.8s infinite}
+@keyframes tgDotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.4)}}
+
 /* REAL BREATHING ETHEREUM COIN */
 .hero-coin{position:absolute;right:55px;bottom:42px;width:124px;height:124px;border:1px solid #cbd5e1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ffffff,#f1f5f9 70%,#e2e8f0);box-shadow:0 10px 30px rgba(98,126,234,0.18),0 4px 12px rgba(0,0,0,0.05);animation:ethCoinBreath 4.5s ease-in-out infinite;cursor:pointer}
 .hero-coin .eth-logo{width:56px;height:56px;display:block;filter:drop-shadow(0 4px 10px rgba(98,126,234,0.35))}
@@ -148,6 +156,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
   .main-grid>.card,.input-card{width:100%!important;min-width:0!important}
   .hero{width:100%!important;min-height:300px!important}
   .hero-copy,.hero-pills{max-width:70%!important}
+  .hero-action-strip{max-width:70%!important}
   .hero-coin{width:60px!important;height:60px!important;right:9px!important;bottom:10px!important;transform:none!important}
   .hero-coin .eth-logo{width:30px!important;height:30px!important}
   .hero-coin:after{font-size:16px!important;right:4px!important;top:2px!important}
@@ -177,7 +186,6 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
   gap: 10px;
   padding: 6px 12px;
   background: transparent;
-  /* Pure stationary breathing on its own spot without translateY */
   animation: footerStationaryBreath 4s ease-in-out infinite;
 }
 
@@ -282,7 +290,23 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
   <div class="eyebrow">01 — HISTORICAL SIGNAL QUEST</div>
   <h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1>
   <p class="hero-copy">Run your own scenario through the real ETHTRENDs completed signal-to-signal trade record. Change the capital, position size and leverage - then explore the journey.</p>
-  <div class="hero-pills"><div class="pill"><b>REAL</b> TRADE RECORD</div><div class="pill"><b>133+</b> COMPLETED SIGNALS</div><div class="pill"><b>0</b> HARD-CODED RESULTS</div></div>
+  
+  <div class="hero-pills">
+    <div class="pill"><b>REAL</b> TRADE RECORD</div>
+    <div class="pill"><b>133+</b> COMPLETED SIGNALS</div>
+    <div class="pill"><b>0</b> HARD-CODED RESULTS</div>
+  </div>
+
+  <!-- JOIN TELEGRAM PILL STRIP -->
+  <div class="hero-action-strip">
+    <a href="https://t.me/ETHTRENDS_bot" target="_blank" rel="noopener noreferrer" class="telegram-pill">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+      <span>JOIN TELEGRAM BOT</span>
+      <span class="telegram-pulse"></span>
+    </a>
+  </div>
   
   <!-- REAL ETHEREUM LOGO COIN -->
   <div class="hero-coin" title="Ethereum">
