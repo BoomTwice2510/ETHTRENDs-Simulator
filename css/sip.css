@@ -1,500 +1,335 @@
-/* =========================================================
-   ETHTRENDs SIP MODE
-   SIP-only styles — existing simulator styles untouched
-   ========================================================= */
+/* ETHTRENDs SIP styles
+   Intentionally matches the existing ETHTRENDs light simulator UI.
+   No black SIP preview box.
+*/
+.sip-mode-panel { margin-top: 14px; }
 
-.sip-hidden {
-  display: none !important;
-}
-
-/* ---------- SIP MODE CONTAINER ---------- */
-
-.sip-mode {
-  width: 100%;
-  margin-top: 24px;
-}
-
-.sip-panel {
-  width: 100%;
-  background: #050505;
-  border: 1px solid rgba(0, 229, 255, 0.45);
-  border-radius: 18px;
-  padding: 22px;
-  box-sizing: border-box;
-}
-
-/* ---------- HEADER ---------- */
-
-.sip-header {
-  margin-bottom: 22px;
-}
-
-.sip-kicker,
-.sip-section-title,
-.sip-result-kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: #00e5ff;
-}
-
-.sip-header h2 {
-  margin: 7px 0 6px;
-  font-size: clamp(22px, 4vw, 32px);
-  line-height: 1.1;
-  color: #fff;
-}
-
-.sip-header p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.58);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-/* ---------- INPUT GRID ---------- */
-
-.sip-input-grid {
+.sip-layout {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 300px minmax(0, 1fr);
   gap: 14px;
 }
 
-.sip-input-box {
-  background: #030303;
-  border: 1px solid rgba(255, 105, 180, 0.42);
-  border-radius: 14px;
-  padding: 15px;
+.sip-input-card {
+  position: sticky;
+  top: 10px;
+  align-self: start;
 }
 
-.sip-input-box label {
-  display: block;
-  margin-bottom: 8px;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
+.sip-results-card {
+  min-height: 500px;
+  background: #fff;
 }
 
-.sip-input-box input,
-.sip-input-box select {
-  width: 100%;
-  box-sizing: border-box;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9px;
-  padding: 11px 12px;
-  color: #fff;
-  outline: none;
-  font-size: 14px;
+.sip-fixed-rule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding: 11px;
+  border: 1px solid rgba(2,132,199,.22);
+  background: #f8fafc;
+  border-radius: 10px;
 }
 
-.sip-input-box input:focus,
-.sip-input-box select:focus {
-  border-color: #00e5ff;
-  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.08);
+.sip-fixed-rule span {
+  color: #475569;
+  font: 700 9px "JetBrains Mono", monospace;
 }
 
-.sip-input-help {
-  margin-top: 7px;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.38);
-  line-height: 1.4;
+.sip-fixed-rule strong {
+  color: #0284c7;
+  font: 800 12px "JetBrains Mono", monospace;
 }
 
-/* ---------- POSITION INFO ---------- */
-
+/* IMPORTANT: this used to become a black box in the deployed SIP CSS.
+   Keep it visually identical to the normal simulator cards. */
 .sip-position-preview {
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 229, 255, 0.3);
-  background: #020202;
+  margin-top: 12px;
+  padding: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: inherit;
 }
 
 .sip-position-preview-title {
-  margin-bottom: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  color: #475569;
+  font: 700 9px "JetBrains Mono", monospace;
+  letter-spacing: .06em;
+  margin-bottom: 7px;
 }
 
 .sip-position-row {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 5px;
 }
 
 .sip-position-item {
-  padding: 10px 8px;
-  border: 1px solid rgba(255, 105, 180, 0.25);
-  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 3px;
   text-align: center;
 }
 
 .sip-position-item span {
   display: block;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 9px;
-  margin-bottom: 5px;
+  color: #475569;
+  font: 700 7px "JetBrains Mono", monospace;
 }
 
 .sip-position-item strong {
-  color: #fff;
-  font-size: 12px;
+  display: block;
+  margin-top: 4px;
+  color: #111;
+  font: 800 9px "JetBrains Mono", monospace;
 }
 
-/* ---------- RUN BUTTON ---------- */
-
-.sip-run-button {
-  width: 100%;
-  margin-top: 16px;
-  border: 1px solid #00e5ff;
-  border-radius: 12px;
-  padding: 13px 16px;
-  background: #000;
-  color: #00e5ff;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.sip-position-preview .hint {
+  margin-top: 8px;
+  color: #475569;
+  font: 600 9px/1.55 "Inter", sans-serif;
 }
-
-.sip-run-button:hover {
-  background: rgba(0, 229, 255, 0.08);
-  box-shadow: 0 0 18px rgba(0, 229, 255, 0.12);
-}
-
-.sip-run-button:active {
-  transform: scale(0.99);
-}
-
-.sip-run-button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-/* ---------- ERROR / STATUS ---------- */
 
 .sip-status {
-  margin-top: 12px;
-  padding: 11px 13px;
+  margin-top: 9px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 105, 180, 0.35);
-  background: #030303;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.sip-status.error {
-  border-color: rgba(255, 105, 180, 0.65);
-  color: #ff9dcc;
+  padding: 9px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font: 600 9px/1.5 "Inter", sans-serif;
 }
 
 .sip-status.success {
-  border-color: rgba(0, 229, 255, 0.55);
-  color: #8ff4ff;
+  border-color: rgba(5,150,105,.35);
+  color: #047857;
+  background: rgba(5,150,105,.05);
 }
 
-/* ---------- RESULTS ---------- */
-
-.sip-results {
-  margin-top: 24px;
+.sip-status.error {
+  border-color: rgba(220,38,38,.30);
+  color: #b91c1c;
+  background: rgba(220,38,38,.06);
 }
 
 .sip-results-heading {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
+}
+
+.sip-results-heading .result-label {
+  color: #db2777;
 }
 
 .sip-results-heading h2 {
-  margin: 6px 0;
-  color: #fff;
-  font-size: clamp(20px, 3.5vw, 28px);
+  margin: 5px 0;
+  color: #111;
+  font: 800 clamp(22px,4vw,30px) "Inter", sans-serif;
 }
 
 .sip-results-heading p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.48);
-  font-size: 12px;
-  line-height: 1.6;
+  color: #475569;
+  font: 600 10px/1.6 "Inter", sans-serif;
 }
-
-/* ---------- SCENARIO CARDS ---------- */
 
 .sip-scenario-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .sip-scenario-card {
-  background: #020202;
-  border: 1px solid rgba(255, 105, 180, 0.35);
-  border-radius: 15px;
-  padding: 17px;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 12px;
 }
 
-.sip-scenario-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 229, 255, 0.55);
+.sip-scenario-card.base {
+  border-color: rgba(2,132,199,.45);
+  background: linear-gradient(145deg,#f0f9ff,#f8fafc);
 }
 
 .sip-scenario-header {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  align-items: flex-start;
+  gap: 8px;
 }
 
 .sip-scenario-name {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 800;
+  font: 800 11px "JetBrains Mono", monospace;
+  color: #111;
 }
 
 .sip-scenario-description {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 10px;
+  margin-top: 3px;
+  color: #475569;
+  font: 600 8px "Inter", sans-serif;
 }
 
 .sip-scenario-roi {
+  font: 800 12px "JetBrains Mono", monospace;
   white-space: nowrap;
-  font-size: 15px;
-  font-weight: 800;
 }
 
 .sip-scenario-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 10px;
 }
 
 .sip-scenario-grid > div {
-  padding: 10px;
-  border-radius: 9px;
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 7px;
+  padding: 7px;
 }
 
-.sip-scenario-grid span {
+.sip-scenario-grid span,
+.sip-summary-box span {
   display: block;
-  margin-bottom: 5px;
-  color: rgba(255, 255, 255, 0.38);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: #475569;
+  font: 700 7px "JetBrains Mono", monospace;
 }
 
 .sip-scenario-grid strong {
-  color: #fff;
-  font-size: 12px;
+  display: block;
+  margin-top: 3px;
+  color: #111;
+  font: 800 10px "JetBrains Mono", monospace;
 }
 
-/* ---------- PRIMARY PROJECTION ---------- */
-
 .sip-primary-projection {
-  margin-top: 24px;
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  border-radius: 16px;
-  padding: 18px;
-  background: #020202;
+  margin-top: 14px;
+}
+
+.sip-result-card {
+  border: 1px solid rgba(219,39,119,.3);
+  border-radius: 14px;
+  background: linear-gradient(145deg,#fdf2f8,#f8fafc);
+  padding: 15px;
 }
 
 .sip-result-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 18px;
-  margin-top: 12px;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sip-result-kicker {
+  color: #db2777;
+  font: 800 9px "JetBrains Mono", monospace;
+  letter-spacing: .1em;
 }
 
 .sip-result-title {
   margin-top: 5px;
-  color: #fff;
-  font-size: clamp(28px, 5vw, 44px);
-  font-weight: 900;
-  line-height: 1;
+  color: #111;
+  font: 800 clamp(28px,4vw,40px) "Inter", sans-serif;
 }
 
 .sip-result-subtitle {
-  margin-top: 8px;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 11px;
+  margin-top: 3px;
+  color: #475569;
+  font: 600 9px "JetBrains Mono", monospace;
 }
 
 .sip-result-roi {
-  font-size: 22px;
-  font-weight: 900;
+  font: 800 16px "JetBrains Mono", monospace;
   white-space: nowrap;
 }
 
-/* ---------- SUMMARY ---------- */
-
-.sip-summary-grid {
+.sip-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .sip-summary-box {
-  padding: 13px;
-  border-radius: 11px;
-  border: 1px solid rgba(255, 105, 180, 0.25);
-  background: #000;
-}
-
-.sip-summary-box span {
-  display: block;
-  color: rgba(255, 255, 255, 0.38);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 9px;
+  padding: 9px;
 }
 
 .sip-summary-box strong {
-  color: #fff;
-  font-size: 13px;
+  display: block;
+  margin-top: 5px;
+  color: #111;
+  font: 800 12px "JetBrains Mono", monospace;
+  overflow-wrap: anywhere;
 }
 
-/* ---------- YEAR TABLE ---------- */
+.sip-section-title {
+  font: 800 10px "JetBrains Mono", monospace;
+  letter-spacing: .08em;
+  color: #111;
+  margin: 15px 0 7px;
+}
 
-.sip-year-table-wrap,
-.sip-monthly-table-wrap {
-  width: 100%;
+.sip-table-wrap {
   overflow-x: auto;
-  margin-top: 20px;
+  margin-top: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
 }
 
-.sip-year-table,
-.sip-monthly-table {
+.sip-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 620px;
+  min-width: 650px;
 }
 
-.sip-year-table th,
-.sip-year-table td,
-.sip-monthly-table th,
-.sip-monthly-table td {
-  padding: 11px 10px;
+.sip-table th,
+.sip-table td {
+  padding: 8px;
+  border-bottom: 1px solid #e2e8f0;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
 }
 
-.sip-year-table th,
-.sip-monthly-table th {
-  color: rgba(255, 255, 255, 0.42);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
+.sip-table th {
+  color: #475569;
+  font: 700 7px "JetBrains Mono", monospace;
+  letter-spacing: .05em;
+  background: #f8fafc;
 }
 
-.sip-year-table td,
-.sip-monthly-table td {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 11px;
+.sip-table td {
+  color: #334155;
+  font: 700 9px "JetBrains Mono", monospace;
 }
 
-.sip-year-table tr:hover td,
-.sip-monthly-table tr:hover td {
-  background: rgba(0, 229, 255, 0.025);
+.sip-table tr:last-child td {
+  border-bottom: 0;
 }
 
-/* ---------- MONTHLY SECTION ---------- */
-
-.sip-monthly-section {
-  margin-top: 25px;
+.sip-disclaimer {
+  margin-top: 12px;
+  color: #475569;
+  font: 600 8px/1.6 "Inter", sans-serif;
 }
 
-.sip-monthly-section .sip-section-title {
-  margin-bottom: 2px;
-}
-
-/* ---------- COLORS ---------- */
-
-.positive {
-  color: #00e5ff !important;
-}
-
-.negative {
-  color: #ff9dcc !important;
-}
-
-/* ---------- RESPONSIVE ---------- */
+.sip-positive { color: #059669 !important; }
+.sip-negative { color: #dc2626 !important; }
 
 @media (max-width: 900px) {
-  .sip-scenario-list {
-    grid-template-columns: 1fr;
-  }
-
-  .sip-summary-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sip-position-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  .sip-layout { grid-template-columns: 1fr; }
+  .sip-input-card { position: relative; top: auto; }
+  .sip-scenario-list { grid-template-columns: 1fr; }
+  .sip-summary { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-  .sip-panel {
-    padding: 15px;
-    border-radius: 14px;
-  }
-
-  .sip-input-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sip-position-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sip-summary-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .sip-result-header {
-    flex-direction: column;
-  }
-
-  .sip-result-roi {
-    font-size: 18px;
-  }
-
-  .sip-primary-projection {
-    padding: 13px;
-  }
-
-  .sip-result-title {
-    font-size: 32px;
-  }
-}
-
-@media (max-width: 400px) {
-  .sip-summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sip-position-row {
-    grid-template-columns: 1fr 1fr;
-  }
+  .sip-position-row { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .sip-summary { grid-template-columns: 1fr 1fr; }
+  .sip-result-header { flex-direction: column; }
 }
