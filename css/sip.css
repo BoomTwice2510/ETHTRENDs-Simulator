@@ -61,14 +61,20 @@
     padding: 10px 10px 40px !important;
   }
 
-  .main-grid,
-  .sip-layout {
+  .main-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 10px !important;
+    }
+
+    .sip-layout {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     width: 100% !important;
     max-width: 100% !important;
     gap: 10px !important;
-  }
+    }
 
   .input-card,
   .main-grid > main,
