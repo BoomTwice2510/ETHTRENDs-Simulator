@@ -288,106 +288,17 @@
   display: none !important;
 }
 
-/* Conservative projection notice */
-.sip-conservative-disclaimer {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 14px 0 12px;
-  padding: 12px 14px;
-  border: 1px solid rgba(0, 229, 255, .32);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, .22);
-  text-align: center;
-}
-
-.sip-conservative-title {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  margin-bottom: 6px;
-}
-
-.sip-conservative-copy {
-  font-size: 10px;
-  line-height: 1.5;
-  opacity: .78;
-}
-
-.projection-rate {
-  display: inline-block;
-  font-weight: 900;
-  animation: projectionBreath 2.2s ease-in-out infinite;
-}
-
-.rate-20 { animation-delay: 0s; }
-.rate-40 { animation-delay: .35s; }
-.rate-60 { animation-delay: .7s; }
-
-@keyframes projectionBreath {
-  0%, 100% { opacity: .58; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
-}
-
-/* Selected scenario's large total amount */
-.sip-scenario-card.active .total-amount,
-.sip-scenario-card.selected .total-amount,
-.scenario-card.active .total-amount,
-.scenario-card.selected .total-amount {
-  animation: totalAmountBreath 2s ease-in-out infinite;
-}
-
-@keyframes totalAmountBreath {
-  0%, 100% { opacity: .88; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.025); }
-}
-
-@media (max-width: 760px) {
-  .sip-conservative-disclaimer {
-    margin: 10px 0 9px;
-    padding: 10px 11px;
-  }
-
-  .sip-conservative-title {
-    font-size: 10px;
-  }
-
-  .sip-conservative-copy {
-    font-size: 9px;
-  }
-}
-
-/* SIP leverage selector */
-.sip-leverage-control {
-  margin-top: 10px;
-}
-
-.sip-control-label {
-  display: block;
-  font-size: 9px;
-  letter-spacing: .12em;
-  font-weight: 800;
-  margin-bottom: 5px;
-  opacity: .72;
-}
-
-.sip-leverage-options {
-  display: flex;
-  gap: 6px;
-}
-
-.sip-leverage-btn {
-  appearance: none;
-  border: 1px solid rgba(0, 229, 255, .35);
-  background: transparent;
-  color: inherit;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 10px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.sip-leverage-btn.active {
-  border-color: rgba(0, 229, 255, .9);
-  box-shadow: 0 0 12px rgba(0, 229, 255, .12);
-}
+/* SIP conservative projection banner — one shared notice above all three scenario cards */
+.sip-conservative-disclaimer{margin-top:14px;margin-bottom:12px;padding:13px 14px;border:1px solid rgba(219,39,119,.30);border-left:3px solid #0284c7;border-radius:11px;background:#fff7fb;color:#475569;font:600 9px/1.6 "Inter",sans-serif;text-align:left;animation:sipFadeInUp .4s ease both}
+.sip-conservative-title{color:#db2777;font:800 10px "JetBrains Mono",monospace;letter-spacing:.06em;margin-bottom:5px}
+.sip-conservative-copy{margin-top:4px}
+.sip-conservative-warning{margin-top:7px;padding-top:7px;border-top:1px solid rgba(203,213,225,.9);color:#b91c1c;font:800 8px/1.5 "JetBrains Mono",monospace}
+.projection-rate{display:inline-block;font-weight:900;animation:sipProjectionBreath 2.2s ease-in-out infinite}
+.rate-20{animation-delay:0s}.rate-40{animation-delay:.35s}.rate-60{animation-delay:.7s}
+@keyframes sipProjectionBreath{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.sip-total-amount-breathing{animation:sipTotalBreath 2.1s ease-in-out infinite;transform-origin:left center}
+@keyframes sipTotalBreath{0%,100%{opacity:.88;transform:scale(1)}50%{opacity:1;transform:scale(1.025)}}
+.sip-leverage-options{display:flex;gap:6px}
+.sip-leverage-btn{appearance:none;border:1px solid rgba(2,132,199,.3);background:#fff;color:#475569;border-radius:8px;padding:5px 10px;font:800 9px "JetBrains Mono",monospace;cursor:pointer}
+.sip-leverage-btn.active{border-color:#0284c7;background:#eaf7ff;color:#0284c7;box-shadow:0 0 0 2px rgba(2,132,199,.08)}
+@media(max-width:520px){.sip-conservative-disclaimer{padding:11px 12px;font-size:8px}.sip-conservative-title{font-size:9px}.sip-conservative-warning{font-size:7px}.sip-leverage-btn{padding:5px 9px}}

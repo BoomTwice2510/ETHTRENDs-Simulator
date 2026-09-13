@@ -2,15 +2,6 @@
    Source of truth: simulator API trade record.
    No hard-coded historical P&L.
 */
-// User-selectable SIP leverage (5X or 10X). Default remains 10X.
-let selectedLeverage = 10;
-function setSIPLeverage(value){
-  const n = Number(value);
-  if (n === 5 || n === 10) selectedLeverage = n;
-  return selectedLeverage;
-}
-function getSIPLeverage(){ return selectedLeverage; }
-
 (function () {
   "use strict";
 
@@ -60,6 +51,7 @@ function getSIPLeverage(){ return selectedLeverage; }
     if (m <= 12) return base * 5;
 
     const year = Math.ceil(m / 12);
+    // No cap after Year 5: Y6=50×, Y7=60× ... Y25=240× base.
     const multiplier = year <= 5
       ? CONFIG.YEAR_MULTIPLIERS[year]
       : 40 + ((year - 5) * 10);
@@ -118,6 +110,7 @@ function getSIPLeverage(){ return selectedLeverage; }
 
     if (!keys.length) return [];
 
+    // Never use the current partial calendar month as a historical baseline.
     const now = new Date();
     const currentKey = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
     const completed = keys.filter(k => k < currentKey);
@@ -148,8 +141,9 @@ function getSIPLeverage(){ return selectedLeverage; }
     });
   }
 
-  function projectScenario(monthlySip, baselineMonths, multiplier, fxRate, years) {
+  function projectScenario(monthlySip, baselineMonths, multiplier, fxRate, years, leverage = CONFIG.LEVERAGE) {
     const sip = validateSip(monthlySip);
+    leverage = Number(leverage) === 5 ? 5 : 10;
     years = Math.max(CONFIG.MIN_YEARS, Math.min(CONFIG.MAX_YEARS, Math.floor(n(years) || CONFIG.MIN_YEARS)));
     const fx = Math.max(0.000001, n(fxRate) || 102);
     const baseline = baselineMonths.length ? baselineMonths : [{month:"N/A",points:0,trades:0,wins:0,losses:0}];
@@ -163,7 +157,7 @@ function getSIPLeverage(){ return selectedLeverage; }
       const source = baseline[(month - 1) % baseline.length];
 
       const scenarioPoints = source.points * multiplier;
-      const pnlUSD = scenarioPoints * positionEth;
+      const pnlUSD = scenarioPoints * positionEth * (leverage / CONFIG.LEVERAGE);
       const pnlINR = pnlUSD * fx;
       const contributionINR = sip;
       const openingINR = corpusINR;
@@ -221,8 +215,9 @@ function getSIPLeverage(){ return selectedLeverage; }
     return out;
   }
 
-  function run({ monthlySip, trades, fxRate = 102, years = 5 }) {
+  function run({ monthlySip, trades, fxRate = 102, years = 5, leverage = CONFIG.LEVERAGE }) {
     const sip = validateSip(monthlySip);
+    leverage = Number(leverage) === 5 ? 5 : 10;
     if (!Array.isArray(trades) || !trades.length) {
       throw new Error("No completed historical trades were returned by the API.");
     }
@@ -234,7 +229,7 @@ function getSIPLeverage(){ return selectedLeverage; }
 
     const scenarios = {};
     for (const [name, multiplier] of Object.entries(CONFIG.SCENARIOS)) {
-      const projected = projectScenario(sip, baselineMonths, multiplier, fxRate, years);
+      const projected = projectScenario(sip, baselineMonths, multiplier, fxRate, years, leverage);
       scenarios[name] = {
         name,
         multiplier,
@@ -247,7 +242,7 @@ function getSIPLeverage(){ return selectedLeverage; }
       monthlySip: sip,
       years,
       basePositionEth: basePosition(sip),
-      leverage: selectedLeverage,
+      leverage,
       baselineMonths,
       baselineAveragePoints:
         baselineMonths.reduce((s, x) => s + x.points, 0) / baselineMonths.length,
