@@ -333,3 +333,75 @@
   .sip-summary { grid-template-columns: 1fr 1fr; }
   .sip-result-header { flex-direction: column; }
 }
+
+/* Horizon selector + expandable SIP details */
+.sip-years-select {
+  width:100%;
+  appearance:auto;
+  padding:10px 11px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  background:#fff;
+  color:#111;
+  font:800 11px "JetBrains Mono", monospace;
+  outline:none;
+}
+.sip-years-select:focus { border-color:#0284c7; box-shadow:0 0 0 3px rgba(2,132,199,.08); }
+
+.sip-scenario-list { align-items:start; }
+.sip-scenario-card { overflow:hidden; }
+.sip-scenario-toggle {
+  width:100%; border:0; background:transparent; color:inherit; padding:0;
+  display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left; cursor:pointer;
+}
+.sip-scenario-right { display:flex; align-items:center; gap:10px; }
+.sip-scenario-right > span { font:800 16px "JetBrains Mono",monospace; color:#64748b; transition:transform .2s; }
+.sip-scenario-card.open .sip-scenario-right > span { transform:rotate(180deg); }
+.sip-scenario-summary { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:10px; }
+.sip-scenario-summary > div { border:1px solid #cbd5e1; background:#fff; border-radius:7px; padding:7px; }
+.sip-scenario-summary span { display:block; color:#475569; font:700 7px "JetBrains Mono",monospace; }
+.sip-scenario-summary strong { display:block; margin-top:3px; color:#111; font:800 10px "JetBrains Mono",monospace; overflow-wrap:anywhere; }
+.sip-scenario-details { display:none; margin-top:13px; }
+.sip-scenario-card.open .sip-scenario-details { display:block; }
+.sip-detail-block { margin-top:2px; }
+.sip-table small { color:#64748b; font-size:7px; }
+
+.sip-monthly-accordion { margin-top:10px; border:1px solid #cbd5e1; border-radius:10px; overflow:hidden; background:#fff; }
+.sip-monthly-toggle {
+  width:100%; border:0; background:#f8fafc; padding:11px 12px; display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; color:#111; text-align:left;
+}
+.sip-monthly-toggle span { display:block; }
+.sip-monthly-toggle b { display:block; font:800 9px "JetBrains Mono",monospace; letter-spacing:.07em; }
+.sip-monthly-toggle small { display:block; margin-top:3px; color:#64748b; font:600 8px "Inter",sans-serif; }
+.sip-monthly-toggle > strong { color:#0284c7; font:800 16px "JetBrains Mono",monospace; }
+.sip-monthly-body { display:none; padding:0 10px 10px; }
+.sip-monthly-accordion.open .sip-monthly-body { display:block; }
+.sip-month-group { margin-top:10px; }
+.sip-month-group-title { color:#db2777; font:800 8px "JetBrains Mono",monospace; letter-spacing:.08em; margin:0 0 6px; }
+
+.sip-risk-card { margin-top:12px; border:1px solid rgba(2,132,199,.3); border-radius:12px; background:#f8fafc; padding:12px; }
+.sip-risk-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.sip-risk-head p { margin:3px 0 0; color:#64748b; font:600 8px/1.5 "Inter",sans-serif; }
+.sip-risk-badge { border-radius:999px; padding:5px 8px; font:800 8px "JetBrains Mono",monospace; white-space:nowrap; border:1px solid #cbd5e1; }
+.sip-risk-badge.low { color:#047857; background:rgba(5,150,105,.06); border-color:rgba(5,150,105,.3); }
+.sip-risk-badge.moderate { color:#b45309; background:rgba(217,119,6,.06); border-color:rgba(217,119,6,.3); }
+.sip-risk-badge.high { color:#b91c1c; background:rgba(220,38,38,.06); border-color:rgba(220,38,38,.3); }
+.sip-risk-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:10px; }
+.sip-risk-grid > div { border:1px solid #cbd5e1; background:#fff; border-radius:8px; padding:8px; }
+.sip-risk-grid span { display:block; color:#475569; font:700 7px "JetBrains Mono",monospace; }
+.sip-risk-grid strong { display:block; margin-top:4px; color:#111; font:800 11px "JetBrains Mono",monospace; }
+.sip-risk-grid small { display:block; margin-top:3px; color:#64748b; font:600 7px/1.4 "Inter",sans-serif; }
+.sip-risk-note { margin-top:8px; color:#475569; font:600 8px/1.55 "Inter",sans-serif; }
+.sip-risk-note b { color:#0284c7; }
+
+.sip-disclaimer { margin-top:14px; padding:11px 12px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; color:#475569; font:600 8px/1.65 "Inter",sans-serif; }
+.sip-disclaimer b { color:#dc2626; font:800 8px "JetBrains Mono",monospace; }
+
+@media (max-width:900px) {
+  .sip-risk-grid { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:640px) {
+  .sip-scenario-list { grid-template-columns:1fr; }
+  .sip-risk-grid { grid-template-columns:1fr 1fr; }
+}

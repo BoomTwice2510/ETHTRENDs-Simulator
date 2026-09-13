@@ -10,7 +10,8 @@
     SIP_UNIT_INR: 1000,
     ETH_PER_SIP_UNIT: 0.01,
     LEVERAGE: 10,
-    YEARS: 5,
+    MIN_YEARS: 5,
+    MAX_YEARS: 25,
     BASELINE_MONTHS: 8,
     YEAR_MULTIPLIERS: Object.freeze({
       1: 5,
@@ -49,14 +50,19 @@
     if (m <= 4) return base * m;
     if (m <= 12) return base * 5;
 
-    const year = Math.min(CONFIG.YEARS, Math.ceil(m / 12));
-    return base * CONFIG.YEAR_MULTIPLIERS[year];
+    const year = Math.ceil(m / 12);
+    // Position keeps increasing every year. Y1=5×, Y2=10×,
+    // Y3=20×, Y4=30×, Y5=40×, Y6=50× ... Y25=240×.
+    // There is intentionally NO 40× cap after Year 5.
+    const multiplier = year === 1 ? 5 : year * 10 - 10;
+    return base * multiplier;
   }
 
-  function buildPositionSchedule(monthlySip) {
+  function buildPositionSchedule(monthlySip, years = CONFIG.MAX_YEARS) {
     validateSip(monthlySip);
+    years = Math.max(1, Math.min(CONFIG.MAX_YEARS, Math.floor(n(years) || CONFIG.MAX_YEARS)));
     const rows = [];
-    for (let month = 1; month <= CONFIG.YEARS * 12; month++) {
+    for (let month = 1; month <= years * 12; month++) {
       rows.push({
         month,
         year: Math.ceil(month / 12),
@@ -135,15 +141,16 @@
     });
   }
 
-  function projectScenario(monthlySip, baselineMonths, multiplier, fxRate) {
+  function projectScenario(monthlySip, baselineMonths, multiplier, fxRate, years) {
     const sip = validateSip(monthlySip);
+    years = Math.max(CONFIG.MIN_YEARS, Math.min(CONFIG.MAX_YEARS, Math.floor(n(years) || CONFIG.MIN_YEARS)));
     const fx = Math.max(0.000001, n(fxRate) || 102);
     const baseline = baselineMonths.length ? baselineMonths : [{month:"N/A",points:0,trades:0,wins:0,losses:0}];
 
     let corpusINR = 0;
     const monthly = [];
 
-    for (let month = 1; month <= CONFIG.YEARS * 12; month++) {
+    for (let month = 1; month <= years * 12; month++) {
       const year = Math.ceil(month / 12);
       const positionEth = calculatePosition(sip, month);
       const source = baseline[(month - 1) % baseline.length];
@@ -170,7 +177,7 @@
       });
     }
 
-    const investedINR = sip * 60;
+    const investedINR = sip * years * 12;
     const netPnlINR = corpusINR - investedINR;
     const roiPercent = investedINR ? (netPnlINR / investedINR) * 100 : 0;
 
@@ -187,7 +194,8 @@
 
   function yearSummaries(monthly) {
     const out = [];
-    for (let year = 1; year <= CONFIG.YEARS; year++) {
+    const maxYear = monthly.reduce((m, x) => Math.max(m, x.year), 0);
+    for (let year = 1; year <= maxYear; year++) {
       const rows = monthly.filter(x => x.year === year);
       if (!rows.length) continue;
       const invested = rows.reduce((s, x) => s + x.contributionINR, 0);
@@ -206,7 +214,7 @@
     return out;
   }
 
-  function run({ monthlySip, trades, fxRate = 102 }) {
+  function run({ monthlySip, trades, fxRate = 102, years = 5 }) {
     const sip = validateSip(monthlySip);
     if (!Array.isArray(trades) || !trades.length) {
       throw new Error("No completed historical trades were returned by the API.");
@@ -219,7 +227,7 @@
 
     const scenarios = {};
     for (const [name, multiplier] of Object.entries(CONFIG.SCENARIOS)) {
-      const projected = projectScenario(sip, baselineMonths, multiplier, fxRate);
+      const projected = projectScenario(sip, baselineMonths, multiplier, fxRate, years);
       scenarios[name] = {
         name,
         multiplier,
@@ -230,6 +238,7 @@
 
     return {
       monthlySip: sip,
+      years,
       basePositionEth: basePosition(sip),
       leverage: CONFIG.LEVERAGE,
       baselineMonths,
@@ -238,7 +247,7 @@
       baselineTotalPoints:
         baselineMonths.reduce((s, x) => s + x.points, 0),
       scenarios,
-      positionSchedule: buildPositionSchedule(sip),
+      positionSchedule: buildPositionSchedule(sip, years),
       generatedAt: new Date().toISOString()
     };
   }

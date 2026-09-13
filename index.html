@@ -167,6 +167,14 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
         <input id="sipFx" type="number" min="1" step="0.01" value="102">
       </div>
 
+      <div class="field">
+        <label>PROJECTION HORIZON</label>
+        <select id="sipYears" class="sip-years-select">
+          <option value="5" selected>5 YEARS</option><option value="6">6 YEARS</option><option value="7">7 YEARS</option><option value="8">8 YEARS</option><option value="9">9 YEARS</option><option value="10">10 YEARS</option><option value="11">11 YEARS</option><option value="12">12 YEARS</option><option value="13">13 YEARS</option><option value="14">14 YEARS</option><option value="15">15 YEARS</option><option value="16">16 YEARS</option><option value="17">17 YEARS</option><option value="18">18 YEARS</option><option value="19">19 YEARS</option><option value="20">20 YEARS</option><option value="21">21 YEARS</option><option value="22">22 YEARS</option><option value="23">23 YEARS</option><option value="24">24 YEARS</option><option value="25">25 YEARS</option>
+        </select>
+        <div class="hint">Choose any horizon from 5 to 25 years.</div>
+      </div>
+
       <div class="sip-fixed-rule">
         <span>LEVERAGE</span>
         <strong>10× FIXED</strong>
@@ -453,7 +461,8 @@ async function runSIPProjection(){
     sipLastResult=ETHTRENDsSIP.run({
       monthlySip:amount,
       trades:trades,
-      fxRate:sipFx()
+      fxRate:sipFx(),
+      years:Number($('sipYears').value)||5
     });
 
     if(!sipLastResult)throw new Error('SIP engine returned no projection.');
