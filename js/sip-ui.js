@@ -54,24 +54,25 @@
   function resultLeverageLabel(s){return `${Number(s.leverage||10)}×`;}
 
   function sourceIntelligence(s,currency,sourceTotals){
-    const fx=s.fxRate;
+    const fx=Number(s.fxRate)||102;
+    const baseline=s.baselineCostTotals||{};
     const totals=sourceTotals||{};
-    const hasTradeCosts=(Number(s.tradingFees||0)!==0 || Number(s.funding||0)!==0 || Number(s.slippage||0)!==0 || Number(s.latencyCost||0)!==0);
-    const tradingFees=hasTradeCosts?Number(s.tradingFees||0):Number(totals.tradingFees||0);
-    const funding=hasTradeCosts?Number(s.funding||0):Number(totals.funding||0);
-    const slippage=hasTradeCosts?Number(s.slippage||0):Number(totals.slippage||0);
-    const latencyCost=hasTradeCosts?Number(s.latencyCost||0):Number(totals.latencyCost||0);
-    const trades=hasTradeCosts?Number(s.trades||0):Number(totals.totalTrades||s.trades||0);
+    const tradingFees=Number.isFinite(Number(baseline.tradingFees))?Number(baseline.tradingFees):Number(totals.tradingFees||0);
+    const funding=Number.isFinite(Number(baseline.funding))?Number(baseline.funding):Number(totals.funding||0);
+    const slippage=Number.isFinite(Number(baseline.slippage))?Number(baseline.slippage):Number(totals.slippage||0);
+    const latencyCost=Number.isFinite(Number(baseline.latencyCost))?Number(baseline.latencyCost):Number(totals.latencyCost||0);
+    const trades=Number.isFinite(Number(baseline.trades))&&Number(baseline.trades)>0?Number(baseline.trades):Number(totals.totalTrades||s.trades||0);
     const evidence=s.evidenceCount?Number(s.evidenceTotal||0)/Number(s.evidenceCount):null;
     const accepted=Number(s.riskAccepts||0);
     const rejected=Number(s.riskRejects||0);
+    const executionCosts=funding+slippage+latencyCost;
     return `<div class="sip-intelligence-card">
       <div class="sip-intelligence-head"><div><div class="sip-section-title">SOURCE TRADE INTELLIGENCE</div><p>Execution and decision metadata carried from the real Simulator API trade records. The SIP projection itself still uses historical signal points at the selected scenario scale.</p></div><span class="sip-intelligence-badge">${trades} SOURCE TRADES</span></div>
       <div class="sip-intelligence-grid">
         <div><span>AVG EVIDENCE SCORE</span><strong>${evidence==null?"—":evidence.toFixed(1)+"/100"}</strong><small>Across the source trades in this baseline month</small></div>
         <div><span>RISK DECISION</span><strong>${accepted} ACCEPT${rejected?` · ${rejected} REJECT`:""}</strong><small>Recorded execution decisions</small></div>
-        <div><span>TRADING FEES</span><strong>${money(tradingFees*fx,currency,fx)}</strong><small>Combined source trade fees</small></div>
-        <div><span>EXECUTION COSTS</span><strong>${money((funding+slippage+latencyCost)*fx,currency,fx)}</strong><small>Funding + slippage + latency</small></div>
+        <div><span>TRADING FEES</span><strong>${money(tradingFees*fx,currency,fx)}</strong><small>${tradingFees.toFixed(2)} USD across ${trades} baseline trades</small></div>
+        <div><span>EXECUTION COSTS</span><strong>${money(executionCosts*fx,currency,fx)}</strong><small>Funding ${funding.toFixed(2)} + slippage ${slippage.toFixed(2)} + latency ${latencyCost.toFixed(2)} USD</small></div>
       </div>
     </div>`;
   }
@@ -118,11 +119,13 @@
         <div><span>FINAL YEAR MULTIPLIER</span><strong>${multiplierForYear(result.years)}× BASE</strong></div>
         <div><span>HISTORICAL BASELINE</span><strong>${result.baselineMonths.length} MONTHS</strong></div>
       </div>
-      ${yearTable(s,currency)}${monthlyTable(s,currency)}${sourceIntelligence(result.baselineMonths.reduce((a,m)=>({
-        trades:a.trades+m.trades, evidenceTotal:a.evidenceTotal+m.evidenceTotal, evidenceCount:a.evidenceCount+m.evidenceCount,
-        riskAccepts:a.riskAccepts+m.riskAccepts, riskRejects:a.riskRejects+m.riskRejects, tradingFees:a.tradingFees+m.tradingFees,
-        funding:a.funding+m.funding, slippage:a.slippage+m.slippage, latencyCost:a.latencyCost+m.latencyCost
-      }),{trades:0,evidenceTotal:0,evidenceCount:0,riskAccepts:0,riskRejects:0,tradingFees:0,funding:0,slippage:0,latencyCost:0}),currency,result.sourceTotals)}${riskControl(s,currency)}
+      ${yearTable(s,currency)}${monthlyTable(s,currency)}${sourceIntelligence({
+        ...result.baselineMonths.reduce((a,m)=>({
+          trades:a.trades+m.trades, evidenceTotal:a.evidenceTotal+m.evidenceTotal, evidenceCount:a.evidenceCount+m.evidenceCount,
+          riskAccepts:a.riskAccepts+m.riskAccepts, riskRejects:a.riskRejects+m.riskRejects
+        }),{trades:0,evidenceTotal:0,evidenceCount:0,riskAccepts:0,riskRejects:0}),
+        fxRate:s.fxRate, baselineCostTotals:result.baselineCostTotals
+      },currency,result.sourceTotals)}${riskControl(s,currency)}
     </section>`;
     const toggle=detail.querySelector(".sip-monthly-toggle");
     toggle.addEventListener("click",()=>{const box=toggle.closest(".sip-monthly-accordion"),open=box.classList.toggle("open");toggle.setAttribute("aria-expanded",open);toggle.querySelector("strong").textContent=open?"−":"＋"});

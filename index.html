@@ -621,8 +621,20 @@ async function runSimulation(){
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 
-<script src="/js/sip.js?v=12"></script>
-<script src="/js/sip-ui.js?v=12"></script>
+<script>
+(function(){
+  try{
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});
+    }
+    if(window.caches){
+      caches.keys().then(function(keys){keys.filter(function(k){return k.indexOf('ethtrends-simulator-')===0;}).forEach(function(k){caches.delete(k);});});
+    }
+  }catch(e){}
+})();
+</script>
+<script src="/js/sip.js?v=13"></script>
+<script src="/js/sip-ui.js?v=13"></script>
 <script>
 /* ===== SIP INTEGRATION ===== */
 let simulatorMode='historical',sipCurrency='INR',sipAmountCurrency='INR',sipLastResult=null,sipLastTrades=null;
@@ -748,7 +760,7 @@ async function runSIPProjection(){
     ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
 
     status.className='sip-status success';
-    status.textContent='REAL BOT DATA · '+trades.length+' completed trades processed.';
+    status.textContent='REAL BOT DATA · '+trades.length+' completed trades processed · COST PIPELINE v13';
     status.style.display='block';
 
   }catch(e){

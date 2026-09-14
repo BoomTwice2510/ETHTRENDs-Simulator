@@ -296,17 +296,29 @@
       };
     }
 
+    const baselineCostTotals = baselineMonths.reduce((a, m) => ({
+      trades: a.trades + Number(m.trades || 0),
+      tradingFees: a.tradingFees + Number(m.tradingFees || 0),
+      funding: a.funding + Number(m.funding || 0),
+      slippage: a.slippage + Number(m.slippage || 0),
+      latencyCost: a.latencyCost + Number(m.latencyCost || 0)
+    }), { trades: 0, tradingFees: 0, funding: 0, slippage: 0, latencyCost: 0 });
+
+    // The API totals are authoritative for the complete response. The baseline totals
+    // are independently recomputed from the 8 completed baseline months used by SIP.
+    // Keep both so the UI can never silently turn a real non-zero API cost into $0.
     return {
       monthlySip: sip,
       years,
       basePositionEth: basePosition(sip),
       leverage,
       baselineMonths,
+      baselineCostTotals,
+      sourceTotals: sourceTotals || null,
       baselineAveragePoints:
         baselineMonths.reduce((s, x) => s + x.points, 0) / baselineMonths.length,
       baselineTotalPoints:
         baselineMonths.reduce((s, x) => s + x.points, 0),
-      sourceTotals: sourceTotals || null,
       scenarios,
       positionSchedule: buildPositionSchedule(sip, years),
       generatedAt: new Date().toISOString()
