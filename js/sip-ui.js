@@ -7,6 +7,7 @@
   const signed=(v,c,fx)=>{const x=Number(v||0);return(x>=0?"+":"−")+money(Math.abs(x),c,fx)};
   const pct=v=>(Number(v||0)>=0?"+":"−")+Math.abs(Number(v||0)).toLocaleString("en-IN",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
   const cls=v=>Number(v||0)>=0?"sip-positive":"sip-negative";
+  const inputMoney=(r,fx)=>r.inputSipCurrency==="USD" ? "$"+Number(r.inputSipAmount||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) : "₹"+Number(r.inputSipAmount||r.monthlySip||0).toLocaleString("en-IN",{maximumFractionDigits:0});
 
   function multiplierForYear(y){return y<=1?5:y<=5?({2:10,3:20,4:30,5:40}[y]||40):40+(y-5)*10}
 
@@ -52,6 +53,23 @@
 
   function resultLeverageLabel(s){return `${Number(s.leverage||10)}×`;}
 
+  function sourceIntelligence(s,currency){
+    const fx=s.fxRate;
+    const trades=Number(s.trades||0);
+    const evidence=s.evidenceCount?Number(s.evidenceTotal||0)/Number(s.evidenceCount):null;
+    const accepted=Number(s.riskAccepts||0);
+    const rejected=Number(s.riskRejects||0);
+    return `<div class="sip-intelligence-card">
+      <div class="sip-intelligence-head"><div><div class="sip-section-title">SOURCE TRADE INTELLIGENCE</div><p>Execution and decision metadata carried from the real Simulator API trade records. The SIP projection itself still uses historical signal points at the selected scenario scale.</p></div><span class="sip-intelligence-badge">${trades} SOURCE TRADES</span></div>
+      <div class="sip-intelligence-grid">
+        <div><span>AVG EVIDENCE SCORE</span><strong>${evidence==null?"—":evidence.toFixed(1)+"/100"}</strong><small>Across the source trades in this baseline month</small></div>
+        <div><span>RISK DECISION</span><strong>${accepted} ACCEPT${rejected?` · ${rejected} REJECT`:""}</strong><small>Recorded execution decisions</small></div>
+        <div><span>TRADING FEES</span><strong>${money(s.tradingFees||0,currency,fx)}</strong><small>Source execution cost</small></div>
+        <div><span>FUNDING + SLIPPAGE</span><strong>${money((s.funding||0)+(s.slippage||0)+(s.latencyCost||0),currency,fx)}</strong><small>Funding + slippage + latency</small></div>
+      </div>
+    </div>`;
+  }
+
   function riskControl(s,currency){
     const fx=s.fxRate;let worstLoss=0,worstMonth=null,worstRatio=0;
     s.monthly.forEach(m=>{if(m.pnlINR<worstLoss){worstLoss=m.pnlINR;worstMonth=m.month;worstRatio=Math.abs(m.pnlINR)/Math.max(1,m.openingINR+m.contributionINR)*100}});
@@ -94,7 +112,11 @@
         <div><span>FINAL YEAR MULTIPLIER</span><strong>${multiplierForYear(result.years)}× BASE</strong></div>
         <div><span>HISTORICAL BASELINE</span><strong>${result.baselineMonths.length} MONTHS</strong></div>
       </div>
-      ${yearTable(s,currency)}${monthlyTable(s,currency)}${riskControl(s,currency)}
+      ${yearTable(s,currency)}${monthlyTable(s,currency)}${sourceIntelligence(result.baselineMonths.reduce((a,m)=>({
+        trades:a.trades+m.trades, evidenceTotal:a.evidenceTotal+m.evidenceTotal, evidenceCount:a.evidenceCount+m.evidenceCount,
+        riskAccepts:a.riskAccepts+m.riskAccepts, riskRejects:a.riskRejects+m.riskRejects, tradingFees:a.tradingFees+m.tradingFees,
+        funding:a.funding+m.funding, slippage:a.slippage+m.slippage, latencyCost:a.latencyCost+m.latencyCost
+      }),{trades:0,evidenceTotal:0,evidenceCount:0,riskAccepts:0,riskRejects:0,tradingFees:0,funding:0,slippage:0,latencyCost:0}),currency)}${riskControl(s,currency)}
     </section>`;
     const toggle=detail.querySelector(".sip-monthly-toggle");
     toggle.addEventListener("click",()=>{const box=toggle.closest(".sip-monthly-accordion"),open=box.classList.toggle("open");toggle.setAttribute("aria-expanded",open);toggle.querySelector("strong").textContent=open?"−":"＋"});
@@ -106,7 +128,7 @@
     const draw=()=>{
       const base=result.scenarios.base,fx=base.fxRate;
       target.innerHTML=`<div class="sip-results-heading"><div class="result-label">REAL BOT DATA · SIP PROJECTION</div><h2>${money(base.finalCorpusINR,currency,fx)} projected corpus</h2><p>${result.years}-year model · latest ${result.baselineMonths.length} completed historical months (${result.baselineMonths[0].month} → ${result.baselineMonths[result.baselineMonths.length-1].month}) from the simulator API. Historical monthly points are reused cyclically for the selected horizon.</p></div>
-      <div class="sip-summary"><div class="sip-summary-box"><span>MONTHLY SIP</span><strong>${inr(result.monthlySip)}</strong></div><div class="sip-summary-box"><span>BASE POSITION</span><strong>${result.basePositionEth.toFixed(4)} ETH</strong></div><div class="sip-summary-box"><span>LEVERAGE</span><strong>${Number(result.leverage||10)}×</strong></div><div class="sip-summary-box"><span>HORIZON</span><strong>${result.years} YEARS</strong></div></div>
+      <div class="sip-summary"><div class="sip-summary-box"><span>MONTHLY SIP</span><strong>${inputMoney(result,fx)}</strong></div><div class="sip-summary-box"><span>BASE POSITION</span><strong>${result.basePositionEth.toFixed(4)} ETH</strong></div><div class="sip-summary-box"><span>LEVERAGE</span><strong>${Number(result.leverage||10)}×</strong></div><div class="sip-summary-box"><span>HORIZON</span><strong>${result.years} YEARS</strong></div></div>
       <div class="sip-conservative-disclaimer">
         <div class="sip-conservative-title">⚠ CONSERVATIVE HISTORICAL PROJECTION</div>
         <div class="sip-conservative-copy">Future returns are modeled at <span class="projection-rate rate-20">20%</span> / <span class="projection-rate rate-40">40%</span> / <span class="projection-rate rate-60">60%</span> of historical performance for Worst / Base / Best scenarios. Losses are included and compounded normally. This is a mathematical scenario based on historical data, <strong>not a return guarantee.</strong></div>

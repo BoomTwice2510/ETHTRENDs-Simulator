@@ -93,7 +93,21 @@
       exitTime: exitTime ? String(exitTime) : "",
       entryPrice: n(trade && (trade.entryPrice ?? trade.entry_price)),
       exitPrice: n(trade && (trade.exitPrice ?? trade.exit_price)),
-      points: extractPoints(trade)
+      points: extractPoints(trade),
+      grossPnl: n(trade && (trade.grossPnl ?? trade.gross_pnl)),
+      tradingFees: n(trade && (trade.tradingFees ?? trade.trading_fees)),
+      funding: n(trade && trade.funding),
+      slippage: n(trade && trade.slippage),
+      latencyCost: n(trade && (trade.latencyCost ?? trade.latency_cost)),
+      pnl: n(trade && trade.pnl),
+      balanceAfter: n(trade && (trade.balanceAfter ?? trade.balance_after)),
+      requiredMargin: n(trade && (trade.requiredMargin ?? trade.required_margin)),
+      marginRatioPercent: n(trade && (trade.marginRatioPercent ?? trade.margin_ratio_percent)),
+      riskDecision: trade && trade.riskDecision != null ? String(trade.riskDecision) : "",
+      evidenceScore: trade && trade.evidenceScore != null ? n(trade.evidenceScore) : null,
+      marketContext: trade && trade.marketContext != null ? String(trade.marketContext) : "",
+      decisionAudit: trade && trade.decisionAudit && typeof trade.decisionAudit === "object" ? trade.decisionAudit : null,
+      status: trade && trade.status != null ? String(trade.status) : ""
     };
   }
 
@@ -128,16 +142,33 @@
       const key = monthKey(t.exitTime);
       if (!baselineSet.has(key)) continue;
       if (!groups[key]) {
-        groups[key] = { month: key, points: 0, trades: 0, wins: 0, losses: 0 };
+        groups[key] = {
+          month: key, points: 0, trades: 0, wins: 0, losses: 0,
+          grossPnl: 0, tradingFees: 0, funding: 0, slippage: 0, latencyCost: 0,
+          evidenceTotal: 0, evidenceCount: 0, riskAccepts: 0, riskRejects: 0
+        };
       }
       groups[key].points += t.points;
       groups[key].trades += 1;
+      groups[key].grossPnl += t.grossPnl;
+      groups[key].tradingFees += t.tradingFees;
+      groups[key].funding += t.funding;
+      groups[key].slippage += t.slippage;
+      groups[key].latencyCost += t.latencyCost;
+      if (t.evidenceScore != null) {
+        groups[key].evidenceTotal += t.evidenceScore;
+        groups[key].evidenceCount += 1;
+      }
+      if (t.riskDecision.toUpperCase() === "ACCEPT") groups[key].riskAccepts += 1;
+      if (t.riskDecision.toUpperCase() === "REJECT") groups[key].riskRejects += 1;
       if (t.points > 0) groups[key].wins += 1;
       else if (t.points < 0) groups[key].losses += 1;
     }
 
     return baselineKeys.map(key => groups[key] || {
-      month: key, points: 0, trades: 0, wins: 0, losses: 0
+      month: key, points: 0, trades: 0, wins: 0, losses: 0,
+      grossPnl: 0, tradingFees: 0, funding: 0, slippage: 0, latencyCost: 0,
+      evidenceTotal: 0, evidenceCount: 0, riskAccepts: 0, riskRejects: 0
     });
   }
 

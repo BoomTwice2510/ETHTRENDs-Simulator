@@ -270,6 +270,10 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
     line-height: 1.5;
   }
 }
+
+.trade-intelligence{margin-top:10px;padding:10px;border:1px solid rgba(2,132,199,.25);border-radius:10px;background:linear-gradient(145deg,#f7fcff,#fff)}
+.trade-intelligence-title{margin-bottom:7px;color:#0284c7;font:800 9px "JetBrains Mono";letter-spacing:.08em}.trade-audit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.trade-audit-item{border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:8px;min-width:0}.trade-audit-item span{display:block;color:#475569;font:700 7px "JetBrains Mono"}.trade-audit-item b{display:block;margin-top:4px;color:#111;font:800 11px "JetBrains Mono"}.trade-audit-item small{display:block;margin-top:3px;color:#64748b;font:600 8px/1.35 "Inter";overflow-wrap:anywhere}
+@media(max-width:760px){.trade-audit-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.trade-audit-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -332,9 +336,13 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
       <div class="card-title">BUILD YOUR SIP PLAN <span class="mini">YOUR RULES</span></div>
 
       <div class="field">
-        <label>MONTHLY SIP · INR</label>
+        <label>MONTHLY SIP · <span id="sipAmountCurrencyLabel">INR</span></label>
         <input id="sipAmount" type="number" min="1000" step="1000" value="1000">
-        <div class="hint">Minimum ₹1,000 · ₹1,000 multiples only</div>
+        <div class="currency" style="margin-top:8px">
+          <button id="sipAmountUsd" type="button" onclick="setSipAmountCurrency('USD')">$ USD</button>
+          <button id="sipAmountInr" class="active" type="button" onclick="setSipAmountCurrency('INR')">₹ INR</button>
+        </div>
+        <div id="sipAmountHint" class="hint">Minimum ₹1,000 · ₹1,000 multiples only</div>
       </div>
 
       <div class="field">
@@ -470,6 +478,15 @@ function toggle(el){el.closest('.accordion').classList.toggle('open')}
 function dateKey(s){return String(s||'').slice(0,7)}
 function groupMonths(trades,starting){const groups={};let prior=starting;for(const t of trades){const key=dateKey(t.exitTime);if(!/^\d{4}-\d{2}$/.test(key))continue;if(!groups[key])groups[key]={month:key,openBalance:prior,pnl:0,closeBalance:prior,trades:0,wins:0,losses:0};const g=groups[key],p=num(t.pnl);g.pnl+=p;g.closeBalance=num(t.balanceAfter);g.trades++;if(p>0)g.wins++;else if(p<0)g.losses++;prior=num(t.balanceAfter)}return Object.values(groups).sort((a,b)=>a.month.localeCompare(b.month)).map(g=>({...g,returnPct:g.openBalance>0?g.pnl/g.openBalance*100:0,winRate:g.trades?g.wins/g.trades*100:0}))}
 function renderMonths(months){$('months').innerHTML=months.map((g,i)=>`<div class="accordion"><button class="acc-head" onclick="toggle(this)"><div><div class="acc-main">${g.month}</div><div class="acc-sub">${g.trades} trades • ${g.wins}W / ${g.losses}L</div></div><div class="acc-value ${cls(g.pnl)}">${signedMoney(g.pnl)}<br><span style="font-size:10px">${pct(g.returnPct)}</span></div><div class="chev">⌄</div></button><div class="acc-body"><div class="details-grid"><div class="detail"><small>OPEN BALANCE</small><b>${money(g.openBalance)}</b></div><div class="detail"><small>CLOSE BALANCE</small><b>${money(g.closeBalance)}</b></div><div class="detail"><small>MONTH P&amp;L</small><b class="${cls(g.pnl)}">${signedMoney(g.pnl)}</b></div><div class="detail"><small>WIN RATE</small><b>${g.winRate.toFixed(1)}%</b></div></div></div></div>`).join('')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function auditRows(a){
+  if(!a||typeof a!=='object')return '';
+  return Object.entries(a).map(([k,v])=>{
+    const label=String(k).replace(/_/g,' ').toUpperCase();
+    const points=num(v&&v.points),max=num(v&&v.max),text=esc(v&&v.label||'—');
+    return `<div class="trade-audit-item"><span>${esc(label)}</span><b>${points}/${max}</b><small>${text}</small></div>`;
+  }).join('');
+}
 function renderTrades(trades){
   $('tradeCount').textContent=`${trades.length} records`;
   $('tradeLogSummary').textContent=`${trades.length} trades`;
@@ -489,8 +506,17 @@ function renderTrades(trades){
           <div class="detail"><small>P&amp;L</small><b class="${cls(p)}">${signedMoney(p)}</b></div>
           <div class="detail"><small>BALANCE AFTER</small><b>${money(t.balanceAfter)}</b></div>
           <div class="detail"><small>REQUIRED MARGIN</small><b>${money(t.requiredMargin)}</b></div>
-          <div class="detail"><small>STATUS</small><b>${t.status||'—'}</b></div>
+          <div class="detail"><small>STATUS</small><b>${esc(t.status||'—')}</b></div>
+          <div class="detail"><small>GROSS P&amp;L</small><b class="${cls(t.grossPnl)}">${signedMoney(t.grossPnl)}</b></div>
+          <div class="detail"><small>TRADING FEES</small><b>${money(t.tradingFees)}</b></div>
+          <div class="detail"><small>FUNDING</small><b>${money(t.funding)}</b></div>
+          <div class="detail"><small>SLIPPAGE</small><b>${money(t.slippage)}</b></div>
+          <div class="detail"><small>LATENCY COST</small><b>${money(t.latencyCost)}</b></div>
+          <div class="detail"><small>EVIDENCE SCORE</small><b>${t.evidenceScore==null?'—':num(t.evidenceScore).toFixed(0)+'/100'}</b></div>
+          <div class="detail"><small>MARKET CONTEXT</small><b>${esc(t.marketContext||'—')}</b></div>
+          <div class="detail"><small>RISK DECISION</small><b class="${String(t.riskDecision||'').toUpperCase()==='ACCEPT'?'pos':'neg'}">${esc(t.riskDecision||'—')}</b></div>
         </div>
+        ${t.decisionAudit?`<div class="trade-intelligence"><div class="trade-intelligence-title">DECISION AUDIT</div><div class="trade-audit-grid">${auditRows(t.decisionAudit)}</div></div>`:''}
       </div>
     </div>`
   }).join('');
@@ -595,11 +621,11 @@ async function runSimulation(){
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 
-<script src="/js/sip.js?v=9"></script>
-<script src="/js/sip-ui.js?v=9"></script>
+<script src="/js/sip.js?v=10"></script>
+<script src="/js/sip-ui.js?v=10"></script>
 <script>
 /* ===== SIP INTEGRATION ===== */
-let simulatorMode='historical',sipCurrency='INR',sipLastResult=null;
+let simulatorMode='historical',sipCurrency='INR',sipAmountCurrency='INR',sipLastResult=null,sipLastTrades=null;
 
 function switchSimulatorMode(mode){
   simulatorMode=mode;
@@ -622,9 +648,34 @@ function setSipCurrency(c){
 
 function sipFx(){return num($('sipFx').value)||102}
 
+function sipAmountINR(){
+  const amount=num($('sipAmount').value);
+  return sipAmountCurrency==='USD' ? amount*sipFx() : amount;
+}
+
+function setSipAmountCurrency(c){
+  const current=num($('sipAmount').value);
+  const fx=sipFx();
+  if(current>0 && fx>0){
+    const converted=c==='USD' ? current/fx : current*fx;
+    $('sipAmount').value=Number(converted.toFixed(2));
+  }
+  sipAmountCurrency=c;
+  const usd=$('sipAmountUsd'),inr=$('sipAmountInr');
+  usd.classList.toggle('active',c==='USD');
+  inr.classList.toggle('active',c==='INR');
+  usd.setAttribute('aria-pressed',String(c==='USD'));
+  inr.setAttribute('aria-pressed',String(c==='INR'));
+  $('sipAmountCurrencyLabel').textContent=c;
+  $('sipAmount').min=c==='USD' ? '10' : '1000';
+  $('sipAmount').step=c==='USD' ? '10' : '1000';
+  $('sipAmountHint').textContent=c==='USD' ? 'Minimum $10 · $10 multiples only · converted using USD → INR rate' : 'Minimum ₹1,000 · ₹1,000 multiples only';
+  updateSIPPositionPreview();
+}
+
 function updateSIPPositionPreview(){
   if(!window.ETHTRENDsSIP)return;
-  const amount=num($('sipAmount').value);
+  const amount=sipAmountINR();
   if(!amount)return;
   try{
     const schedule=ETHTRENDsSIP.buildPositionSchedule(amount);
@@ -645,7 +696,8 @@ function simulatorApiUrl(){
 
 async function runSIPProjection(){
   const btn=$('sipRunBtn'),status=$('sipStatus'),empty=$('sipEmpty');
-  const amount=num($('sipAmount').value);
+  const enteredAmount=num($('sipAmount').value);
+  const amount=sipAmountINR();
   const leverage=window.sipLeverage||10;
   status.style.display='none';
   btn.disabled=true;
@@ -653,7 +705,8 @@ async function runSIPProjection(){
 
   try{
     if(!window.ETHTRENDsSIP)throw new Error('SIP engine is not loaded. Check js/sip.js.');
-    if(amount<1000||amount%1000!==0)throw new Error('Monthly SIP must be at least ₹1,000 and in ₹1,000 multiples.');
+    if(sipAmountCurrency==='INR' && (enteredAmount<1000 || enteredAmount%1000!==0))throw new Error('Monthly SIP must be at least ₹1,000 and in ₹1,000 multiples.');
+    if(sipAmountCurrency==='USD' && (enteredAmount<10 || enteredAmount%10!==0))throw new Error('Monthly SIP must be at least $10 and in $10 multiples.');
 
     const r=await fetch(simulatorApiUrl(),{
       method:'POST',
@@ -669,6 +722,7 @@ async function runSIPProjection(){
 
     const trades=data.trades||[];
     if(!trades.length)throw new Error('No completed trades were returned by the simulator API.');
+    sipLastTrades=trades;
 
     sipLastResult=ETHTRENDsSIP.run({
       monthlySip:amount,
@@ -679,6 +733,8 @@ async function runSIPProjection(){
     });
 
     if(!sipLastResult)throw new Error('SIP engine returned no projection.');
+    sipLastResult.inputSipAmount=enteredAmount;
+    sipLastResult.inputSipCurrency=sipAmountCurrency;
 
     empty.style.display='none';
     ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
@@ -706,10 +762,25 @@ document.querySelectorAll('.sip-leverage-btn').forEach(btn=>btn.addEventListener
     b.setAttribute('aria-pressed',String(active));
   });
   updateSIPPositionPreview();
+  if(sipLastTrades && window.ETHTRENDsSIP && window.ETHTRENDsSIPUI){
+    try{
+      sipLastResult=ETHTRENDsSIP.run({
+        monthlySip:sipAmountINR(),
+        trades:sipLastTrades,
+        fxRate:sipFx(),
+        years:Number($('sipYears').value)||5,
+        leverage:window.sipLeverage
+      });
+      sipLastResult.inputSipAmount=num($('sipAmount').value);
+      sipLastResult.inputSipCurrency=sipAmountCurrency;
+      ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
+    }catch(e){}
+  }
 }));
 
 $('sipAmount').addEventListener('input',updateSIPPositionPreview);
 $('sipFx').addEventListener('input',()=>{
+  if(sipAmountCurrency==='USD') updateSIPPositionPreview();
   if(sipLastResult && window.ETHTRENDsSIPUI){
     ETHTRENDsSIPUI.renderResults(sipLastResult,$('sipResults'),sipCurrency);
   }
