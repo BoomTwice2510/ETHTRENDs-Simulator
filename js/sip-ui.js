@@ -2,7 +2,7 @@
 (function(){
   "use strict";
   const inr=v=>"₹"+Number(v||0).toLocaleString("en-IN",{maximumFractionDigits:0});
-  const usd=(v,fx)=>"$"+(Number(v||0)/Math.max(.000001,Number(fx)||102)).toLocaleString("en-US",{maximumFractionDigits:2});
+  const usd=(v,fx)=>"$"+(Number(v||0)/Math.max(.000001,Number(fx)||100)).toLocaleString("en-US",{maximumFractionDigits:2});
   const money=(v,c,fx)=>c==="USD"?usd(v,fx):inr(v);
   const signed=(v,c,fx)=>{const x=Number(v||0);return(x>=0?"+":"−")+money(Math.abs(x),c,fx)};
   const pct=v=>(Number(v||0)>=0?"+":"−")+Math.abs(Number(v||0)).toLocaleString("en-IN",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
@@ -54,7 +54,7 @@
   function resultLeverageLabel(s){return `${Number(s.leverage||10)}×`;}
 
   function sourceIntelligence(s,currency,sourceTotals){
-    const fx=Number(s.fxRate)||102;
+    const fx=Number(s.fxRate)||100;
     const baseline=s.baselineCostTotals||{};
     const totals=sourceTotals||{};
     const tradingFees=Number.isFinite(Number(baseline.tradingFees))?Number(baseline.tradingFees):Number(totals.tradingFees||0);

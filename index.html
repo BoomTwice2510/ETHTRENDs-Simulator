@@ -355,7 +355,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 
       <div class="field">
         <label>USD → INR RATE</label>
-        <input id="sipFx" type="number" min="1" step="0.01" value="102">
+        <input id="sipFx" type="number" min="1" step="0.01" value="100">
       </div>
 
       <div class="field">
@@ -424,7 +424,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <div class="field"><label>Position Size · ETH</label><input id="size" type="number" min="0.0001" step="0.0001" value="0.10"></div>
 <div class="field"><label>Leverage</label><input id="leverage" type="number" min="1" max="125" step="1" value="10"></div>
 <div class="field"><label>Display Currency</label><div class="currency"><button id="usd" class="active" onclick="setCurrency('USD')">$ USD</button><button id="inr" onclick="setCurrency('INR')">₹ INR</button></div></div>
-<div class="field"><label>USD → INR Rate</label><input id="fx" type="number" min="1" step="0.01" value="102"></div>
+<div class="field"><label>USD → INR Rate</label><input id="fx" type="number" min="1" step="0.01" value="100"></div>
 <button id="run" class="run" onclick="runSimulation()">⚡ RUN MY SCENARIO</button><div class="hint">Every completed historical trade is replayed in chronological order. No demo trades or fabricated results.</div></aside>
 <main class="card"><div id="error" class="error"></div><div id="empty" class="empty">⚡ Build your scenario on the left<br>then launch the historical quest.</div>
 <div id="results" style="display:none">
@@ -658,7 +658,7 @@ function setSipCurrency(c){
   }
 }
 
-function sipFx(){return num($('sipFx').value)||102}
+function sipFx(){return num($('sipFx').value)||100}
 
 function sipAmountINR(){
   const amount=num($('sipAmount').value);

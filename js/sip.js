@@ -203,7 +203,7 @@
     const sip = validateSip(monthlySip);
     leverage = Number(leverage) === 5 ? 5 : 10;
     years = Math.max(CONFIG.MIN_YEARS, Math.min(CONFIG.MAX_YEARS, Math.floor(n(years) || CONFIG.MIN_YEARS)));
-    const fx = Math.max(0.000001, n(fxRate) || 102);
+    const fx = Math.max(0.000001, n(fxRate) || 100);
     const baseline = baselineMonths.length ? baselineMonths : [{month:"N/A",points:0,trades:0,wins:0,losses:0}];
 
     let corpusINR = 0;
@@ -273,7 +273,7 @@
     return out;
   }
 
-  function run({ monthlySip, trades, fxRate = 102, years = 5, leverage = CONFIG.LEVERAGE, sourceTotals = null }) {
+  function run({ monthlySip, trades, fxRate = 100, years = 5, leverage = CONFIG.LEVERAGE, sourceTotals = null }) {
     const sip = validateSip(monthlySip);
     leverage = Number(leverage) === 5 ? 5 : 10;
     if (!Array.isArray(trades) || !trades.length) {
