@@ -621,8 +621,8 @@ async function runSimulation(){
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 
-<script src="/js/sip.js?v=11"></script>
-<script src="/js/sip-ui.js?v=11"></script>
+<script src="/js/sip.js?v=12"></script>
+<script src="/js/sip-ui.js?v=12"></script>
 <script>
 /* ===== SIP INTEGRATION ===== */
 let simulatorMode='historical',sipCurrency='INR',sipAmountCurrency='INR',sipLastResult=null,sipLastTrades=null;
@@ -723,13 +723,21 @@ async function runSIPProjection(){
     const trades=data.trades||[];
     if(!trades.length)throw new Error('No completed trades were returned by the simulator API.');
     sipLastTrades=trades;
+    trades._sourceTotals={
+      totalTrades:Number(data.totalTrades ?? data.total_trades ?? trades.length) || trades.length,
+      tradingFees:Number(data.totalTradingFees ?? data.total_trading_fees ?? 0) || 0,
+      funding:Number(data.totalFunding ?? data.total_funding ?? 0) || 0,
+      slippage:Number(data.totalSlippage ?? data.total_slippage ?? 0) || 0,
+      latencyCost:Number(data.totalLatencyCost ?? data.total_latency_cost ?? 0) || 0
+    };
 
     sipLastResult=ETHTRENDsSIP.run({
       monthlySip:amount,
       trades:trades,
       fxRate:sipFx(),
       years:Number($('sipYears').value)||5,
-      leverage:leverage
+      leverage:leverage,
+      sourceTotals:trades._sourceTotals
     });
 
     if(!sipLastResult)throw new Error('SIP engine returned no projection.');

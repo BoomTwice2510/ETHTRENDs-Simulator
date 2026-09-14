@@ -83,6 +83,33 @@
     return side === "SHORT" ? entry - exit : exit - entry;
   }
 
+  function deepNumberByKeys(value, keys, seen = new Set()) {
+    if (value == null || typeof value !== "object" || seen.has(value)) return null;
+    seen.add(value);
+
+    const wanted = new Set(keys.map(k => String(k).toLowerCase().replace(/[^a-z0-9]/g, "")));
+    for (const [key, raw] of Object.entries(value)) {
+      const normalizedKey = String(key).toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (wanted.has(normalizedKey)) {
+        const number = Number(raw);
+        if (Number.isFinite(number)) return number;
+      }
+    }
+
+    for (const raw of Object.values(value)) {
+      if (raw && typeof raw === "object") {
+        const found = deepNumberByKeys(raw, keys, seen);
+        if (found != null) return found;
+      }
+    }
+    return null;
+  }
+
+  function tradeNumber(trade, keys) {
+    const direct = deepNumberByKeys(trade, keys);
+    return direct == null ? 0 : direct;
+  }
+
   function normalizeTrade(trade, index) {
     const exitTime = trade && (trade.exitTime ?? trade.exit_time ?? trade.closedAt ?? trade.exit_time_utc);
     const entryTime = trade && (trade.entryTime ?? trade.entry_time ?? trade.entry_time_utc);
@@ -94,50 +121,12 @@
       entryPrice: n(trade && (trade.entryPrice ?? trade.entry_price)),
       exitPrice: n(trade && (trade.exitPrice ?? trade.exit_price)),
       points: extractPoints(trade),
-      grossPnl: n(trade && (trade.grossPnl ?? trade.gross_pnl)),
-      tradingFees: n(trade && (
-        trade.tradingFees ??
-        trade.trading_fees ??
-        trade.tradingFee ??
-        trade.trading_fee ??
-        trade.fees ??
-        trade.fee ??
-        trade.executionCosts?.tradingFees ??
-        trade.executionCosts?.trading_fees ??
-        trade.execution?.tradingFees ??
-        trade.execution?.trading_fees
-      )),
-      funding: n(trade && (
-        trade.funding ??
-        trade.fundingCost ??
-        trade.funding_cost ??
-        trade.executionCosts?.funding ??
-        trade.executionCosts?.fundingCost ??
-        trade.execution?.funding ??
-        trade.execution?.fundingCost
-      )),
-      slippage: n(trade && (
-        trade.slippage ??
-        trade.slippageCost ??
-        trade.slippage_cost ??
-        trade.executionCosts?.slippage ??
-        trade.executionCosts?.slippageCost ??
-        trade.execution?.slippage ??
-        trade.execution?.slippageCost
-      )),
-      latencyCost: n(trade && (
-        trade.latencyCost ??
-        trade.latency_cost ??
-        trade.latency ??
-        trade.latencyFee ??
-        trade.latency_fee ??
-        trade.executionCosts?.latencyCost ??
-        trade.executionCosts?.latency_cost ??
-        trade.executionCosts?.latency ??
-        trade.execution?.latencyCost ??
-        trade.execution?.latency
-      )),
-      pnl: n(trade && (trade.pnl ?? trade.netPnl ?? trade.net_pnl)),
+      grossPnl: tradeNumber(trade, ["grossPnl", "gross_pnl", "grossProfitLoss"]),
+      tradingFees: tradeNumber(trade, ["tradingFees", "trading_fees", "tradingFee", "trading_fee", "fees", "fee"]),
+      funding: tradeNumber(trade, ["funding", "fundingCost", "funding_cost", "fundingFee", "funding_fee"]),
+      slippage: tradeNumber(trade, ["slippage", "slippageCost", "slippage_cost", "slippageFee", "slippage_fee"]),
+      latencyCost: tradeNumber(trade, ["latencyCost", "latency_cost", "latency", "latencyFee", "latency_fee"]),
+      pnl: tradeNumber(trade, ["pnl", "netPnl", "net_pnl"]),
       balanceAfter: n(trade && (trade.balanceAfter ?? trade.balance_after)),
       requiredMargin: n(trade && (trade.requiredMargin ?? trade.required_margin)),
       marginRatioPercent: n(trade && (trade.marginRatioPercent ?? trade.margin_ratio_percent)),
@@ -284,7 +273,7 @@
     return out;
   }
 
-  function run({ monthlySip, trades, fxRate = 102, years = 5, leverage = CONFIG.LEVERAGE }) {
+  function run({ monthlySip, trades, fxRate = 102, years = 5, leverage = CONFIG.LEVERAGE, sourceTotals = null }) {
     const sip = validateSip(monthlySip);
     leverage = Number(leverage) === 5 ? 5 : 10;
     if (!Array.isArray(trades) || !trades.length) {
@@ -317,6 +306,7 @@
         baselineMonths.reduce((s, x) => s + x.points, 0) / baselineMonths.length,
       baselineTotalPoints:
         baselineMonths.reduce((s, x) => s + x.points, 0),
+      sourceTotals: sourceTotals || null,
       scenarios,
       positionSchedule: buildPositionSchedule(sip, years),
       generatedAt: new Date().toISOString()

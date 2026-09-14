@@ -53,9 +53,15 @@
 
   function resultLeverageLabel(s){return `${Number(s.leverage||10)}×`;}
 
-  function sourceIntelligence(s,currency){
+  function sourceIntelligence(s,currency,sourceTotals){
     const fx=s.fxRate;
-    const trades=Number(s.trades||0);
+    const totals=sourceTotals||{};
+    const hasTradeCosts=(Number(s.tradingFees||0)!==0 || Number(s.funding||0)!==0 || Number(s.slippage||0)!==0 || Number(s.latencyCost||0)!==0);
+    const tradingFees=hasTradeCosts?Number(s.tradingFees||0):Number(totals.tradingFees||0);
+    const funding=hasTradeCosts?Number(s.funding||0):Number(totals.funding||0);
+    const slippage=hasTradeCosts?Number(s.slippage||0):Number(totals.slippage||0);
+    const latencyCost=hasTradeCosts?Number(s.latencyCost||0):Number(totals.latencyCost||0);
+    const trades=hasTradeCosts?Number(s.trades||0):Number(totals.totalTrades||s.trades||0);
     const evidence=s.evidenceCount?Number(s.evidenceTotal||0)/Number(s.evidenceCount):null;
     const accepted=Number(s.riskAccepts||0);
     const rejected=Number(s.riskRejects||0);
@@ -64,8 +70,8 @@
       <div class="sip-intelligence-grid">
         <div><span>AVG EVIDENCE SCORE</span><strong>${evidence==null?"—":evidence.toFixed(1)+"/100"}</strong><small>Across the source trades in this baseline month</small></div>
         <div><span>RISK DECISION</span><strong>${accepted} ACCEPT${rejected?` · ${rejected} REJECT`:""}</strong><small>Recorded execution decisions</small></div>
-        <div><span>TRADING FEES</span><strong>${money((s.tradingFees||0)*fx,currency,fx)}</strong><small>Combined source trade fees</small></div>
-        <div><span>EXECUTION COSTS</span><strong>${money(((s.funding||0)+(s.slippage||0)+(s.latencyCost||0))*fx,currency,fx)}</strong><small>Funding + slippage + latency</small></div>
+        <div><span>TRADING FEES</span><strong>${money(tradingFees*fx,currency,fx)}</strong><small>Combined source trade fees</small></div>
+        <div><span>EXECUTION COSTS</span><strong>${money((funding+slippage+latencyCost)*fx,currency,fx)}</strong><small>Funding + slippage + latency</small></div>
       </div>
     </div>`;
   }
@@ -116,7 +122,7 @@
         trades:a.trades+m.trades, evidenceTotal:a.evidenceTotal+m.evidenceTotal, evidenceCount:a.evidenceCount+m.evidenceCount,
         riskAccepts:a.riskAccepts+m.riskAccepts, riskRejects:a.riskRejects+m.riskRejects, tradingFees:a.tradingFees+m.tradingFees,
         funding:a.funding+m.funding, slippage:a.slippage+m.slippage, latencyCost:a.latencyCost+m.latencyCost
-      }),{trades:0,evidenceTotal:0,evidenceCount:0,riskAccepts:0,riskRejects:0,tradingFees:0,funding:0,slippage:0,latencyCost:0}),currency)}${riskControl(s,currency)}
+      }),{trades:0,evidenceTotal:0,evidenceCount:0,riskAccepts:0,riskRejects:0,tradingFees:0,funding:0,slippage:0,latencyCost:0}),currency,result.sourceTotals)}${riskControl(s,currency)}
     </section>`;
     const toggle=detail.querySelector(".sip-monthly-toggle");
     toggle.addEventListener("click",()=>{const box=toggle.closest(".sip-monthly-accordion"),open=box.classList.toggle("open");toggle.setAttribute("aria-expanded",open);toggle.querySelector("strong").textContent=open?"−":"＋"});

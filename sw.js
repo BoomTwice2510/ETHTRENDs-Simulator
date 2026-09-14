@@ -4,7 +4,7 @@
  * Runtime API requests are never cached.
  */
 
-const CACHE_NAME = "ethtrends-simulator-v6";
+const CACHE_NAME = "ethtrends-simulator-v7";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
