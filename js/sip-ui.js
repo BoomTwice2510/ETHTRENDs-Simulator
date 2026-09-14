@@ -64,8 +64,8 @@
       <div class="sip-intelligence-grid">
         <div><span>AVG EVIDENCE SCORE</span><strong>${evidence==null?"—":evidence.toFixed(1)+"/100"}</strong><small>Across the source trades in this baseline month</small></div>
         <div><span>RISK DECISION</span><strong>${accepted} ACCEPT${rejected?` · ${rejected} REJECT`:""}</strong><small>Recorded execution decisions</small></div>
-        <div><span>TRADING FEES</span><strong>${money(s.tradingFees||0,currency,fx)}</strong><small>Source execution cost</small></div>
-        <div><span>FUNDING + SLIPPAGE</span><strong>${money((s.funding||0)+(s.slippage||0)+(s.latencyCost||0),currency,fx)}</strong><small>Funding + slippage + latency</small></div>
+        <div><span>TRADING FEES</span><strong>${money((s.tradingFees||0)*fx,currency,fx)}</strong><small>Combined source trade fees</small></div>
+        <div><span>EXECUTION COSTS</span><strong>${money(((s.funding||0)+(s.slippage||0)+(s.latencyCost||0))*fx,currency,fx)}</strong><small>Funding + slippage + latency</small></div>
       </div>
     </div>`;
   }
