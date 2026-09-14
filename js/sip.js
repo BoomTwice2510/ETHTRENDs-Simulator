@@ -95,11 +95,49 @@
       exitPrice: n(trade && (trade.exitPrice ?? trade.exit_price)),
       points: extractPoints(trade),
       grossPnl: n(trade && (trade.grossPnl ?? trade.gross_pnl)),
-      tradingFees: n(trade && (trade.tradingFees ?? trade.trading_fees)),
-      funding: n(trade && trade.funding),
-      slippage: n(trade && trade.slippage),
-      latencyCost: n(trade && (trade.latencyCost ?? trade.latency_cost)),
-      pnl: n(trade && trade.pnl),
+      tradingFees: n(trade && (
+        trade.tradingFees ??
+        trade.trading_fees ??
+        trade.tradingFee ??
+        trade.trading_fee ??
+        trade.fees ??
+        trade.fee ??
+        trade.executionCosts?.tradingFees ??
+        trade.executionCosts?.trading_fees ??
+        trade.execution?.tradingFees ??
+        trade.execution?.trading_fees
+      )),
+      funding: n(trade && (
+        trade.funding ??
+        trade.fundingCost ??
+        trade.funding_cost ??
+        trade.executionCosts?.funding ??
+        trade.executionCosts?.fundingCost ??
+        trade.execution?.funding ??
+        trade.execution?.fundingCost
+      )),
+      slippage: n(trade && (
+        trade.slippage ??
+        trade.slippageCost ??
+        trade.slippage_cost ??
+        trade.executionCosts?.slippage ??
+        trade.executionCosts?.slippageCost ??
+        trade.execution?.slippage ??
+        trade.execution?.slippageCost
+      )),
+      latencyCost: n(trade && (
+        trade.latencyCost ??
+        trade.latency_cost ??
+        trade.latency ??
+        trade.latencyFee ??
+        trade.latency_fee ??
+        trade.executionCosts?.latencyCost ??
+        trade.executionCosts?.latency_cost ??
+        trade.executionCosts?.latency ??
+        trade.execution?.latencyCost ??
+        trade.execution?.latency
+      )),
+      pnl: n(trade && (trade.pnl ?? trade.netPnl ?? trade.net_pnl)),
       balanceAfter: n(trade && (trade.balanceAfter ?? trade.balance_after)),
       requiredMargin: n(trade && (trade.requiredMargin ?? trade.required_margin)),
       marginRatioPercent: n(trade && (trade.marginRatioPercent ?? trade.margin_ratio_percent)),
