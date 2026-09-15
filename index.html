@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <title>ETHTRENDs — Historical Simulator</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="/css/sip.css?v=9">
+<link rel="stylesheet" href="/css/sip.css?v=11">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
@@ -49,6 +49,8 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .achievements{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.achievement{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;padding:12px}.achievement.unlocked{border-color:rgba(5,150,105,0.4);background:linear-gradient(135deg,rgba(5,150,105,0.05),#f8fafc)}.achievement .icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:9px;border:1px solid #cbd5e1;border-radius:11px;background:#ffffff;color:var(--cyan);font-size:0}.achievement b{display:block;font:800 11px "Inter";color:#111}.achievement span{display:block;color:#475569;font:600 9px/1.5 "Inter";margin-top:3px}.achievement.locked{opacity:.5}.progress{height:5px;background:#e2e8f0;border-radius:99px;margin-top:8px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}
 .journey{display:grid;grid-template-columns:1fr 1fr;gap:8px}.journey-card{border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:12px}.journey-head{display:flex;justify-content:space-between;font:800 11px "JetBrains Mono";color:#111}.journey-head span{color:var(--green)}.journey-bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0 5px}.journey-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));border-radius:99px}.journey-meta{display:flex;justify-content:space-between;color:#475569;font:700 9px "JetBrains Mono"}
 .list{display:flex;flex-direction:column;gap:7px}.accordion{border:1px solid #cbd5e1;background:#f8fafc;border-radius:11px;overflow:hidden}.accordion:hover{border-color:rgba(219,39,119,0.4)}.acc-head{width:100%;display:grid;grid-template-columns:1.3fr 1fr 25px;gap:8px;align-items:center;text-align:left;background:transparent;color:var(--text);border:0;padding:12px 11px;cursor:pointer}.acc-main{font:800 12px "Inter";color:#111}.acc-sub{color:#475569;font:600 9px "JetBrains Mono";margin-top:3px}.acc-value{text-align:right;font:800 12px "JetBrains Mono";color:#111}.chev{color:var(--pink);text-align:right;font-size:16px;transition:.2s}.accordion.open .chev{transform:rotate(180deg);color:var(--cyan)}.acc-body{display:none;border-top:1px solid #cbd5e1;padding:10px;background:#ffffff}.accordion.open .acc-body{display:block;animation:drop .18s ease}@keyframes drop{from{opacity:.3;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.signal-archive-section{margin-top:18px;padding:12px;border:1px solid rgba(219,39,119,.28);border-radius:17px;background:linear-gradient(180deg,rgba(219,39,119,.035),rgba(2,132,199,.025));box-shadow:0 8px 24px rgba(15,23,42,.04)}.signal-archive-section>.section-head{margin:0 2px 10px}.signal-archive-section>.section-head .section-title{font-size:13px}.trade-log-accordion{border-color:rgba(219,39,119,.28);background:#fff}.archive-head{grid-template-columns:1fr auto 25px;background:linear-gradient(90deg,rgba(219,39,119,.035),rgba(2,132,199,.035));padding:14px 13px}.archive-head .acc-main{letter-spacing:.03em}.archive-body{padding:12px!important;background:#fff}.archive-toolbar{display:grid;grid-template-columns:1.2fr 1fr;gap:9px;margin-bottom:12px}.archive-search,.archive-month-picker{padding:10px;border:1px solid #dbe4ee;border-radius:11px;background:#f8fafc}.archive-toolbar label{display:block;margin-bottom:6px;color:#475569;font:800 8px "JetBrains Mono";letter-spacing:.08em}.archive-search-row,.archive-month-row{display:grid;grid-template-columns:1fr auto;gap:6px}.archive-search input,.archive-month-picker select{width:100%;min-width:0;height:36px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#111;padding:0 9px;outline:0;font:700 11px "JetBrains Mono"}.archive-search input:focus,.archive-month-picker select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(2,132,199,.10)}.archive-search-row button,.archive-month-row button{height:36px;padding:0 11px;border:1px solid rgba(2,132,199,.35);border-radius:8px;background:rgba(2,132,199,.08);color:#0369a1;cursor:pointer;font:800 9px "JetBrains Mono";white-space:nowrap}.archive-search-row button:hover,.archive-month-row button:hover{background:rgba(2,132,199,.14)}.archive-search-status{min-height:12px;margin-top:5px;color:#64748b;font:600 8px "JetBrains Mono"}.archive-search-status.error{color:var(--red)}.archive-search-status.success{color:var(--green)}.archive-divider{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 1px 7px;padding-top:10px;border-top:1px solid #e2e8f0;color:#64748b;font:800 8px "JetBrains Mono";letter-spacing:.08em}.archive-divider span:first-child{color:var(--pink)}.archive-months{display:flex;flex-direction:column;gap:7px}.archive-month-card{border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;overflow:hidden}.archive-month-card.open{border-color:rgba(2,132,199,.38)}.archive-month-head{width:100%;display:grid;grid-template-columns:1fr auto 22px;gap:8px;align-items:center;text-align:left;border:0;background:transparent;padding:11px;cursor:pointer;color:#111}.archive-month-title{font:800 11px "JetBrains Mono"}.archive-month-sub{margin-top:3px;color:#64748b;font:600 8px "JetBrains Mono"}.archive-month-pnl{text-align:right;font:800 10px "JetBrains Mono"}.archive-month-chevron{color:var(--pink);font-size:14px;transition:.18s}.archive-month-card.open .archive-month-chevron{transform:rotate(180deg);color:var(--cyan)}.archive-month-content{display:none;border-top:1px solid #dbe4ee;padding:8px;background:#fff}.archive-month-card.open .archive-month-content{display:block}.archive-month-trades{display:flex;flex-direction:column;gap:6px}.archive-month-empty{padding:10px;color:#64748b;font:600 9px "JetBrains Mono"}.archive-month-card .accordion{background:#f8fafc}.archive-month-card .acc-body{background:#fff}.archive-month-card .details-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.archive-month-card .trade-intelligence{margin-top:8px}.archive-month-card .trade-audit-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.archive-month-card .trade-head{padding:10px}.archive-highlight{animation:archivePulse 1.4s ease}.archive-highlight>.acc-head{background:rgba(2,132,199,.08)}@keyframes archivePulse{0%{box-shadow:0 0 0 0 rgba(2,132,199,.35)}100%{box-shadow:0 0 0 10px rgba(2,132,199,0)}}
+
 .details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.detail{background:#f8fafc;border:1px solid #cbd5e1;border-radius:8px;padding:8px}.detail small{display:block;color:#475569;font:700 8px "JetBrains Mono"}.detail b{display:block;margin-top:5px;font:800 11px "JetBrains Mono";color:#111}.trade-head{grid-template-columns:46px 1fr auto 24px}.side{font:900 11px "JetBrains Mono"}.side.long{color:var(--green)}.side.short{color:var(--red)}.trade-pnl{font:900 11px "JetBrains Mono"}.trade-times{color:#475569;font:600 9px/1.45 "JetBrains Mono"}
 .disclaimer-card{margin-top:14px;padding:13px;border:1px solid rgba(219,39,119,0.3);border-left:3px solid var(--cyan);border-radius:11px;background:#f8fafc}.disclaimer-title{color:var(--pink);font:800 11px "JetBrains Mono"}.disclaimer-text{color:#334155;font:600 10px/1.7 "Inter";margin-top:7px}.disclaimer-text strong{color:#111}.disclaimer-warning{color:var(--cyan);font:800 9px/1.6 "JetBrains Mono";margin-top:8px;padding-top:8px;border-top:1px solid #cbd5e1}
 .empty{text-align:center;padding:100px 20px;color:#475569;font:600 11px/1.7 "Inter"}.footer-note{color:#475569;font:600 9px/1.6 "Inter";margin:8px 2px}
@@ -149,6 +151,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .etht-horizon-picker.open .etht-horizon-menu{display:block}
 .etht-horizon-option{display:block;width:100%;padding:10px 11px;border:0;border-radius:8px;background:transparent;text-align:left;color:#334155;cursor:pointer;font:700 10px "DM Mono",monospace}
 .etht-horizon-option:hover,.etht-horizon-option.selected{background:#0284c7;color:#fff}
+@media (max-width:760px){.signal-archive-section{padding:9px;border-radius:14px}.archive-toolbar{grid-template-columns:1fr;gap:7px}.archive-divider{align-items:flex-start;flex-direction:column;gap:3px}.archive-month-card .details-grid{grid-template-columns:1fr 1fr}.archive-month-card .trade-audit-grid{grid-template-columns:1fr 1fr}.archive-month-card .trade-head{grid-template-columns:45px minmax(0,1fr) auto 20px;gap:5px}.archive-month-card .trade-times{min-width:0;overflow-wrap:anywhere}.archive-month-card .trade-pnl{font-size:10px}.archive-month-card .detail{min-width:0}.archive-month-card .detail b{overflow-wrap:anywhere;word-break:break-word}.archive-month-card .detail-context{grid-column:1 / -1}.archive-month-card .detail-context b{font-size:10px;line-height:1.35;overflow-wrap:anywhere;word-break:break-word}.archive-month-card .detail-risk{min-width:0}.archive-month-card .detail-risk b{overflow-wrap:anywhere}.archive-search-row,.archive-month-row{grid-template-columns:minmax(0,1fr) auto}}
 @media (max-width:760px){
   html,body{width:100%;max-width:100%;overflow-x:hidden}
   .app{width:100%!important;max-width:100%!important;padding:10px 8px 40px!important}
@@ -432,7 +435,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <div class="summary"><div class="metric"><small>NET P&L</small><strong id="pnl"></strong></div><div class="metric"><small>TOTAL ROI</small><strong id="roi"></strong></div><div class="metric"><small>TRADES</small><strong id="trades"></strong></div><div class="metric"><small>WIN RATE</small><strong id="winrate"></strong></div><div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div><div class="metric"><small>FINAL BALANCE</small><strong id="finalMini"></strong></div><div class="metric"><small>STARTING CAPITAL</small><strong id="startingMini"></strong></div></div>
 <section class="section"><div class="section-head"><div class="section-title"><b>02</b> · BALANCE JOURNEY</div><span class="badge">HISTORICAL EQUITY</span></div><div class="chartbox"><canvas id="equity"></canvas></div></section>
 <section class="section"><div class="section-head"><div class="section-title"><b>03</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>04</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head" onclick="toggle(this)"><div><div class="acc-main">ALL TRADES</div><div class="acc-sub">Open the complete signal-by-signal record</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body"><div id="tradeLog" class="list"></div></div></div><div class="footer-note">Tap a signal to inspect entry, exit, P&L, balance and margin.</div></section>
+<section class="section signal-archive-section" id="signalArchiveSection"><div class="section-head"><div class="section-title"><b>04</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head archive-head" onclick="toggle(this)"><div><div class="acc-main">SIGNAL ARCHIVE</div><div class="acc-sub">Browse history month-wise or jump directly to a trade</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body archive-body"><div class="archive-toolbar"><div class="archive-search"><label for="tradeSearchInput">JUMP TO TRADE</label><div class="archive-search-row"><input id="tradeSearchInput" type="number" min="1" inputmode="numeric" placeholder="Trade # e.g. 87"><button type="button" onclick="jumpToTrade()">VIEW TRADE</button></div><div id="tradeSearchStatus" class="archive-search-status"></div></div><div class="archive-month-picker"><label for="archiveMonthSelect">OPEN MONTH</label><div class="archive-month-row"><select id="archiveMonthSelect"><option value="">Select month</option></select><button type="button" onclick="openArchiveMonth()">OPEN</button></div></div></div><div class="archive-divider"><span>MONTHLY TRADE ARCHIVE</span><span>SELECT A MONTH TO VIEW ITS TRADES</span></div><div id="tradeLog" class="archive-months"></div></div></div><div class="footer-note">Choose a month to inspect its trades, or enter a trade number to open it directly. Details stay collapsed until selected.</div></section>
 <section class="section"><div class="section-head"><div class="section-title"><b>05</b> · ACHIEVEMENTS UNLOCKED</div><span class="badge">PLAY THE DATA</span></div><div id="achievements" class="achievements"></div></section>
 <section id="gameShell" class="game-shell">
   <div class="section-head"><div class="section-title"><b>06</b> · YOUR SIGNAL QUEST</div><span class="badge">ADAPTIVE TO YOUR CAPITAL • POSITION • REAL TRADES</span></div>
@@ -487,41 +490,89 @@ function auditRows(a){
     return `<div class="trade-audit-item"><span>${esc(label)}</span><b>${points}/${max}</b><small>${text}</small></div>`;
   }).join('');
 }
-function renderTrades(trades){
-  $('tradeCount').textContent=`${trades.length} records`;
-  $('tradeLogSummary').textContent=`${trades.length} trades`;
-  $('tradeLog').innerHTML=trades.map(t=>{
-    const side=String(t.side||'').toUpperCase(),p=num(t.pnl);
-    return `<div class="accordion">
-      <button class="acc-head trade-head" onclick="toggle(this)">
-        <div class="side ${side==='LONG'?'long':'short'}">#${t.tradeNumber??''} ${side}</div>
-        <div class="trade-times">${t.entryTime||''}<br>→ ${t.exitTime||''}</div>
-        <div class="trade-pnl ${cls(p)}">${signedMoney(p)}</div>
-        <div class="chev">⌄</div>
-      </button>
-      <div class="acc-body">
-        <div class="details-grid">
-          <div class="detail"><small>ENTRY PRICE</small><b>${num(t.entryPrice).toFixed(2)}</b></div>
-          <div class="detail"><small>EXIT PRICE</small><b>${num(t.exitPrice).toFixed(2)}</b></div>
-          <div class="detail"><small>P&amp;L</small><b class="${cls(p)}">${signedMoney(p)}</b></div>
-          <div class="detail"><small>BALANCE AFTER</small><b>${money(t.balanceAfter)}</b></div>
-          <div class="detail"><small>REQUIRED MARGIN</small><b>${money(t.requiredMargin)}</b></div>
-          <div class="detail"><small>STATUS</small><b>${esc(t.status||'—')}</b></div>
-          <div class="detail"><small>GROSS P&amp;L</small><b class="${cls(t.grossPnl)}">${signedMoney(t.grossPnl)}</b></div>
-          <div class="detail"><small>TRADING FEES</small><b>${money(t.tradingFees)}</b></div>
-          <div class="detail"><small>FUNDING</small><b>${money(t.funding)}</b></div>
-          <div class="detail"><small>SLIPPAGE</small><b>${money(t.slippage)}</b></div>
-          <div class="detail"><small>LATENCY COST</small><b>${money(t.latencyCost)}</b></div>
-          <div class="detail"><small>EVIDENCE SCORE</small><b>${t.evidenceScore==null?'—':num(t.evidenceScore).toFixed(0)+'/100'}</b></div>
-          <div class="detail"><small>MARKET CONTEXT</small><b>${esc(t.marketContext||'—')}</b></div>
-          <div class="detail"><small>RISK DECISION</small><b class="${String(t.riskDecision||'').toUpperCase()==='ACCEPT'?'pos':'neg'}">${esc(t.riskDecision||'—')}</b></div>
-        </div>
-        ${t.decisionAudit?`<div class="trade-intelligence"><div class="trade-intelligence-title">DECISION AUDIT</div><div class="trade-audit-grid">${auditRows(t.decisionAudit)}</div></div>`:''}
+let archiveTrades=[];
+let archiveMonths=[];
+function archiveMonthKey(t){return String(t?.exitTime||t?.entryTime||'').slice(0,7)}
+function archiveMonthLabel(key){
+  if(!/^\d{4}-\d{2}$/.test(key))return key;
+  const d=new Date(key+'-01T00:00:00');
+  return d.toLocaleDateString('en-US',{year:'numeric',month:'long'});
+}
+function tradeCardHTML(t){
+  const side=String(t.side||'').toUpperCase(),p=num(t.pnl);
+  return `<div class="accordion archive-trade" data-trade-number="${esc(t.tradeNumber??'')}">
+    <button class="acc-head trade-head" onclick="toggle(this)">
+      <div class="side ${side==='LONG'?'long':'short'}">#${t.tradeNumber??''} ${side}</div>
+      <div class="trade-times">${esc(t.entryTime||'')}<br>→ ${esc(t.exitTime||'')}</div>
+      <div class="trade-pnl ${cls(p)}">${signedMoney(p)}</div>
+      <div class="chev">⌄</div>
+    </button>
+    <div class="acc-body">
+      <div class="details-grid">
+        <div class="detail detail-entry"><small>ENTRY PRICE</small><b>${num(t.entryPrice).toFixed(2)}</b></div>
+        <div class="detail detail-exit"><small>EXIT PRICE</small><b>${num(t.exitPrice).toFixed(2)}</b></div>
+        <div class="detail detail-pnl ${p>=0?'profit-box':'loss-box'}"><small>P&amp;L</small><b class="${cls(p)}">${signedMoney(p)}</b></div>
+        <div class="detail detail-balance"><small>BALANCE AFTER</small><b>${money(t.balanceAfter)}</b></div>
+        <div class="detail detail-margin"><small>REQUIRED MARGIN</small><b>${money(t.requiredMargin)}</b></div>
+        <div class="detail detail-status"><small>STATUS</small><b>${esc(t.status||'—')}</b></div>
+        <div class="detail detail-gross ${num(t.grossPnl)>=0?'profit-box':'loss-box'}"><small>GROSS P&amp;L</small><b class="${cls(t.grossPnl)}">${signedMoney(t.grossPnl)}</b></div>
+        <div class="detail detail-fee"><small>TRADING FEES</small><b>${money(t.tradingFees)}</b></div>
+        <div class="detail detail-funding"><small>FUNDING</small><b>${money(t.funding)}</b></div>
+        <div class="detail detail-slippage"><small>SLIPPAGE</small><b>${money(t.slippage)}</b></div>
+        <div class="detail detail-latency"><small>LATENCY COST</small><b>${money(t.latencyCost)}</b></div>
+        <div class="detail detail-evidence"><small>EVIDENCE SCORE</small><b>${t.evidenceScore==null?'—':num(t.evidenceScore).toFixed(0)+'/100'}</b></div>
+        <div class="detail detail-context"><small>MARKET CONTEXT</small><b>${esc(t.marketContext||'—')}</b></div>
+        <div class="detail detail-risk"><small>RISK DECISION</small><b class="${String(t.riskDecision||'').toUpperCase()==='ACCEPT'?'pos':'neg'}">${esc(t.riskDecision||'—')}</b></div>
       </div>
-    </div>`
-  }).join('');
+      ${t.decisionAudit?`<div class="trade-intelligence"><div class="trade-intelligence-title">DECISION AUDIT</div><div class="trade-audit-grid">${auditRows(t.decisionAudit)}</div></div>`:''}
+    </div>
+  </div>`;
+}
+function renderArchiveMonths(trades){
+  const grouped={};
+  for(const t of trades){const key=archiveMonthKey(t);if(!grouped[key])grouped[key]=[];grouped[key].push(t)}
+  archiveMonths=Object.entries(grouped).sort((a,b)=>a[0].localeCompare(b[0])).map(([month,items])=>{
+    const wins=items.filter(t=>num(t.pnl)>0).length,losses=items.filter(t=>num(t.pnl)<0).length,pnl=items.reduce((s,t)=>s+num(t.pnl),0);
+    return {month,items,wins,losses,pnl};
+  });
+  $('archiveMonthSelect').innerHTML='<option value="">Select month</option>'+archiveMonths.map(g=>`<option value="${esc(g.month)}">${esc(archiveMonthLabel(g.month))} · ${g.items.length} trades</option>`).join('');
+  $('tradeLog').innerHTML=archiveMonths.map(g=>`<div class="archive-month-card" data-month="${esc(g.month)}"><button class="archive-month-head" type="button" onclick="openArchiveMonth('${esc(g.month)}')"><div><div class="archive-month-title">${esc(archiveMonthLabel(g.month))}</div><div class="archive-month-sub">${g.items.length} trades · ${g.wins}W / ${g.losses}L</div></div><div class="archive-month-pnl ${cls(g.pnl)}">${signedMoney(g.pnl)}</div><div class="archive-month-chevron">⌄</div></button><div class="archive-month-content"><div class="archive-month-trades">${g.items.map(tradeCardHTML).join('')}</div></div></div>`).join('');
+}
+function renderTrades(trades){
+  archiveTrades=trades||[];
+  $('tradeCount').textContent=`${archiveTrades.length} records`;
+  $('tradeLogSummary').textContent=`${archiveTrades.length} trades`;
+  renderArchiveMonths(archiveTrades);
   $('tradeLogAccordion').classList.remove('open');
 }
+function openArchiveMonth(month){
+  const card=document.querySelector(`.archive-month-card[data-month="${CSS.escape(String(month))}"]`);
+  if(!card)return;
+  document.querySelectorAll('.archive-month-card.open').forEach(x=>{if(x!==card)x.classList.remove('open')});
+  card.classList.add('open');
+  const select=$('archiveMonthSelect');if(select)select.value=String(month);
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),30);
+}
+function jumpToTrade(){
+  const value=String($('tradeSearchInput')?.value||'').trim();
+  const status=$('tradeSearchStatus');
+  if(!value){status.className='archive-search-status error';status.textContent='Enter a trade number.';return}
+  const trade=archiveTrades.find(t=>String(t.tradeNumber)===value);
+  if(!trade){status.className='archive-search-status error';status.textContent=`Trade #${value} was not found in the returned archive.`;return}
+  $('tradeLogAccordion').classList.add('open');
+  const month=archiveMonthKey(trade);
+  openArchiveMonth(month);
+  setTimeout(()=>{
+    const card=document.querySelector(`.archive-month-card[data-month="${CSS.escape(month)}"] .archive-trade[data-trade-number="${CSS.escape(value)}"]`);
+    if(!card)return;
+    card.classList.add('open','archive-highlight');
+    card.querySelector('.acc-head')?.scrollIntoView({behavior:'smooth',block:'center'});
+    status.className='archive-search-status success';status.textContent=`Trade #${value} opened.`;
+    setTimeout(()=>card.classList.remove('archive-highlight'),1500);
+  },80);
+}
+$('tradeSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')jumpToTrade()});
+
 function iconSVG(name){
   const emojis={rocket:'🚀', trophy:'🏆', diamond:'💎', shield:'🛡️', bolt:'⚡', flame:'🔥', compass:'🧭', target:'🎯', money:'💰'};
   return `<span style="font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:24px;line-height:1;">${emojis[name]||'⚡'}</span>`;
@@ -633,8 +684,8 @@ $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
   }catch(e){}
 })();
 </script>
-<script src="/js/sip.js?v=13"></script>
-<script src="/js/sip-ui.js?v=13"></script>
+<script src="/js/sip.js?v=14"></script>
+<script src="/js/sip-ui.js?v=14"></script>
 <script>
 /* ===== SIP INTEGRATION ===== */
 let simulatorMode='historical',sipCurrency='INR',sipAmountCurrency='INR',sipLastResult=null,sipLastTrades=null;
