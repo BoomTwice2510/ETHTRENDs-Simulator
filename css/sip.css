@@ -388,3 +388,147 @@
   .archive-close-row.archive-trade-close-row{padding:6px 0 7px}
   .archive-trade-close-row .archive-close-btn{width:auto}
 }
+
+
+/* ===== FINAL MOBILE RESULTS FIX ===== */
+@media (max-width: 760px) {
+  /* Historical result hero cards must stack on phones. */
+  .result-top {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .result-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 13px !important;
+    border-radius: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .result-label {
+    font-size: 8px !important;
+    letter-spacing: .07em !important;
+  }
+
+  .big-money {
+    font-size: 31px !important;
+    line-height: 1 !important;
+  }
+
+  .result-sub {
+    font-size: 8px !important;
+    line-height: 1.45 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .score-wrap {
+    gap: 11px !important;
+    align-items: center !important;
+  }
+
+  .score-ring {
+    width: 74px !important;
+    height: 74px !important;
+  }
+
+  .score-ring:after {
+    inset: 6px !important;
+  }
+
+  .score-num {
+    font-size: 20px !important;
+  }
+
+  .score-num small {
+    font-size: 7px !important;
+  }
+
+  .score-copy h3 {
+    font-size: 13px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .score-copy p {
+    font-size: 8px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Keep the metric area compact and readable on phone screens. */
+  .summary {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .metric {
+    min-width: 0 !important;
+    padding: 9px 8px !important;
+    border-radius: 9px !important;
+    box-sizing: border-box !important;
+  }
+
+  .metric small {
+    font-size: 7px !important;
+  }
+
+  .metric strong {
+    font-size: 13px !important;
+    margin-top: 4px !important;
+  }
+
+  .metric-cost em {
+    font-size: 6px !important;
+  }
+
+  .chartbox {
+    height: 230px !important;
+  }
+
+  .section-head {
+    align-items: center !important;
+  }
+
+  .section-title {
+    font-size: 10px !important;
+  }
+
+  .badge {
+    font-size: 7px !important;
+    padding: 4px 7px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .result-card {
+    padding: 12px !important;
+  }
+
+  .result-sub {
+    font-size: 7px !important;
+  }
+
+  .score-wrap {
+    gap: 9px !important;
+  }
+
+  .score-ring {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .score-num {
+    font-size: 18px !important;
+  }
+
+  .score-copy h3 {
+    font-size: 12px !important;
+  }
+
+  .score-copy p {
+    font-size: 7px !important;
+  }
+
+  .metric strong {
+    font-size: 12px !important;
+  }
+}
