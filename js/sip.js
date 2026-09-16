@@ -336,3 +336,35 @@
     run
   };
 })();
+
+/* ===== HISTORICAL WINDOW UTILITIES =====
+   Shared by the historical simulator UI. Keeps date filtering and execution-cost
+   field handling out of the page-level renderer so the same rules can be reused.
+*/
+(function(){
+  "use strict";
+  const tradeTime = (t) => {
+    const raw = t && (t.exitTime ?? t.exit_time ?? t.entryTime ?? t.entry_time);
+    const ms = Date.parse(String(raw || ""));
+    return Number.isFinite(ms) ? ms : 0;
+  };
+  const costValue = (t, keys) => {
+    for (const k of keys) {
+      const v = Number(t && t[k]);
+      if (Number.isFinite(v)) return v;
+    }
+    return 0;
+  };
+  const scopeHistoricalTrades = (allTrades, period) => {
+    const source = [...(allTrades || [])].sort((a,b) => tradeTime(a) - tradeTime(b));
+    if (period === "all") return source;
+    const days = Number(String(period || "").replace("d", ""));
+    if (!days) return source;
+    const timed = source.map(t => ({ t, ms: tradeTime(t) })).filter(x => x.ms > 0);
+    if (!timed.length) return source;
+    const latest = Math.max(...timed.map(x => x.ms));
+    const cutoff = latest - (days - 1) * 86400000;
+    return timed.filter(x => x.ms >= cutoff).map(x => x.t);
+  };
+  window.ETHTRENDSIPUtils = Object.freeze({ tradeTime, costValue, scopeHistoricalTrades });
+})();

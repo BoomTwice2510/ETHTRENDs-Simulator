@@ -342,3 +342,49 @@
   .detail small{font-size:7px!important;letter-spacing:.01em}
   .detail b{font-size:10px!important;line-height:1.35!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:break-word!important}
 }
+
+/* ===== HISTORICAL SIMULATOR ARCHIVE CONTROLS ===== */
+.archive-close-row.archive-trade-close-row{
+  justify-content:flex-end;
+  padding:7px 0 8px;
+  border-bottom:1px solid #e2e8f0;
+  margin-bottom:8px;
+}
+.archive-trade-close-row .archive-close-btn{
+  font-size:7px;
+  padding:5px 8px;
+}
+.archive-trade.open .archive-trade-close-row .archive-close-btn{
+  display:inline-flex;
+}
+.archive-search-result .archive-trade-close-row{
+  background:linear-gradient(180deg,#f8fafc,#fff);
+  margin:-1px -1px 8px;
+  padding:7px 8px;
+  border-radius:10px 10px 0 0;
+}
+
+/* Light color treatment for the scenario controls. */
+.input-card .field{
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.input-card .field:hover{
+  transform:translateY(-1px);
+  border-color:rgba(2,132,199,.32);
+  box-shadow:0 5px 14px rgba(15,23,42,.045);
+}
+.scenario-period-field{
+  background:linear-gradient(135deg,rgba(224,242,254,.72),rgba(253,242,248,.72))!important;
+  border-color:rgba(2,132,199,.25)!important;
+}
+.metric-cost{
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.metric-cost:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 14px rgba(15,23,42,.05);
+}
+@media(max-width:760px){
+  .archive-close-row.archive-trade-close-row{padding:6px 0 7px}
+  .archive-trade-close-row .archive-close-btn{width:auto}
+}

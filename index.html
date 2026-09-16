@@ -278,6 +278,43 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .trade-intelligence-title{margin-bottom:7px;color:#0284c7;font:800 9px "JetBrains Mono";letter-spacing:.08em}.trade-audit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.trade-audit-item{border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:8px;min-width:0}.trade-audit-item span{display:block;color:#475569;font:700 7px "JetBrains Mono"}.trade-audit-item b{display:block;margin-top:4px;color:#111;font:800 11px "JetBrains Mono"}.trade-audit-item small{display:block;margin-top:3px;color:#64748b;font:600 8px/1.35 "Inter";overflow-wrap:anywhere}
 @media(max-width:760px){.trade-audit-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.trade-audit-grid{grid-template-columns:1fr}}
 </style>
+<style>
+/* ===== HISTORICAL WINDOW + ARCHIVE UX ===== */
+.scenario-period-field{padding:10px;border:1px solid rgba(2,132,199,.20);border-radius:13px;background:linear-gradient(135deg,rgba(224,242,254,.62),rgba(253,242,248,.62));box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.scenario-period-field .field label{margin-bottom:8px}
+.period-options{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.period-btn{min-height:34px;padding:7px 6px;border:1px solid #cbd5e1;border-radius:8px;background:rgba(255,255,255,.82);color:#475569;cursor:pointer;font:800 8px "JetBrains Mono";letter-spacing:.03em;transition:.16s ease}
+.period-btn:hover{border-color:rgba(2,132,199,.45);background:#fff;transform:translateY(-1px)}
+.period-btn.active{border-color:#0284c7;background:linear-gradient(135deg,#0284c7,#38bdf8);color:#fff;box-shadow:0 4px 12px rgba(2,132,199,.22)}
+.period-hint{margin-top:7px;color:#64748b;font:600 8px/1.45 "Inter"}
+.metric-cost{position:relative;overflow:hidden}
+.metric-cost:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.metric-cost.fee{background:linear-gradient(135deg,#ecfeff,#f8fafc);border-color:rgba(2,132,199,.28)}
+.metric-cost.fee:before{background:#0284c7}.metric-cost.funding{background:linear-gradient(135deg,#fff7ed,#fffaf5);border-color:rgba(217,119,6,.28)}
+.metric-cost.funding:before{background:#d97706}.metric-cost.slippage{background:linear-gradient(135deg,#fdf2f8,#fff);border-color:rgba(219,39,119,.25)}
+.metric-cost.slippage:before{background:#db2777}.metric-cost.latency{background:linear-gradient(135deg,#f5f3ff,#fff);border-color:rgba(124,58,237,.25)}
+.metric-cost.latency:before{background:#7c3aed}.metric-cost strong{font-size:15px}.metric-cost em{display:block;margin-top:4px;color:#64748b;font:600 7px "JetBrains Mono";font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cost-positive{color:var(--cyan)!important}.cost-negative{color:#be123c!important}
+.input-card .field:not(.scenario-period-field){padding:9px 10px;border-radius:12px;border:1px solid rgba(148,163,184,.35);background:linear-gradient(135deg,#f8fafc,#fff);box-shadow:0 3px 10px rgba(15,23,42,.025)}
+.input-card .field:nth-of-type(1){background:linear-gradient(135deg,#eff6ff,#fff)}
+.input-card .field:nth-of-type(2){background:linear-gradient(135deg,#ecfeff,#fff)}
+.input-card .field:nth-of-type(3){background:linear-gradient(135deg,#fdf2f8,#fff)}
+.input-card .field:nth-of-type(5){background:linear-gradient(135deg,#f5f3ff,#fff)}
+.input-card .field input{background:rgba(255,255,255,.9);border-color:#cbd5e1}
+.archive-close-row{display:flex;justify-content:flex-end;align-items:center;padding:0 0 8px}
+.archive-close-btn{border:1px solid rgba(219,39,119,.28);background:rgba(219,39,119,.06);color:#be185d;border-radius:8px;padding:6px 9px;cursor:pointer;font:800 8px "JetBrains Mono";letter-spacing:.03em}
+.archive-close-btn:hover{background:rgba(219,39,119,.12);border-color:rgba(219,39,119,.42)}
+.archive-search-result{border:1px solid rgba(2,132,199,.28);border-radius:11px;background:#f8fafc;padding:8px}
+.archive-search-result-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px;padding:4px 2px 8px;border-bottom:1px solid #dbe4ee}
+.archive-search-result-head span{display:block;color:#db2777;font:800 7px "JetBrains Mono";letter-spacing:.1em}
+.archive-search-result-head strong{display:block;margin-top:3px;color:#111;font:800 12px "JetBrains Mono"}
+.archive-search-result-head small{display:block;margin-top:2px;color:#64748b;font:600 8px "JetBrains Mono"}
+.archive-search-result>.archive-trade{background:#fff}
+.archive-search-result>.archive-trade.open{border-color:rgba(2,132,199,.38)}
+.archive-month-content>.archive-close-row{background:linear-gradient(180deg,rgba(248,250,252,.8),#fff);margin:-8px -8px 8px;padding:7px 8px;border-bottom:1px solid #e2e8f0}
+.archive-trade>.acc-body>.archive-close-row{background:transparent}
+@media(max-width:760px){.period-options{grid-template-columns:1fr 1fr}.metric-cost em{font-size:6px}.archive-search-result-head{align-items:flex-start;flex-direction:column}.archive-search-result-head .archive-close-btn{width:100%}}
+</style>
 </head>
 <body>
 <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
@@ -426,13 +463,23 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <div class="field"><label>Starting Capital · USD</label><input id="capital" type="number" min="0.01" step="0.01" value="100"></div>
 <div class="field"><label>Position Size · ETH</label><input id="size" type="number" min="0.0001" step="0.0001" value="0.10"></div>
 <div class="field"><label>Leverage</label><input id="leverage" type="number" min="1" max="125" step="1" value="10"></div>
+<div class="field scenario-period-field"><label>HISTORICAL SIGNAL WINDOW</label><div class="period-options" role="group" aria-label="Historical signal window">
+<button type="button" class="period-btn active" data-period="all">ALL HISTORY</button>
+<button type="button" class="period-btn" data-period="30d">LAST 30 DAYS</button>
+<button type="button" class="period-btn" data-period="90d">LAST 90 DAYS</button>
+<button type="button" class="period-btn" data-period="120d">LAST 120 DAYS</button>
+</div><div class="period-hint">Replay only the latest selected window from the returned historical signal record.</div></div>
 <div class="field"><label>Display Currency</label><div class="currency"><button id="usd" class="active" onclick="setCurrency('USD')">$ USD</button><button id="inr" onclick="setCurrency('INR')">₹ INR</button></div></div>
 <div class="field"><label>USD → INR Rate</label><input id="fx" type="number" min="1" step="0.01" value="100"></div>
 <button id="run" class="run" onclick="runSimulation()">⚡ RUN MY SCENARIO</button><div class="hint">Every completed historical trade is replayed in chronological order. No demo trades or fabricated results.</div></aside>
 <main class="card"><div id="error" class="error"></div><div id="empty" class="empty">⚡ Build your scenario on the left<br>then launch the historical quest.</div>
 <div id="results" style="display:none">
 <div class="result-top"><div class="result-card"><div class="result-label">YOUR HISTORICAL JOURNEY ENDS AT</div><div id="final" class="big-money green"></div><div class="result-sub">Starting from <span id="starting"></span> · <span id="scope"></span></div></div><div class="result-card accent"><div class="score-wrap"><div class="score-ring" id="scoreRing"><div class="score-num"><span id="score">0</span><small>QUEST SCORE</small></div></div><div class="score-copy"><h3 id="verdict">SCENARIO COMPLETE</h3><p id="verdictCopy">Your score is based only on the historical result you just simulated.</p></div></div></div></div>
-<div class="summary"><div class="metric"><small>NET P&L</small><strong id="pnl"></strong></div><div class="metric"><small>TOTAL ROI</small><strong id="roi"></strong></div><div class="metric"><small>TRADES</small><strong id="trades"></strong></div><div class="metric"><small>WIN RATE</small><strong id="winrate"></strong></div><div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div><div class="metric"><small>FINAL BALANCE</small><strong id="finalMini"></strong></div><div class="metric"><small>STARTING CAPITAL</small><strong id="startingMini"></strong></div></div>
+<div class="summary">
+<div class="metric"><small>NET P&amp;L</small><strong id="pnl"></strong></div><div class="metric"><small>TOTAL ROI</small><strong id="roi"></strong></div><div class="metric"><small>TRADES</small><strong id="trades"></strong></div><div class="metric"><small>WIN RATE</small><strong id="winrate"></strong></div>
+<div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div><div class="metric metric-cost fee"><small>TRADING FEES</small><strong id="tradingFees"></strong><em id="costScope"></em></div><div class="metric metric-cost funding"><small>FUNDING</small><strong id="fundingFees"></strong><em class="cost-scope-copy"></em></div>
+<div class="metric metric-cost slippage"><small>SLIPPAGE</small><strong id="slippageFees"></strong><em class="cost-scope-copy"></em></div><div class="metric metric-cost latency"><small>LATENCY COST</small><strong id="latencyFees"></strong><em class="cost-scope-copy"></em></div><div class="metric"><small>FINAL BALANCE</small><strong id="finalMini"></strong></div><div class="metric"><small>STARTING CAPITAL</small><strong id="startingMini"></strong></div>
+</div>
 <section class="section"><div class="section-head"><div class="section-title"><b>02</b> · BALANCE JOURNEY</div><span class="badge">HISTORICAL EQUITY</span></div><div class="chartbox"><canvas id="equity"></canvas></div></section>
 <section class="section"><div class="section-head"><div class="section-title"><b>03</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
 <section class="section signal-archive-section" id="signalArchiveSection"><div class="section-head"><div class="section-title"><b>04</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head archive-head" onclick="toggle(this)"><div><div class="acc-main">SIGNAL ARCHIVE</div><div class="acc-sub">Browse history month-wise or jump directly to a trade</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body archive-body"><div class="archive-toolbar"><div class="archive-search"><label for="tradeSearchInput">JUMP TO TRADE</label><div class="archive-search-row"><input id="tradeSearchInput" type="number" min="1" inputmode="numeric" placeholder="Trade # e.g. 87"><button type="button" onclick="jumpToTrade()">VIEW TRADE</button></div><div id="tradeSearchStatus" class="archive-search-status"></div></div><div class="archive-month-picker"><label for="archiveMonthSelect">OPEN MONTH</label><div class="archive-month-row"><select id="archiveMonthSelect"><option value="">Select month</option></select><button type="button" onclick="openArchiveMonth()">OPEN</button></div></div></div><div class="archive-divider"><span>MONTHLY TRADE ARCHIVE</span><span>SELECT A MONTH TO VIEW ITS TRADES</span></div><div id="tradeLog" class="archive-months"></div></div></div><div class="footer-note">Choose a month to inspect its trades, or enter a trade number to open it directly. Details stay collapsed until selected.</div></section>
@@ -492,22 +539,43 @@ function auditRows(a){
 }
 let archiveTrades=[];
 let archiveMonths=[];
+let archiveSearchMode=false;
 function archiveMonthKey(t){return String(t?.exitTime||t?.entryTime||'').slice(0,7)}
 function archiveMonthLabel(key){
   if(!/^\d{4}-\d{2}$/.test(key))return key;
   const d=new Date(key+'-01T00:00:00');
   return d.toLocaleDateString('en-US',{year:'numeric',month:'long'});
 }
+function closeArchiveTrade(el){
+  const card=el.closest('.archive-trade');
+  if(card) card.classList.remove('open');
+}
+function closeArchiveMonth(el){
+  const card=el.closest('.archive-month-card');
+  if(card) card.classList.remove('open');
+}
+function openArchiveTrade(el){
+  const card=el.closest('.archive-trade');
+  if(!card)return;
+  const wasOpen=card.classList.contains('open');
+  const parent=card.parentElement;
+  parent?.querySelectorAll('.archive-trade.open').forEach(x=>x.classList.remove('open'));
+  if(!wasOpen){
+    if(window.ETHTRENDSArchiveUI?.openTrade) window.ETHTRENDSArchiveUI.openTrade(card);
+    else card.classList.add('open');
+  }
+}
 function tradeCardHTML(t){
   const side=String(t.side||'').toUpperCase(),p=num(t.pnl);
   return `<div class="accordion archive-trade" data-trade-number="${esc(t.tradeNumber??'')}">
-    <button class="acc-head trade-head" onclick="toggle(this)">
+    <button class="acc-head trade-head" onclick="openArchiveTrade(this)">
       <div class="side ${side==='LONG'?'long':'short'}">#${t.tradeNumber??''} ${side}</div>
       <div class="trade-times">${esc(t.entryTime||'')}<br>→ ${esc(t.exitTime||'')}</div>
       <div class="trade-pnl ${cls(p)}">${signedMoney(p)}</div>
       <div class="chev">⌄</div>
     </button>
     <div class="acc-body">
+      <div class="archive-close-row"><button type="button" class="archive-close-btn" onclick="closeArchiveTrade(this)">✕ CLOSE TRADE</button></div>
       <div class="details-grid">
         <div class="detail detail-entry"><small>ENTRY PRICE</small><b>${num(t.entryPrice).toFixed(2)}</b></div>
         <div class="detail detail-exit"><small>EXIT PRICE</small><b>${num(t.exitPrice).toFixed(2)}</b></div>
@@ -529,6 +597,7 @@ function tradeCardHTML(t){
   </div>`;
 }
 function renderArchiveMonths(trades){
+  archiveSearchMode=false;
   const grouped={};
   for(const t of trades){const key=archiveMonthKey(t);if(!grouped[key])grouped[key]=[];grouped[key].push(t)}
   archiveMonths=Object.entries(grouped).sort((a,b)=>a[0].localeCompare(b[0])).map(([month,items])=>{
@@ -536,7 +605,14 @@ function renderArchiveMonths(trades){
     return {month,items,wins,losses,pnl};
   });
   $('archiveMonthSelect').innerHTML='<option value="">Select month</option>'+archiveMonths.map(g=>`<option value="${esc(g.month)}">${esc(archiveMonthLabel(g.month))} · ${g.items.length} trades</option>`).join('');
-  $('tradeLog').innerHTML=archiveMonths.map(g=>`<div class="archive-month-card" data-month="${esc(g.month)}"><button class="archive-month-head" type="button" onclick="openArchiveMonth('${esc(g.month)}')"><div><div class="archive-month-title">${esc(archiveMonthLabel(g.month))}</div><div class="archive-month-sub">${g.items.length} trades · ${g.wins}W / ${g.losses}L</div></div><div class="archive-month-pnl ${cls(g.pnl)}">${signedMoney(g.pnl)}</div><div class="archive-month-chevron">⌄</div></button><div class="archive-month-content"><div class="archive-month-trades">${g.items.map(tradeCardHTML).join('')}</div></div></div>`).join('');
+  $('tradeLog').innerHTML=archiveMonths.map(g=>`<div class="archive-month-card" data-month="${esc(g.month)}"><button class="archive-month-head" type="button" onclick="openArchiveMonth('${esc(g.month)}')"><div><div class="archive-month-title">${esc(archiveMonthLabel(g.month))}</div><div class="archive-month-sub">${g.items.length} trades · ${g.wins}W / ${g.losses}L</div></div><div class="archive-month-pnl ${cls(g.pnl)}">${signedMoney(g.pnl)}</div><div class="archive-month-chevron">⌄</div></button><div class="archive-month-content"><div class="archive-close-row"><button type="button" class="archive-close-btn" onclick="closeArchiveMonth(this)">✕ CLOSE MONTH</button></div><div class="archive-month-trades">${g.items.map(tradeCardHTML).join('')}</div></div></div>`).join('');
+}
+function renderArchiveSearchResult(trade){
+  archiveSearchMode=true;
+  $('tradeLog').innerHTML=`<div class="archive-search-result"><div class="archive-search-result-head"><div><span>DIRECT TRADE RESULT</span><strong>TRADE #${esc(trade.tradeNumber)}</strong><small>${esc(archiveMonthLabel(archiveMonthKey(trade)))}</small></div><button type="button" class="archive-close-btn" onclick="renderArchiveMonths(archiveTrades)">← BACK TO MONTHS</button></div>${tradeCardHTML(trade)}</div>`;
+  const card=$('tradeLog').querySelector('.archive-trade');
+  card?.classList.add('open','archive-highlight');
+  setTimeout(()=>card?.classList.remove('archive-highlight'),1500);
 }
 function renderTrades(trades){
   archiveTrades=trades||[];
@@ -546,30 +622,31 @@ function renderTrades(trades){
   $('tradeLogAccordion').classList.remove('open');
 }
 function openArchiveMonth(month){
+  if(!month){month=$('archiveMonthSelect')?.value||'';}
+  if(!month)return;
+  archiveSearchMode=false;
   const card=document.querySelector(`.archive-month-card[data-month="${CSS.escape(String(month))}"]`);
   if(!card)return;
-  document.querySelectorAll('.archive-month-card.open').forEach(x=>{if(x!==card)x.classList.remove('open')});
-  card.classList.add('open');
-  const select=$('archiveMonthSelect');if(select)select.value=String(month);
-  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),30);
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.archive-month-card.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.archive-trade.open').forEach(x=>x.classList.remove('open'));
+  if(!wasOpen){
+    card.classList.add('open');
+    if(window.ETHTRENDSArchiveUI?.openMonth) window.ETHTRENDSArchiveUI.openMonth(card);
+  }
+  const select=$('archiveMonthSelect');if(select)select.value=wasOpen?'':String(month);
+  if(!wasOpen)setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),30);
 }
 function jumpToTrade(){
   const value=String($('tradeSearchInput')?.value||'').trim();
   const status=$('tradeSearchStatus');
   if(!value){status.className='archive-search-status error';status.textContent='Enter a trade number.';return}
   const trade=archiveTrades.find(t=>String(t.tradeNumber)===value);
-  if(!trade){status.className='archive-search-status error';status.textContent=`Trade #${value} was not found in the returned archive.`;return}
+  if(!trade){status.className='archive-search-status error';status.textContent=`Trade #${value} was not found in the selected historical window.`;return}
   $('tradeLogAccordion').classList.add('open');
-  const month=archiveMonthKey(trade);
-  openArchiveMonth(month);
-  setTimeout(()=>{
-    const card=document.querySelector(`.archive-month-card[data-month="${CSS.escape(month)}"] .archive-trade[data-trade-number="${CSS.escape(value)}"]`);
-    if(!card)return;
-    card.classList.add('open','archive-highlight');
-    card.querySelector('.acc-head')?.scrollIntoView({behavior:'smooth',block:'center'});
-    status.className='archive-search-status success';status.textContent=`Trade #${value} opened.`;
-    setTimeout(()=>card.classList.remove('archive-highlight'),1500);
-  },80);
+  renderArchiveSearchResult(trade);
+  status.className='archive-search-status success';status.textContent=`Trade #${value} opened as a direct result.`;
+  setTimeout(()=>document.querySelector('#tradeLog .archive-trade')?.scrollIntoView({behavior:'smooth',block:'center'}),80);
 }
 $('tradeSearchInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')jumpToTrade()});
 
@@ -648,27 +725,84 @@ function gamify(d,trades,months){
     ['DRAWDOWN HEALTH',`${dd.toFixed(2)}%`,`${hp}% HP`,hp]
   ].map(x=>`<div class="journey-card"><div class="journey-head">${x[0]} <span>${x[3]>=50?'↑':'↓'}</span></div><div class="journey-bar"><i style="width:${x[3]}%"></i></div><div class="journey-meta"><span>${x[1]}</span><span>${x[2]}</span></div></div>`).join('');
 }
-function render(d){lastData=d;const trades=d.trades||[],months=groupMonths(trades,num(d.startingCapital));$('empty').style.display='none';$('results').style.display='block';$('scope').textContent=`${trades.length} returned trades • ALL HISTORY`;$('starting').textContent=money(d.startingCapital);$('final').textContent=money(d.finalBalance);$('finalMini').textContent=money(d.finalBalance);$('startingMini').textContent=money(d.startingCapital);$('pnl').textContent=signedMoney(d.netPnl);$('pnl').className=cls(d.netPnl);$('roi').textContent=pct(d.roiPercent);$('roi').className=cls(d.roiPercent);$('trades').textContent=d.executedTrades??0;$('winrate').textContent=num(d.winRate).toFixed(2)+'%';$('best').textContent=signedMoney(d.bestTradePnl);$('best').className=cls(d.bestTradePnl);$('dd').textContent=money(d.maxDrawdown)+' ('+num(d.maxDrawdownPercent).toFixed(2)+'%)';$('dd').className='neg';renderMonths(months);renderTrades(trades);gamify(d,trades,months);const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,borderColor:'#0284c7',tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',maxTicksLimit:8}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})}
+let simulationPeriod='all';
+function tradeTime(t){
+  const raw=t?.exitTime||t?.exit_time||t?.entryTime||t?.entry_time;
+  const ms=Date.parse(String(raw||''));
+  return Number.isFinite(ms)?ms:0;
+}
+function costValue(t,keys){
+  for(const k of keys){const v=Number(t?.[k]);if(Number.isFinite(v))return v}
+  return 0;
+}
+function scopeTrades(allTrades,period){
+  const source=[...(allTrades||[])].sort((a,b)=>tradeTime(a)-tradeTime(b));
+  if(period==='all')return source;
+  const timed=source.map(t=>({t,ms:tradeTime(t)})).filter(x=>x.ms>0);
+  if(!timed.length)return source;
+  const latest=Math.max(...timed.map(x=>x.ms));
+  const days=Number(String(period).replace('d',''))||0;
+  const cutoff=latest-(days-1)*24*60*60*1000;
+  return timed.filter(x=>x.ms>=cutoff).map(x=>x.t);
+}
+function buildScopedData(base,selected,period){
+  const capital=num(base.startingCapital),trades=selected.map(t=>({...t}));
+  let balance=capital,peak=capital,maxDD=0,best=0;
+  for(const t of trades){
+    const p=num(t.pnl);
+    balance+=p;
+    t.balanceAfter=balance;
+    peak=Math.max(peak,balance);
+    maxDD=Math.max(maxDD,peak-balance);
+    best=Math.max(best,p);
+  }
+  const wins=trades.filter(t=>num(t.pnl)>0).length;
+  const losses=trades.filter(t=>num(t.pnl)<0).length;
+  const net=balance-capital;
+  const roi=capital?net/capital*100:0;
+  const ddPct=capital?maxDD/capital*100:0;
+  const fees=trades.reduce((s,t)=>s+costValue(t,['tradingFees','trading_fees','tradingFee','trading_fee','fees','fee']),0);
+  const funding=trades.reduce((s,t)=>s+costValue(t,['funding','fundingCost','funding_cost','fundingFee','funding_fee']),0);
+  const slippage=trades.reduce((s,t)=>s+costValue(t,['slippage','slippageCost','slippage_cost','slippageFee','slippage_fee']),0);
+  const latency=trades.reduce((s,t)=>s+costValue(t,['latencyCost','latency_cost','latency','latencyFee','latency_fee']),0);
+  const times=trades.map(tradeTime).filter(Boolean);
+  return {...base,_allTrades:base._allTrades||base.trades,trades,executedTrades:trades.length,totalTrades:trades.length,finalBalance:balance,netPnl:net,roiPercent:roi,bestTradePnl:best,maxDrawdown:maxDD,maxDrawdownPercent:ddPct,winRate:trades.length?wins/trades.length*100:0,period,periodStart:times.length?Math.min(...times):0,periodEnd:times.length?Math.max(...times):0,totalTradingFees:fees,totalFunding:funding,totalSlippage:slippage,totalLatencyCost:latency};
+}
+function periodLabel(period){return period==='all'?'ALL HISTORY':`LAST ${period.replace('d','')} DAYS`}
+function periodDateRange(d){
+  if(!d.periodStart||!d.periodEnd)return '';
+  const a=new Date(d.periodStart),b=new Date(d.periodEnd);
+  const f=x=>x.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  return `${f(a)} → ${f(b)}`;
+}
+function render(d){
+  lastData=d;
+  const trades=d.trades||[],months=groupMonths(trades,num(d.startingCapital));
+  $('empty').style.display='none';$('results').style.display='block';
+  const range=periodDateRange(d),scopeText=periodLabel(d.period)+(range?` · ${range}`:'');
+  $('scope').textContent=`${trades.length} returned trades • ${scopeText}`;
+  $('starting').textContent=money(d.startingCapital);$('final').textContent=money(d.finalBalance);$('finalMini').textContent=money(d.finalBalance);$('startingMini').textContent=money(d.startingCapital);
+  $('pnl').textContent=signedMoney(d.netPnl);$('pnl').className=cls(d.netPnl);$('roi').textContent=pct(d.roiPercent);$('roi').className=cls(d.roiPercent);$('trades').textContent=d.executedTrades??trades.length;$('winrate').textContent=num(d.winRate).toFixed(2)+'%';$('best').textContent=signedMoney(d.bestTradePnl);$('best').className=cls(d.bestTradePnl);$('dd').textContent=money(d.maxDrawdown)+' ('+num(d.maxDrawdownPercent).toFixed(2)+'%)';$('dd').className='neg';
+  $('tradingFees').textContent=money(d.totalTradingFees);$('fundingFees').textContent=money(d.totalFunding);$('slippageFees').textContent=money(d.totalSlippage);$('latencyFees').textContent=money(d.totalLatencyCost);
+  $('tradingFees').className='cost-positive';$('fundingFees').className='cost-negative';$('slippageFees').className='cost-negative';$('latencyFees').className='cost-negative';
+  $('costScope').textContent=scopeText;document.querySelectorAll('.cost-scope-copy').forEach(el=>el.textContent=scopeText);
+  renderMonths(months);renderTrades(trades);gamify(d,trades,months);
+  const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,borderColor:'#0284c7',tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',maxTicksLimit:8}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})
+}
 async function runSimulation(){
-  const btn=$('run'),err=$('error'),overlay=$('loadingOverlay');
-  err.style.display='none';btn.disabled=true;btn.textContent='RUNNING...';
-  const capital=num($('capital').value), size=num($('size').value), leverage=parseInt($('leverage').value,10);
-  if(capital<=0||size<=0||leverage<1){err.innerHTML='<span class="err-title">⚠ INVALID SCENARIO</span><span class="err-copy">Enter valid capital, position size and leverage.</span>';err.style.display='block';btn.disabled=false;btn.textContent='RUN FULL SIMULATION';return;}
+  const btn=$('run'),err=$('error'),overlay=$('loadingOverlay');err.style.display='none';btn.disabled=true;btn.textContent='RUNNING...';
+  const capital=num($('capital').value),size=num($('size').value),leverage=parseInt($('leverage').value,10);
+  if(capital<=0||size<=0||leverage<1){err.innerHTML='<span class="err-title">⚠ INVALID SCENARIO</span><span class="err-copy">Enter valid capital, position size and leverage.</span>';err.style.display='block';btn.disabled=false;btn.textContent='RUN MY SCENARIO';return;}
   const payload={startingCapital:capital,positionSize:size,leverage:leverage,period:'all'};
-  overlay.classList.add('show');
-  let progress=0, stopped=false, timer=null, startedAt=performance.now();
+  overlay.classList.add('show');let progress=0,stopped=false,timer=null,startedAt=performance.now();
   timer=setInterval(()=>{if(stopped)return;let t=Math.min(1,(performance.now()-startedAt)/2700);progress=(1-Math.pow(1-t,1.65))*98;$('loadingPercent').textContent=Math.round(progress)+'%';$('loadingFill').style.width=progress+'%';},80);
   try{
-    let r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    let raw=await r.text(); let d=JSON.parse(raw);
-    stopped=true;clearInterval(timer);$('loadingPercent').textContent='100%';$('loadingFill').style.width='100%';
-    await new Promise(resolve=>setTimeout(resolve,220));
-    overlay.classList.remove('show');render(d);
-  }catch(e){
-    stopped=true;clearInterval(timer);overlay.classList.remove('show');
-    err.innerHTML='<span class="err-title">⚠ SIMULATOR CONNECTION</span><span class="err-copy">'+e.message+'</span>';err.style.display='block';
-  }finally{btn.disabled=false;btn.textContent='RUN FULL SIMULATION';}
+    let r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let raw=await r.text();if(!r.ok)throw new Error('Simulator API returned HTTP '+r.status+'.');let d=JSON.parse(raw);if(!Array.isArray(d.trades))throw new Error('Simulator API returned no trade archive.');
+    const allTrades=d.trades.map(t=>({...t}));const selected=scopeTrades(allTrades,simulationPeriod);d=buildScopedData(d,selected,simulationPeriod);d._allTrades=allTrades;
+    stopped=true;clearInterval(timer);$('loadingPercent').textContent='100%';$('loadingFill').style.width='100%';await new Promise(resolve=>setTimeout(resolve,220));overlay.classList.remove('show');render(d);
+  }catch(e){stopped=true;clearInterval(timer);overlay.classList.remove('show');err.innerHTML='<span class="err-title">⚠ SIMULATOR CONNECTION</span><span class="err-copy">'+e.message+'</span>';err.style.display='block';}finally{btn.disabled=false;btn.textContent='RUN MY SCENARIO';}
 }
+document.querySelectorAll('.period-btn').forEach(btn=>btn.addEventListener('click',()=>{simulationPeriod=btn.dataset.period;document.querySelectorAll('.period-btn').forEach(b=>{const active=b.dataset.period===simulationPeriod;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});if(lastData&&lastData.trades){const all=lastData._allTrades||lastData.trades;render(buildScopedData(lastData,scopeTrades(all,simulationPeriod),simulationPeriod))}}));
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 

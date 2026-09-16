@@ -153,3 +153,23 @@
   }
   window.ETHTRENDsSIPUI={renderResults};
 })();
+/* ===== SIGNAL ARCHIVE UI HELPERS ===== */
+(function(){
+  "use strict";
+  function openTrade(card){
+    if(!card) return;
+    const parent=card.closest('.archive-month-content, .archive-search-result');
+    if(parent) parent.querySelectorAll('.archive-trade.open').forEach(x=>{if(x!==card)x.classList.remove('open')});
+    card.classList.add('open');
+  }
+  function closeTrade(card){
+    if(card) card.classList.remove('open');
+  }
+  function closeMonth(card){
+    if(card) card.classList.remove('open');
+  }
+  function openMonth(card){
+    if(card) card.classList.add('open');
+  }
+  window.ETHTRENDSArchiveUI=Object.freeze({openTrade,closeTrade,closeMonth,openMonth});
+})();
