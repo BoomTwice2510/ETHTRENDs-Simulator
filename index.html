@@ -277,6 +277,20 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 .trade-intelligence{margin-top:10px;padding:10px;border:1px solid rgba(2,132,199,.25);border-radius:10px;background:linear-gradient(145deg,#f7fcff,#fff)}
 .trade-intelligence-title{margin-bottom:7px;color:#0284c7;font:800 9px "JetBrains Mono";letter-spacing:.08em}.trade-audit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.trade-audit-item{border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;padding:8px;min-width:0}.trade-audit-item span{display:block;color:#475569;font:700 7px "JetBrains Mono"}.trade-audit-item b{display:block;margin-top:4px;color:#111;font:800 11px "JetBrains Mono"}.trade-audit-item small{display:block;margin-top:3px;color:#64748b;font:600 8px/1.35 "Inter";overflow-wrap:anywhere}
 @media(max-width:760px){.trade-audit-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.trade-audit-grid{grid-template-columns:1fr}}
+/* ===== RISK / DRAWDOWN INSIGHT ===== */
+.risk-insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.risk-insight-card{border:1px solid #cbd5e1;border-radius:13px;background:linear-gradient(145deg,#f8fafc,#fff);padding:13px}
+.risk-insight-card.dd{border-color:rgba(220,38,38,.28);background:linear-gradient(145deg,#fff7f7,#fff)}
+.risk-insight-card.exhaust{border-color:rgba(217,119,6,.3);background:linear-gradient(145deg,#fffaf0,#fff)}
+.risk-insight-kicker{font:800 8px "JetBrains Mono";letter-spacing:.1em;color:#64748b}
+.risk-insight-card.dd .risk-insight-kicker{color:var(--red)}.risk-insight-card.exhaust .risk-insight-kicker{color:var(--yellow)}
+.risk-insight-title{margin-top:5px;font:800 15px "Inter";color:#111}.risk-insight-sub{margin-top:3px;color:#64748b;font:600 8px/1.5 "Inter"}
+.risk-insight-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:9px}.risk-insight-stat{border:1px solid #dbe4ee;border-radius:8px;background:#fff;padding:7px;min-width:0}.risk-insight-stat span{display:block;color:#64748b;font:700 7px "JetBrains Mono"}.risk-insight-stat b{display:block;margin-top:4px;color:#111;font:800 10px "JetBrains Mono";overflow-wrap:anywhere}
+.risk-view-btn{margin-top:9px;width:100%;padding:8px 10px;border:1px solid rgba(2,132,199,.35);border-radius:8px;background:rgba(2,132,199,.07);color:#0369a1;cursor:pointer;font:800 8px "JetBrains Mono"}.risk-view-btn:hover{background:rgba(2,132,199,.13)}
+.custom-period-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.custom-period-row input{width:100%;padding:9px 8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#111;outline:0;font:700 9px "JetBrains Mono"}.custom-period-row input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(2,132,199,.1)}
+@media(max-width:760px){.risk-insight-grid{grid-template-columns:1fr}.risk-insight-stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:480px){.risk-insight-stats{grid-template-columns:1fr 1fr}}
+
 </style>
 <style>
 /* ===== HISTORICAL WINDOW + ARCHIVE UX ===== */
@@ -468,7 +482,12 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <button type="button" class="period-btn" data-period="30d">LAST 30 DAYS</button>
 <button type="button" class="period-btn" data-period="90d">LAST 90 DAYS</button>
 <button type="button" class="period-btn" data-period="120d">LAST 120 DAYS</button>
-</div><div class="period-hint">Replay only the latest selected window from the returned historical signal record.</div></div>
+</div>
+<div class="custom-period-row">
+<input id="customStartDate" type="date" aria-label="Custom start date">
+<input id="customEndDate" type="date" aria-label="Custom end date">
+</div>
+<div class="period-hint">Choose a preset or any custom start/end date. End date is inclusive. The selected window is replayed from the starting capital.</div></div>
 <div class="field"><label>Display Currency</label><div class="currency"><button id="usd" class="active" onclick="setCurrency('USD')">$ USD</button><button id="inr" onclick="setCurrency('INR')">₹ INR</button></div></div>
 <div class="field"><label>USD → INR Rate</label><input id="fx" type="number" min="1" step="0.01" value="100"></div>
 <button id="run" class="run" onclick="runSimulation()">⚡ RUN MY SCENARIO</button><div class="hint">Every completed historical trade is replayed in chronological order. No demo trades or fabricated results.</div></aside>
@@ -480,12 +499,29 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
 <div class="metric"><small>BEST TRADE</small><strong id="best"></strong></div><div class="metric"><small>MAX DRAWDOWN</small><strong id="dd"></strong></div><div class="metric metric-cost fee"><small>TRADING FEES</small><strong id="tradingFees"></strong><em id="costScope"></em></div><div class="metric metric-cost funding"><small>FUNDING</small><strong id="fundingFees"></strong><em class="cost-scope-copy"></em></div>
 <div class="metric metric-cost slippage"><small>SLIPPAGE</small><strong id="slippageFees"></strong><em class="cost-scope-copy"></em></div><div class="metric metric-cost latency"><small>LATENCY COST</small><strong id="latencyFees"></strong><em class="cost-scope-copy"></em></div><div class="metric"><small>FINAL BALANCE</small><strong id="finalMini"></strong></div><div class="metric"><small>STARTING CAPITAL</small><strong id="startingMini"></strong></div>
 </div>
-<section class="section"><div class="section-head"><div class="section-title"><b>02</b> · BALANCE JOURNEY</div><span class="badge">HISTORICAL EQUITY</span></div><div class="chartbox"><canvas id="equity"></canvas></div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>03</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
-<section class="section signal-archive-section" id="signalArchiveSection"><div class="section-head"><div class="section-title"><b>04</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head archive-head" onclick="toggle(this)"><div><div class="acc-main">SIGNAL ARCHIVE</div><div class="acc-sub">Browse history month-wise or jump directly to a trade</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body archive-body"><div class="archive-toolbar"><div class="archive-search"><label for="tradeSearchInput">JUMP TO TRADE</label><div class="archive-search-row"><input id="tradeSearchInput" type="number" min="1" inputmode="numeric" placeholder="Trade # e.g. 87"><button type="button" onclick="jumpToTrade()">VIEW TRADE</button></div><div id="tradeSearchStatus" class="archive-search-status"></div></div><div class="archive-month-picker"><label for="archiveMonthSelect">OPEN MONTH</label><div class="archive-month-row"><select id="archiveMonthSelect"><option value="">Select month</option></select><button type="button" onclick="openArchiveMonth()">OPEN</button></div></div></div><div class="archive-divider"><span>MONTHLY TRADE ARCHIVE</span><span>SELECT A MONTH TO VIEW ITS TRADES</span></div><div id="tradeLog" class="archive-months"></div></div></div><div class="footer-note">Choose a month to inspect its trades, or enter a trade number to open it directly. Details stay collapsed until selected.</div></section>
-<section class="section"><div class="section-head"><div class="section-title"><b>05</b> · ACHIEVEMENTS UNLOCKED</div><span class="badge">PLAY THE DATA</span></div><div id="achievements" class="achievements"></div></section>
+<section class="section" id="riskInsightSection">
+<div class="section-head"><div class="section-title"><b>02</b> · RISK BREAKDOWN</div><span class="badge">TRADE LEVEL</span></div>
+<div class="risk-insight-grid">
+<div class="risk-insight-card dd">
+<div class="risk-insight-kicker">MAXIMUM DRAWDOWN EVENT</div>
+<div id="ddTradeTitle" class="risk-insight-title">—</div>
+<div id="ddTradeSub" class="risk-insight-sub">The trade that created the largest peak-to-trough drawdown in this selected window.</div>
+<div id="ddTradeStats" class="risk-insight-stats"></div>
+<button id="ddTradeBtn" class="risk-view-btn" type="button" onclick="viewRiskTrade('drawdown')">VIEW FULL TRADE DETAILS</button>
+</div>
+<div class="risk-insight-card exhaust">
+<div class="risk-insight-kicker">CAPITAL EXHAUSTION / MARGIN STRESS</div>
+<div id="exhaustTradeTitle" class="risk-insight-title">—</div>
+<div id="exhaustTradeSub" class="risk-insight-sub">Shows the first trade where the scenario could no longer safely support the next position or the balance was exhausted.</div>
+<div id="exhaustTradeStats" class="risk-insight-stats"></div>
+<button id="exhaustTradeBtn" class="risk-view-btn" type="button" onclick="viewRiskTrade('exhaustion')">VIEW FULL TRADE DETAILS</button>
+</div></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>03</b> · BALANCE JOURNEY</div><span class="badge">HISTORICAL EQUITY</span></div><div class="chartbox"><canvas id="equity"></canvas></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>04</b> · MONTHLY LEVELS</div><span class="badge">TAP TO EXPAND</span></div><div id="months" class="list"></div></section>
+<section class="section signal-archive-section" id="signalArchiveSection"><div class="section-head"><div class="section-title"><b>05</b> · SIGNAL ARCHIVE</div><span id="tradeCount" class="badge"></span></div><div class="accordion trade-log-accordion" id="tradeLogAccordion"><button class="acc-head archive-head" onclick="toggle(this)"><div><div class="acc-main">SIGNAL ARCHIVE</div><div class="acc-sub">Browse history month-wise or jump directly to a trade</div></div><div class="acc-value" id="tradeLogSummary">—</div><div class="chev">⌄</div></button><div class="acc-body archive-body"><div class="archive-toolbar"><div class="archive-search"><label for="tradeSearchInput">JUMP TO TRADE</label><div class="archive-search-row"><input id="tradeSearchInput" type="number" min="1" inputmode="numeric" placeholder="Trade # e.g. 87"><button type="button" onclick="jumpToTrade()">VIEW TRADE</button></div><div id="tradeSearchStatus" class="archive-search-status"></div></div><div class="archive-month-picker"><label for="archiveMonthSelect">OPEN MONTH</label><div class="archive-month-row"><select id="archiveMonthSelect"><option value="">Select month</option></select><button type="button" onclick="openArchiveMonth()">OPEN</button></div></div></div><div class="archive-divider"><span>MONTHLY TRADE ARCHIVE</span><span>SELECT A MONTH TO VIEW ITS TRADES</span></div><div id="tradeLog" class="archive-months"></div></div></div><div class="footer-note">Choose a month to inspect its trades, or enter a trade number to open it directly. Details stay collapsed until selected.</div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>06</b> · ACHIEVEMENTS UNLOCKED</div><span class="badge">PLAY THE DATA</span></div><div id="achievements" class="achievements"></div></section>
 <section id="gameShell" class="game-shell">
-  <div class="section-head"><div class="section-title"><b>06</b> · YOUR SIGNAL QUEST</div><span class="badge">ADAPTIVE TO YOUR CAPITAL • POSITION • REAL TRADES</span></div>
+  <div class="section-head"><div class="section-title"><b>07</b> · YOUR SIGNAL QUEST</div><span class="badge">ADAPTIVE TO YOUR CAPITAL • POSITION • REAL TRADES</span></div>
   <div class="game-console">
     <div class="game-kicker">HISTORICAL RUN COMPLETE</div>
     <div class="game-top">
@@ -512,7 +548,7 @@ button,input{font:inherit}button{touch-action:manipulation}.app{max-width:1180px
     </div>
   </div>
 </section>
-<section class="section"><div class="section-head"><div class="section-title"><b>07</b> · PROGRESS MAP</div><span class="badge">YOUR SCENARIO</span></div><div id="journey" class="journey"></div></section>
+<section class="section"><div class="section-head"><div class="section-title"><b>08</b> · PROGRESS MAP</div><span class="badge">YOUR SCENARIO</span></div><div id="journey" class="journey"></div></section>
 <div class="disclaimer-card"><div class="disclaimer-title">⚠ HISTORICAL PERFORMANCE ≠ FUTURE RESULTS</div><div class="disclaimer-text">This simulator shows how the <strong>ETHTRENDs historical signal record</strong> would have performed under the assumptions you entered. It is a <strong>historical scenario only</strong> — not a prediction, promise, or guarantee of future returns.</div><div class="disclaimer-text">Past performance does not guarantee future performance. Actual results may differ materially because of market conditions, volatility, liquidity, fees, funding, slippage, execution price, leverage, position sizing, missed trades and other factors.</div><div class="disclaimer-warning">NO GUARANTEED RETURNS · NOT FINANCIAL ADVICE · HISTORICAL DATA ONLY</div></div>
 </div></main></div></div>
 <script>
@@ -735,9 +771,15 @@ function costValue(t,keys){
   for(const k of keys){const v=Number(t?.[k]);if(Number.isFinite(v))return v}
   return 0;
 }
-function scopeTrades(allTrades,period){
+function scopeTrades(allTrades,period,customStart='',customEnd=''){
   const source=[...(allTrades||[])].sort((a,b)=>tradeTime(a)-tradeTime(b));
   if(period==='all')return source;
+  if(period==='custom'){
+    const start=customStart?Date.parse(customStart+'T00:00:00'):NaN;
+    const end=customEnd?Date.parse(customEnd+'T23:59:59.999'):NaN;
+    if(!Number.isFinite(start)||!Number.isFinite(end)||end<start)return [];
+    return source.filter(t=>{const ms=tradeTime(t);return ms>=start&&ms<=end});
+  }
   const timed=source.map(t=>({t,ms:tradeTime(t)})).filter(x=>x.ms>0);
   if(!timed.length)return source;
   const latest=Math.max(...timed.map(x=>x.ms));
@@ -745,35 +787,66 @@ function scopeTrades(allTrades,period){
   const cutoff=latest-(days-1)*24*60*60*1000;
   return timed.filter(x=>x.ms>=cutoff).map(x=>x.t);
 }
-function buildScopedData(base,selected,period){
+function buildScopedData(base,selected,period,customStart='',customEnd=''){
   const capital=num(base.startingCapital),trades=selected.map(t=>({...t}));
-  let balance=capital,peak=capital,maxDD=0,best=0;
+  let balance=capital,peak=capital,maxDD=0,best=0,ddTrade=null,ddPeak=capital,exhaustionTrade=null,exhaustionReason='';
   for(const t of trades){
-    const p=num(t.pnl);
-    balance+=p;
-    t.balanceAfter=balance;
-    peak=Math.max(peak,balance);
-    maxDD=Math.max(maxDD,peak-balance);
+    const p=num(t.pnl),margin=num(t.requiredMargin),before=balance;
+    if(!exhaustionTrade && margin>0 && before>0 && margin>before){
+      exhaustionTrade=t;exhaustionReason='Required margin exceeded available balance before this trade.';
+    }
+    balance+=p;t.balanceBefore=before;t.balanceAfter=balance;
+    peak=Math.max(peak,balance);const dd=peak-balance;
+    if(dd>maxDD){maxDD=dd;ddTrade=t;ddPeak=peak}
+    if(!exhaustionTrade && balance<=0){exhaustionTrade=t;exhaustionReason='Balance was exhausted or fell to zero/negative after this trade.'}
     best=Math.max(best,p);
   }
-  const wins=trades.filter(t=>num(t.pnl)>0).length;
-  const losses=trades.filter(t=>num(t.pnl)<0).length;
-  const net=balance-capital;
-  const roi=capital?net/capital*100:0;
-  const ddPct=capital?maxDD/capital*100:0;
+  const wins=trades.filter(t=>num(t.pnl)>0).length,losses=trades.filter(t=>num(t.pnl)<0).length;
+  const net=balance-capital,roi=capital?net/capital*100:0,ddPct=capital?maxDD/capital*100:0;
   const fees=trades.reduce((s,t)=>s+costValue(t,['tradingFees','trading_fees','tradingFee','trading_fee','fees','fee']),0);
   const funding=trades.reduce((s,t)=>s+costValue(t,['funding','fundingCost','funding_cost','fundingFee','funding_fee']),0);
   const slippage=trades.reduce((s,t)=>s+costValue(t,['slippage','slippageCost','slippage_cost','slippageFee','slippage_fee']),0);
   const latency=trades.reduce((s,t)=>s+costValue(t,['latencyCost','latency_cost','latency','latencyFee','latency_fee']),0);
   const times=trades.map(tradeTime).filter(Boolean);
-  return {...base,_allTrades:base._allTrades||base.trades,trades,executedTrades:trades.length,totalTrades:trades.length,finalBalance:balance,netPnl:net,roiPercent:roi,bestTradePnl:best,maxDrawdown:maxDD,maxDrawdownPercent:ddPct,winRate:trades.length?wins/trades.length*100:0,period,periodStart:times.length?Math.min(...times):0,periodEnd:times.length?Math.max(...times):0,totalTradingFees:fees,totalFunding:funding,totalSlippage:slippage,totalLatencyCost:latency};
+  return {...base,_allTrades:base._allTrades||base.trades,trades,executedTrades:trades.length,totalTrades:trades.length,
+    startingCapital:capital,positionSize:num(base.positionSize),leverage:num(base.leverage),finalBalance:balance,netPnl:net,roiPercent:roi,
+    bestTradePnl:best,maxDrawdown:maxDD,maxDrawdownPercent:ddPct,winRate:trades.length?wins/trades.length*100:0,period,customStart,customEnd,
+    periodStart:times.length?Math.min(...times):0,periodEnd:times.length?Math.max(...times):0,totalTradingFees:fees,totalFunding:funding,
+    totalSlippage:slippage,totalLatencyCost:latency,maxDrawdownTrade:ddTrade,maxDrawdownPeak:ddPeak,
+    capitalExhaustionTrade:exhaustionTrade,capitalExhaustionReason:exhaustionReason};
 }
-function periodLabel(period){return period==='all'?'ALL HISTORY':`LAST ${period.replace('d','')} DAYS`}
+function periodLabel(period){if(period==='all')return 'ALL HISTORY';if(period==='custom')return 'CUSTOM DATE RANGE';return `LAST ${period.replace('d','')} DAYS`}
 function periodDateRange(d){
   if(!d.periodStart||!d.periodEnd)return '';
   const a=new Date(d.periodStart),b=new Date(d.periodEnd);
   const f=x=>x.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   return `${f(a)} → ${f(b)}`;
+}
+function riskStat(label,value){return `<div class="risk-insight-stat"><span>${esc(label)}</span><b>${esc(value)}</b></div>`}
+function renderRiskInsights(d){
+  const dd=d.maxDrawdownTrade,ex=d.capitalExhaustionTrade;
+  if(dd){
+    $('ddTradeTitle').textContent=`TRADE #${dd.tradeNumber??'—'} · ${String(dd.side||'').toUpperCase()||'TRADE'}`;
+    $('ddTradeSub').textContent=`${dd.entryTime||'—'} → ${dd.exitTime||'—'} · peak ${money(d.maxDrawdownPeak)} → trough ${money(dd.balanceAfter)}`;
+    $('ddTradeStats').innerHTML=[riskStat('DRAWDOWN',money(d.maxDrawdown)),riskStat('DRAWDOWN %',num(d.maxDrawdownPercent).toFixed(2)+'%'),riskStat('TRADE P&L',signedMoney(dd.pnl)),riskStat('ENTRY',num(dd.entryPrice).toFixed(2)),riskStat('EXIT',num(dd.exitPrice).toFixed(2)),riskStat('BALANCE AFTER',money(dd.balanceAfter))].join('');
+    $('ddTradeBtn').disabled=false;
+  }else{$('ddTradeTitle').textContent='NO DRAWDOWN EVENT';$('ddTradeSub').textContent='No completed trade in the selected window produced a measurable drawdown.';$('ddTradeStats').innerHTML=riskStat('MAX DRAWDOWN',money(0));$('ddTradeBtn').disabled=true}
+  if(ex){
+    $('exhaustTradeTitle').textContent=`TRADE #${ex.tradeNumber??'—'} · ${String(ex.side||'').toUpperCase()||'TRADE'}`;
+    $('exhaustTradeSub').textContent=d.capitalExhaustionReason||'Capital stress event detected.';
+    $('exhaustTradeStats').innerHTML=[riskStat('BALANCE BEFORE',money(ex.balanceBefore)),riskStat('REQUIRED MARGIN',money(ex.requiredMargin)),riskStat('TRADE P&L',signedMoney(ex.pnl)),riskStat('BALANCE AFTER',money(ex.balanceAfter)),riskStat('LEVERAGE',String(d.leverage??'—')+'X'),riskStat('ENTRY',num(ex.entryPrice).toFixed(2))].join('');
+    $('exhaustTradeBtn').disabled=false;
+  }else{
+    const balances=[d.startingCapital,...(d.trades||[]).map(t=>num(t.balanceAfter))];
+    $('exhaustTradeTitle').textContent='CAPITAL SURVIVED';$('exhaustTradeSub').textContent='No trade exhausted the starting capital and no trade required more margin than the available balance in this selected window.';
+    $('exhaustTradeStats').innerHTML=[riskStat('LOWEST BALANCE',money(Math.min(...balances))),riskStat('TRADES CHECKED',String((d.trades||[]).length)),riskStat('STATUS','SURVIVED')].join('');$('exhaustTradeBtn').disabled=true;
+  }
+}
+function viewRiskTrade(type){
+  const trade=type==='drawdown'?lastData?.maxDrawdownTrade:lastData?.capitalExhaustionTrade;if(!trade)return;
+  $('tradeLogAccordion').classList.add('open');renderArchiveSearchResult(trade);$('tradeSearchStatus').className='archive-search-status success';
+  $('tradeSearchStatus').textContent=`Trade #${trade.tradeNumber??''} opened from ${type==='drawdown'?'maximum drawdown':'capital stress'} analysis.`;
+  setTimeout(()=>document.querySelector('#tradeLog .archive-trade')?.scrollIntoView({behavior:'smooth',block:'center'}),80);
 }
 function render(d){
   lastData=d;
@@ -786,23 +859,30 @@ function render(d){
   $('tradingFees').textContent=money(d.totalTradingFees);$('fundingFees').textContent=money(d.totalFunding);$('slippageFees').textContent=money(d.totalSlippage);$('latencyFees').textContent=money(d.totalLatencyCost);
   $('tradingFees').className='cost-positive';$('fundingFees').className='cost-negative';$('slippageFees').className='cost-negative';$('latencyFees').className='cost-negative';
   $('costScope').textContent=scopeText;document.querySelectorAll('.cost-scope-copy').forEach(el=>el.textContent=scopeText);
-  renderMonths(months);renderTrades(trades);gamify(d,trades,months);
+  renderRiskInsights(d);renderMonths(months);renderTrades(trades);gamify(d,trades,months);
   const labels=trades.map(t=>t.tradeNumber),vals=trades.map(t=>num(t.balanceAfter)*fx());if(chart)chart.destroy();chart=new Chart($('equity'),{type:'line',data:{labels,datasets:[{label:'Balance',data:vals,borderColor:'#0284c7',tension:.18,pointRadius:1.3,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',maxTicksLimit:8}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#475569',callback:v=>(currency==='INR'?'₹':'$')+Number(v).toLocaleString()}}}}});window.scrollTo({top:0,behavior:'smooth'})
 }
 async function runSimulation(){
   const btn=$('run'),err=$('error'),overlay=$('loadingOverlay');err.style.display='none';btn.disabled=true;btn.textContent='RUNNING...';
   const capital=num($('capital').value),size=num($('size').value),leverage=parseInt($('leverage').value,10);
   if(capital<=0||size<=0||leverage<1){err.innerHTML='<span class="err-title">⚠ INVALID SCENARIO</span><span class="err-copy">Enter valid capital, position size and leverage.</span>';err.style.display='block';btn.disabled=false;btn.textContent='RUN MY SCENARIO';return;}
+  if(simulationPeriod==='custom'){const a=$('customStartDate').value,b=$('customEndDate').value;if(!a||!b||b<a){err.innerHTML='<span class="err-title">⚠ INVALID DATE RANGE</span><span class="err-copy">Choose a valid start and end date. End date must be on or after start date.</span>';err.style.display='block';btn.disabled=false;btn.textContent='RUN MY SCENARIO';return;}}
   const payload={startingCapital:capital,positionSize:size,leverage:leverage,period:'all'};
   overlay.classList.add('show');let progress=0,stopped=false,timer=null,startedAt=performance.now();
   timer=setInterval(()=>{if(stopped)return;let t=Math.min(1,(performance.now()-startedAt)/2700);progress=(1-Math.pow(1-t,1.65))*98;$('loadingPercent').textContent=Math.round(progress)+'%';$('loadingFill').style.width=progress+'%';},80);
   try{
     let r=await fetch('/api/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});let raw=await r.text();if(!r.ok)throw new Error('Simulator API returned HTTP '+r.status+'.');let d=JSON.parse(raw);if(!Array.isArray(d.trades))throw new Error('Simulator API returned no trade archive.');
-    const allTrades=d.trades.map(t=>({...t}));const selected=scopeTrades(allTrades,simulationPeriod);d=buildScopedData(d,selected,simulationPeriod);d._allTrades=allTrades;
+    const allTrades=d.trades.map(t=>({...t}));const selected=scopeTrades(allTrades,simulationPeriod,$('customStartDate').value,$('customEndDate').value);if(simulationPeriod==='custom'&&!selected.length)throw new Error('No completed trades were found inside the selected date range.');d=buildScopedData(d,selected,simulationPeriod,$('customStartDate').value,$('customEndDate').value);d._allTrades=allTrades;
     stopped=true;clearInterval(timer);$('loadingPercent').textContent='100%';$('loadingFill').style.width='100%';await new Promise(resolve=>setTimeout(resolve,220));overlay.classList.remove('show');render(d);
   }catch(e){stopped=true;clearInterval(timer);overlay.classList.remove('show');err.innerHTML='<span class="err-title">⚠ SIMULATOR CONNECTION</span><span class="err-copy">'+e.message+'</span>';err.style.display='block';}finally{btn.disabled=false;btn.textContent='RUN MY SCENARIO';}
 }
-document.querySelectorAll('.period-btn').forEach(btn=>btn.addEventListener('click',()=>{simulationPeriod=btn.dataset.period;document.querySelectorAll('.period-btn').forEach(b=>{const active=b.dataset.period===simulationPeriod;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});if(lastData&&lastData.trades){const all=lastData._allTrades||lastData.trades;render(buildScopedData(lastData,scopeTrades(all,simulationPeriod),simulationPeriod))}}));
+document.querySelectorAll('.period-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  simulationPeriod=btn.dataset.period;
+  document.querySelectorAll('.period-btn').forEach(b=>{const active=b.dataset.period===simulationPeriod;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+  if(lastData&&lastData.trades){const all=lastData._allTrades||lastData.trades;const selected=scopeTrades(all,simulationPeriod,$('customStartDate').value,$('customEndDate').value);if(selected.length)render(buildScopedData(lastData,selected,simulationPeriod,$('customStartDate').value,$('customEndDate').value));}
+}));
+$('customStartDate').addEventListener('change',()=>{simulationPeriod='custom';document.querySelectorAll('.period-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});if(lastData&&lastData.trades){const selected=scopeTrades(lastData._allTrades||lastData.trades,'custom',$('customStartDate').value,$('customEndDate').value);if(selected.length)render(buildScopedData(lastData,selected,'custom',$('customStartDate').value,$('customEndDate').value));}});
+$('customEndDate').addEventListener('change',()=>{simulationPeriod='custom';document.querySelectorAll('.period-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});if(lastData&&lastData.trades){const selected=scopeTrades(lastData._allTrades||lastData.trades,'custom',$('customStartDate').value,$('customEndDate').value);if(selected.length)render(buildScopedData(lastData,selected,'custom',$('customStartDate').value,$('customEndDate').value));}});
 $('fx').addEventListener('input',()=>{if(lastData)render(lastData)});
 </script>
 
