@@ -1,168 +1,29 @@
 (() => {
-  'use strict';
-  // Calls the same-origin Vercel proxy. The Railway API key stays server-side.
-  const API = '/api/trio/v1';
-  const ASSETS = {
-    GOLD: {name:'Gold', symbol:'XAUUSDT'},
-    SILVER: {name:'Silver', symbol:'XAGUSDT'},
-    CRUDE: {name:'Crude', symbol:'CLUSDT'}
-  };
-  const $ = id => document.getElementById(id);
-  let tradeCache = {};
-  let lastResult = null;
-
-  function n(value) { const x = Number(value); return Number.isFinite(x) ? x : 0; }
-  function money(value) { return (value < 0 ? '-$' : '$') + Math.abs(n(value)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-  function signedMoney(value) { return (n(value) > 0 ? '+' : n(value) < 0 ? '-' : '') + '$' + Math.abs(n(value)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-  function num(value, digits=4) { return n(value).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:digits}); }
-  function pct(value) { return `${n(value).toFixed(2)}%`; }
-  function setApiState(state, text) { const el=$('apiState'); el.textContent=text; el.parentElement.className='api-state '+state; }
-  function showError(message) { const el=$('error'); el.textContent=message; el.hidden=false; }
-  function clearError() { $('error').hidden=true; $('error').textContent=''; }
-
-  async function getJson(url) {
-    const response = await fetch(url,{method:'GET',headers:{'Accept':'application/json'},cache:'no-store'});
-    if (!response.ok) {
-      let detail=''; try { const body=await response.json(); detail=body.detail||body.message||''; } catch (_) {}
-      throw new Error(detail || `API request failed (${response.status})`);
-    }
-    return response.json();
-  }
-
-  async function loadTrades(asset, force=false) {
-    if (!force && tradeCache[asset]) return tradeCache[asset];
-    $('historyLabel').textContent='Loading historical trades…';
-    const payload=await getJson(`${API}/assets/${asset}/trades?limit=20000`);
-    if (!payload || !Array.isArray(payload.trades)) throw new Error(`The ${asset} endpoint returned no trade list.`);
-    const trades=payload.trades.map((t,index)=>({
-      number:index+1,
-      side:String(t.side||'').toUpperCase(),
-      entry:n(t.entry_price), exit:n(t.exit_price), points:n(t.points),
-      entryTime:t.entry_time_utc||'', exitTime:t.exit_time_utc||'',
-      result:String(t.result||'').toUpperCase()
-    })).filter(t => ['LONG','SHORT'].includes(t.side) && t.entry>0 && t.exit>0);
-    if (!trades.length) throw new Error(`No completed ${asset} trades were returned by the API.`);
-    tradeCache[asset]={...payload,trades};
-    $('historyLabel').textContent=`${trades.length.toLocaleString()} closed trades loaded`;
-    return tradeCache[asset];
-  }
-
-  async function boot() {
-    try {
-      // Prevent the parent ETH simulator's service worker from serving stale content on this route.
-      if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(regs=>regs.forEach(reg=>reg.unregister())).catch(()=>{});
-      const health=await getJson(`${API}/health`);
-      if (!health.bot_initialized || !health.historical_data_ready) throw new Error('Trio bot is online, but historical data is not ready yet. Try again shortly.');
-      const assets=await getJson(`${API}/assets`);
-      const available=new Set((assets.assets||[]).map(a=>a.code));
-      if (!Object.keys(ASSETS).every(code=>available.has(code))) throw new Error('The Trio API did not return all three assets.');
-      setApiState('online','TRIO API ONLINE');
-      await loadTrades($('asset').value);
-    } catch (error) {
-      setApiState('offline','API CONNECTION ISSUE');
-      $('historyLabel').textContent='Historical data unavailable';
-      showError(`${error.message} Check the Railway API and try again.`);
-    }
-  }
-
-  function simulate(asset, input, source) {
-    let balance=input.capital, peak=balance, maxDrawdown=0, lowest=balance;
-    let wins=0, losses=0, breakeven=0;
-    const executed=[];
-    let stoppedReason='';
-    source.trades.forEach((trade,index)=>{
-      if (stoppedReason) return;
-      // Match the existing ETHSim scenario convention: historical signed points scaled by size and leverage.
-      const pnl=trade.points*input.size*input.leverage;
-      const before=balance;
-      balance=before+pnl;
-      if (balance<=0) {
-        balance=0;
-        stoppedReason='Simulation stopped because the modeled balance reached zero.';
-      }
-      if (pnl>0) wins++; else if (pnl<0) losses++; else breakeven++;
-      peak=Math.max(peak,balance);
-      maxDrawdown=Math.max(maxDrawdown,peak-balance);
-      lowest=Math.min(lowest,balance);
-      executed.push({...trade,number:index+1,pnl,balanceBefore:before,balanceAfter:balance});
-    });
-    const netPnl=balance-input.capital;
-    return {asset,input,source, trades:executed,startingCapital:input.capital,finalBalance:balance,netPnl,roiPercent:input.capital?(netPnl/input.capital)*100:0,wins,losses,breakeven,winRate:executed.length?(wins/executed.length)*100:0,maxDrawdown,lowest,stoppedReason};
-  }
-
-  function renderChart(result) {
-    const values=[result.startingCapital,...result.trades.map(t=>t.balanceAfter)];
-    const width=900,height=210,left=10,right=10,top=12,bottom=16;
-    const min=Math.min(...values),max=Math.max(...values),range=max-min||1;
-    const x=i=>left+(i/Math.max(1,values.length-1))*(width-left-right);
-    const y=v=>top+((max-v)/range)*(height-top-bottom);
-    const points=values.map((v,i)=>`${x(i).toFixed(2)},${y(v).toFixed(2)}`).join(' ');
-    const zeroY=y(Math.max(min,Math.min(max,0)));
-    const area=`${left},${height-bottom} ${points} ${width-right},${height-bottom}`;
-    const color=result.netPnl>=0?'#087f5b':'#c43b4d';
-    $('chart').innerHTML=`<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Balance curve across ${result.trades.length} historical trades"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".17"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><line x1="${left}" y1="${top+45}" x2="${width-right}" y2="${top+45}" stroke="#edf1f4"/><line x1="${left}" y1="${top+100}" x2="${width-right}" y2="${top+100}" stroke="#edf1f4"/><line x1="${left}" y1="${top+155}" x2="${width-right}" y2="${top+155}" stroke="#edf1f4"/><polygon points="${area}" fill="url(#areaFill)"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="${x(values.length-1)}" cy="${y(values[values.length-1])}" r="4" fill="${color}" vector-effect="non-scaling-stroke"/></svg>`;
-  }
-
-  function render(result) {
-    lastResult=result;
-    $('empty').hidden=true; $('results').hidden=false;
-    const asset=ASSETS[result.asset];
-    $('resultAsset').textContent=`${asset.name.toUpperCase()} · ${asset.symbol} · HISTORICAL REPLAY`;
-    $('resultPeriod').textContent=`${result.trades.length} of ${result.source.trades.length} historical closed trades processed${result.stoppedReason?' · '+result.stoppedReason:''}.`;
-    $('finalBalance').textContent=money(result.finalBalance);
-    $('balanceChange').textContent=`From ${money(result.startingCapital)} starting capital`;
-    $('netPnl').textContent=signedMoney(result.netPnl); $('netPnl').className=result.netPnl>=0?'positive':'negative';
-    $('roi').textContent=pct(result.roiPercent); $('roi').className=result.roiPercent>=0?'positive':'negative';
-    $('winRate').textContent=pct(result.winRate);
-    $('tradeCount').textContent=`${result.trades.length} trades executed`;
-    $('wins').textContent=result.wins; $('losses').textContent=result.losses;
-    $('drawdown').textContent=money(result.maxDrawdown); $('resultLeverage').textContent=`${result.input.leverage}×`;
-    $('chartStart').textContent=money(result.startingCapital); $('lowestBalance').textContent=money(result.lowest); $('chartEnd').textContent=money(result.finalBalance);
-    $('tradeCountBadge').textContent=`${result.trades.length} TRADES`;
-    $('tableFoot').textContent=result.stoppedReason ? `${result.stoppedReason} ${result.source.trades.length-result.trades.length} later trades were not simulated.` : `All ${result.trades.length} returned closed trades were replayed in chronological order.`;
-    const body=$('tradeRows'); body.textContent='';
-    const frag=document.createDocumentFragment();
-    result.trades.forEach(t=>{
-      const tr=document.createElement('tr');
-      const vals=[String(t.number),t.side,num(t.entry,6),num(t.exit,6),`${t.points>0?'+':''}${num(t.points,6)}`,signedMoney(t.pnl),money(t.balanceAfter)];
-      vals.forEach((value,i)=>{const td=document.createElement('td');td.textContent=value;if(i===1)td.className=t.side==='LONG'?'side-long':'side-short';if(i===4||i===5)td.className+=(t.points>0?' positive':t.points<0?' negative':'');tr.appendChild(td);});
-      frag.appendChild(tr);
-    });
-    body.appendChild(frag); renderChart(result);
-    $('results').scrollIntoView({behavior:'smooth',block:'start'});
-  }
-
-  async function run() {
-    clearError();
-    const button=$('run');
-    const asset=$('asset').value;
-    const input={capital:n($('capital').value),size:n($('size').value),leverage:n($('leverage').value)};
-    if (!(input.capital>0) || !(input.size>0) || !(input.leverage>=1 && input.leverage<=125) || !Number.isInteger(input.leverage)) {
-      showError('Enter a positive starting capital and position size. Leverage must be a whole number between 1× and 125×.'); return;
-    }
-    button.disabled=true; button.querySelector('span').textContent='FETCHING HISTORICAL TRADES…';
-    try {
-      setApiState('online','LOADING HISTORICAL DATA');
-      const source=await loadTrades(asset);
-      const result=simulate(asset,input,source);
-      render(result); setApiState('online','TRIO API ONLINE');
-    } catch(error) {
-      setApiState('offline','API CONNECTION ISSUE'); showError(error.message || 'Could not run the simulation.');
-    } finally {
-      button.disabled=false; button.querySelector('span').textContent='RUN SIMULATION';
-    }
-  }
-
-  $('run').addEventListener('click',run);
-  $('asset').addEventListener('change',async()=>{
-    clearError();
-    try { const data=await loadTrades($('asset').value); $('historyLabel').textContent=`${data.trades.length.toLocaleString()} closed trades loaded`; if(lastResult) $('historyLabel').textContent=`${data.trades.length.toLocaleString()} closed trades loaded`; }
-    catch(error) { $('historyLabel').textContent='Historical data unavailable'; showError(error.message); }
-  });
-  document.querySelectorAll('[data-lev]').forEach(button=>button.addEventListener('click',()=>{
-    $('leverage').value=button.dataset.lev;
-    document.querySelectorAll('[data-lev]').forEach(b=>b.classList.toggle('chosen',b===button));
-  }));
-  $('leverage').addEventListener('input',()=>document.querySelectorAll('[data-lev]').forEach(b=>b.classList.toggle('chosen',Number(b.dataset.lev)===Number($('leverage').value))));
-  boot();
+'use strict';
+const API='/api/trio/v1';
+const ASSETS={GOLD:{name:'Gold',symbol:'XAUUSDT'},SILVER:{name:'Silver',symbol:'XAGUSDT'},CRUDE:{name:'Crude',symbol:'CLUSDT'}};
+// Explicit approximate assumptions for a round-trip USDT-margined perpetual.
+const COST={feeRate:0.0005,slippageRate:0.0002,fundingRatePer8h:0.0001};
+const $=id=>document.getElementById(id);const cache={};let currentResult=null;
+const n=v=>{const x=Number(v);return Number.isFinite(x)?x:0};
+const money=v=>(v<0?'-$':'$')+Math.abs(n(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const signed=v=>(v>0?'+':v<0?'-':'')+'$'+Math.abs(n(v)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pct=v=>`${n(v).toFixed(2)}%`;const fmt=(v,d=4)=>n(v).toLocaleString('en-US',{maximumFractionDigits:d});
+function apiState(ok,text){$('apiState').innerHTML=`<i id="apiDot"></i> ${text}`;$('apiState').classList.toggle('online',ok)}
+function error(message){$('error').textContent=message;$('error').hidden=false}function clearError(){$('error').hidden=true;$('error').textContent=''}
+async function getJson(url){const r=await fetch(url,{headers:{Accept:'application/json'},cache:'no-store'});if(!r.ok){let msg='';try{const b=await r.json();msg=b.detail||b.message||''}catch{}throw Error(msg||`API request failed (${r.status})`)}return r.json()}
+function timeMs(t){const v=t.entryTime||t.entry_time_utc||t.entry_time||t.timestamp||'';const ms=typeof v==='number'?(v<1e12?v*1000:v):Date.parse(v);return Number.isFinite(ms)?ms:0}
+function monthKey(t){const ms=timeMs(t);if(!ms)return 'Unknown date';const d=new Date(ms);return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}`}
+function monthLabel(key){if(key==='Unknown date')return key;const [y,m]=key.split('-').map(Number);return new Date(Date.UTC(y,m-1,1)).toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'})}
+async function loadTrades(asset){if(cache[asset])return cache[asset];$('historyLabel').textContent='Loading historical trades…';const payload=await getJson(`${API}/assets/${asset}/trades?limit=20000`);if(!payload||!Array.isArray(payload.trades))throw Error(`The ${asset} endpoint returned no trade list.`);const trades=payload.trades.map((t,i)=>({number:i+1,side:String(t.side||'').toUpperCase(),entry:n(t.entry_price??t.entryPrice??t.entry),exit:n(t.exit_price??t.exitPrice??t.exit),points:n(t.points),entryTime:t.entry_time_utc||t.entryTime||t.entry_time||'',exitTime:t.exit_time_utc||t.exitTime||t.exit_time||'',result:String(t.result||'').toUpperCase()})).filter(t=>['LONG','SHORT'].includes(t.side)&&t.entry>0&&t.exit>0).sort((a,b)=>timeMs(a)-timeMs(b));if(!trades.length)throw Error(`No completed ${asset} trades were returned by the API.`);trades.forEach((t,i)=>t.number=i+1);cache[asset]={...payload,trades};$('historyLabel').textContent=`${trades.length.toLocaleString()} closed trades loaded`;$('loadedCount').textContent=`${trades.length} COMPLETED SIGNALS`;return cache[asset]}
+function simulate(asset,input,source){let balance=input.capital,peak=balance,lowest=balance,wins=0,losses=0,breakeven=0,totalFees=0,totalFunding=0,totalSlippage=0,worst=null,stopped=false;const trades=[];
+ for(const raw of source.trades){if(stopped)break;const before=balance;const signedMove=raw.side==='LONG'?raw.exit-raw.entry:raw.entry-raw.exit;const grossPnl=signedMove*input.size;const entryNotional=raw.entry*input.size,exitNotional=raw.exit*input.size;const fees=(entryNotional+exitNotional)*COST.feeRate;const slippage=(entryNotional+exitNotional)*COST.slippageRate;const heldHours=Math.max(0,(timeMs({...raw,entryTime:raw.exitTime})-timeMs(raw))/3600000);const funding=(entryNotional+exitNotional)/2*COST.fundingRatePer8h*(heldHours/8);const totalCost=fees+slippage+funding;const netPnl=grossPnl-totalCost;const afterRaw=before+netPnl;const after=Math.max(0,afterRaw);const appliedPnl=after-before;balance=after;totalFees+=fees;totalSlippage+=slippage;totalFunding+=funding;if(appliedPnl>0)wins++;else if(appliedPnl<0)losses++;else breakeven++;peak=Math.max(peak,balance);lowest=Math.min(lowest,balance);const t={...raw,number:trades.length+1,grossPnl,fees,funding,slippage,totalCost,pnl:appliedPnl,balanceBefore:before,balanceAfter:balance,lossAmount:Math.max(0,before-balance),lossPct:before>0?Math.max(0,before-balance)/before*100:0};if(t.lossAmount>0&&(!worst||t.lossAmount>worst.lossAmount))worst=t;trades.push(t);if(afterRaw<=0)stopped=true;}
+ const finalBalance=balance,netPnl=finalBalance-input.capital;return{asset,input,source,trades,startingCapital:input.capital,finalBalance,netPnl,roiPercent:netPnl/input.capital*100,wins,losses,breakeven,winRate:trades.length?wins/trades.length*100:0,lowest,totalFees,totalFunding,totalSlippage,worst,stopped};}
+function renderChart(r){const vals=[r.startingCapital,...r.trades.map(t=>t.balanceAfter)];const w=850,h=190,p=10,min=Math.min(...vals),max=Math.max(...vals),range=max-min||1;const x=i=>p+i/Math.max(1,vals.length-1)*(w-p*2),y=v=>p+(max-v)/range*(h-p*2);const pts=vals.map((v,i)=>`${x(i).toFixed(2)},${y(v).toFixed(2)}`).join(' ');const color=r.netPnl>=0?'#0284c7':'#dc2626';$('chart').innerHTML=`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Balance after each historical trade"><line x1="${p}" y1="${h*.25}" x2="${w-p}" y2="${h*.25}" stroke="#e2e8f0"/><line x1="${p}" y1="${h*.5}" x2="${w-p}" y2="${h*.5}" stroke="#e2e8f0"/><line x1="${p}" y1="${h*.75}" x2="${w-p}" y2="${h*.75}" stroke="#e2e8f0"/><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="${x(vals.length-1)}" cy="${y(vals.at(-1))}" r="3.5" fill="${color}"/></svg>`}
+function cell(row,value,cls=''){const td=document.createElement('td');td.textContent=value;if(cls)td.className=cls;row.appendChild(td)}
+function renderMonth(r,key){const list=r.trades.filter(t=>monthKey(t)===key);const pnl=list.reduce((s,t)=>s+t.pnl,0);const wins=list.filter(t=>t.pnl>0).length;const losses=list.filter(t=>t.pnl<0).length;$('monthSummary').textContent=`${list.length} trades · ${signed(pnl)}`;$('monthlySummary').innerHTML=`<div><small>MONTH P&amp;L</small><strong class="${pnl>=0?'trio-positive':'trio-negative'}">${signed(pnl)}</strong></div><div><small>TRADES</small><strong>${list.length}</strong></div><div><small>WINS / LOSSES</small><strong>${wins} / ${losses}</strong></div><div><small>EST. COSTS</small><strong>${money(list.reduce((s,t)=>s+t.totalCost,0))}</strong></div>`;const wrap=$('monthlyTrades');wrap.textContent='';if(!list.length){wrap.innerHTML='<p class="trio-muted">No trades recorded for this month.</p>';return}const table=document.createElement('table');const thead=document.createElement('thead'),hr=document.createElement('tr');['#','ENTRY TIME','SIDE','ENTRY','EXIT','GROSS P&L','EST. COSTS','NET P&L','CAPITAL BEFORE','CAPITAL AFTER'].forEach(v=>cell(hr,v));thead.appendChild(hr);table.appendChild(thead);const tbody=document.createElement('tbody');list.forEach(t=>{const tr=document.createElement('tr');cell(tr,String(t.number));cell(tr,t.entryTime||'—');cell(tr,t.side,t.side==='LONG'?'trio-positive':'trio-negative');cell(tr,fmt(t.entry,5));cell(tr,fmt(t.exit,5));cell(tr,signed(t.grossPnl),t.grossPnl>=0?'trio-positive':'trio-negative');cell(tr,money(t.totalCost));cell(tr,signed(t.pnl),t.pnl>=0?'trio-positive':'trio-negative');cell(tr,money(t.balanceBefore));cell(tr,money(t.balanceAfter));tbody.appendChild(tr)});table.appendChild(tbody);wrap.appendChild(table)}
+function render(r){currentResult=r;$('empty').hidden=true;$('results').hidden=false;const a=ASSETS[r.asset];$('resultAsset').textContent=`${a.name.toUpperCase()} · ${a.symbol} · HISTORICAL REPLAY`;$('resultPeriod').textContent=`${r.trades.length} of ${r.source.trades.length} trades replayed in chronological order${r.stopped?' · stopped when modeled balance reached zero':''}.`;const set=(id,v,cls)=>{const e=$(id);e.textContent=v;if(cls)e.className=cls};set('finalBalance',money(r.finalBalance));set('balanceChange',`From ${money(r.startingCapital)} starting capital`);set('netPnl',signed(r.netPnl),r.netPnl>=0?'trio-positive':'trio-negative');set('roi',pct(r.roiPercent),r.roiPercent>=0?'trio-positive':'trio-negative');set('winRate',pct(r.winRate));set('tradeCount',`${r.trades.length} trades`);set('wins',r.wins);set('losses',r.losses);set('lowestBalance',money(r.lowest));set('tradingFees',money(r.totalFees));set('fundingFees',money(r.totalFunding));set('slippageFees',money(r.totalSlippage));set('resultLeverage',`${r.input.leverage}×`);set('tradeCountBadge',`${r.trades.length} TRADES`);const w=r.worst;if(w){set('worstLoss',money(w.lossAmount),'trio-negative');set('worstLossPct',`${pct(w.lossPct)} of previous capital`);set('worstTradeNumber',`#${w.number}`);set('worstTradeSide',w.side);set('worstBefore',money(w.balanceBefore));set('worstAfter',money(w.balanceAfter));set('worstDiff',money(w.lossAmount),'trio-negative');set('worstDiffPct',pct(w.lossPct));set('worstTradeTitle',`TRADE #${w.number} · ${w.side}`);set('worstTradeSub',`${w.entryTime||'Entry time unavailable'} → ${w.exitTime||'Exit time unavailable'}. Largest single-trade reduction from capital before to capital after.`)}else{['worstLoss','worstBefore','worstAfter','worstDiff'].forEach(id=>set(id,money(0)));set('worstLossPct','No losing trade');set('worstTradeNumber','—');set('worstTradeSide','—');set('worstDiffPct','0.00%');set('worstTradeTitle','NO LOSING TRADE');set('worstTradeSub','No completed trade reduced the modeled capital.')}renderChart(r);const keys=[...new Set(r.trades.map(monthKey))].sort().reverse();const select=$('monthSelect');select.innerHTML='';if(!keys.length){select.innerHTML='<option value="">No months available</option>';$('monthlyTrades').innerHTML='<p class="trio-muted">No trades to show.</p>'}else{keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=monthLabel(k);select.appendChild(o)});renderMonth(r,keys[0])}$('monthSelect').onchange=()=>{if(currentResult&&select.value)renderMonth(currentResult,select.value)};}
+async function run(){clearError();const asset=$('asset').value,input={capital:n($('capital').value),size:n($('size').value),leverage:n($('leverage').value)};if(!(input.capital>0)||!(input.size>0)||!(input.leverage>=1&&input.leverage<=125)||!Number.isInteger(input.leverage)){error('Enter positive capital and position size. Leverage must be a whole number from 1× to 125×.');return}const b=$('run');b.disabled=true;b.textContent='FETCHING HISTORICAL TRADES…';try{apiState(true,'LOADING HISTORICAL DATA');const source=await loadTrades(asset);render(simulate(asset,input,source));apiState(true,'TRIO API ONLINE')}catch(e){apiState(false,'API CONNECTION ISSUE');error(e.message||'Could not run the simulation.')}finally{b.disabled=false;b.textContent='RUN MY SCENARIO ↗'}}
+$('run').addEventListener('click',run);$('asset').addEventListener('change',async()=>{clearError();try{await loadTrades($('asset').value)}catch(e){error(e.message)}});document.querySelectorAll('[data-lev]').forEach(b=>b.addEventListener('click',()=>{$('leverage').value=b.dataset.lev;document.querySelectorAll('[data-lev]').forEach(x=>x.classList.toggle('chosen',x===b))}));$('leverage').addEventListener('input',()=>document.querySelectorAll('[data-lev]').forEach(b=>b.classList.toggle('chosen',Number(b.dataset.lev)===Number($('leverage').value))));
+async function boot(){try{const h=await getJson(`${API}/health`);if(!h.bot_initialized||!h.historical_data_ready)throw Error('Trio API is online, but historical data is not ready.');const a=await getJson(`${API}/assets`);if(!Object.keys(ASSETS).every(k=>(a.assets||[]).some(x=>x.code===k)))throw Error('The API did not return all three assets.');apiState(true,'TRIO API ONLINE');await loadTrades($('asset').value)}catch(e){apiState(false,'API CONNECTION ISSUE');$('historyLabel').textContent='Historical data unavailable';error(`${e.message} Check the Trio API configuration.`)}}boot();
 })();
