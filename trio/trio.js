@@ -1,7 +1,6 @@
 (() => {
   'use strict';
-  // Calls the same-origin Vercel proxy. The Railway API key stays server-side.
-  const API = '/api/trio/v1';
+  const API = 'https://triotrade.up.railway.app/api/trio/v1';
   const ASSETS = {
     GOLD: {name:'Gold', symbol:'XAUUSDT'},
     SILVER: {name:'Silver', symbol:'XAGUSDT'},
