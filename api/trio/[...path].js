@@ -67,15 +67,13 @@ module.exports = async function handler(req, res) {
     return res.status(503).json({ detail: "Trio API proxy is not configured." });
   }
 
-  // Vercel's root catch-all receives /api/trio/v1/... as
-  // req.query.path = ["trio", "v1", ...]. Strip the public proxy prefix.
+  // This nested catch-all serves /api/trio/<path>, so path starts at v1.
   const rawParts = req.query.path;
   const pathParts = Array.isArray(rawParts)
     ? rawParts
     : typeof rawParts === "string"
       ? [rawParts]
       : [];
-  if (pathParts[0] === "trio") pathParts.shift();
 
   if (!pathParts.length || pathParts.some((part) => !/^[a-zA-Z0-9_-]+$/.test(part))) {
     return res.status(404).json({ detail: "Unknown Trio API endpoint." });
