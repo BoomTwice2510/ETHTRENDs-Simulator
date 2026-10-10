@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TrioTrends">
+<link rel="manifest" href="/trio/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/trio/icons/trio-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/trio/icons/trio-180.png">
 <title>TrioTrends Simulator | ETHSim</title>
 <link rel="stylesheet" href="/css/sip.css?v=ethsim-clone-1">
 <link rel="stylesheet" href="/trio/trio.css?v=cost-month-dd-1">
@@ -12,7 +19,7 @@
 <div class="app trio-app">
   <header class="top trio-topbar">
     <div class="brand"><img src="/trio/trio-logo.png" alt="TrioTrade logo"><span>TRIOTRENDs / SIMULATOR</span></div>
-    <div class="top-right"><a class="trio-install" href="/">← BACK TO ETH SIMULATOR</a><div class="live" id="apiState"><i id="apiDot"></i> CONNECTING TO TRIO API</div></div>
+    <div class="top-right"><button class="trio-pwa-install" id="trioInstallBtn" type="button" hidden>INSTALL APP</button><a class="trio-install" href="/">← BACK TO ETH SIMULATOR</a><div class="live" id="apiState"><i id="apiDot"></i> CONNECTING TO TRIO API</div></div>
   </header>
   <section class="hero trio-hero">
     <div class="trio-hero-copy"><div class="trio-kicker">01 · HISTORICAL SIGNAL QUEST</div><h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1><p>Replay TrioTrends' real completed trades across Gold, Silver and Crude. Change capital, position size and leverage, then inspect the balance journey trade by trade.</p><div class="trio-pills"><span>REAL TRADE RECORD</span><span id="loadedCount">LOADING SIGNALS</span><span>HISTORICAL SCENARIO</span></div></div>
@@ -31,7 +38,7 @@
       <p class="trio-model-note">P&amp;L uses signed entry-to-exit price movement × asset units. Leverage affects margin, not fixed-quantity P&amp;L. Fees, funding and slippage are estimates, not exchange billing data.</p>
     </aside>
     <section class="trio-results-column">
-      <div id="empty" class="card trio-empty"><div class="trio-empty-logo"><img src="/trio/trio-logo.png" alt=""></div><div class="trio-kicker">READY WHEN YOU ARE</div><h2>Your capital run starts here.</h2><p>Choose an asset, set your inputs and run the full historical trade sequence to inspect the modeled account value.</p><div class="trio-progress"><i></i><i></i><i></i></div></div>
+      <div id="empty" class="card trio-empty"><div class="trio-kicker">READY WHEN YOU ARE</div><h2>Your capital run starts here.</h2><p>Choose an asset, set your inputs and run the full historical trade sequence to inspect the modeled account value.</p><div class="trio-progress"><i></i><i></i><i></i></div></div>
       <div id="results" hidden>
         <div class="trio-result-heading"><div><div class="trio-kicker" id="resultAsset">GOLD · HISTORICAL REPLAY</div><h2>Scenario results</h2><p id="resultPeriod">Based on historical closed trades.</p></div><span class="trio-badge">HISTORICAL ONLY</span></div>
         <div class="trio-summary">
@@ -50,5 +57,27 @@
   <footer class="trio-footer">TRIOTRENDS SIMULATOR <span>HISTORICAL DATA ONLY · NOT FINANCIAL ADVICE</span></footer>
 </div>
 <script src="/trio/trio.js?v=cost-month-dd-1"></script>
+<script>
+(() => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/trio/sw.js', { scope: '/trio/' }).catch(() => {}));
+  }
+  let installPrompt = null;
+  const installButton = document.getElementById('trioInstallBtn');
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    installPrompt = event;
+    if (installButton) installButton.hidden = false;
+  });
+  if (installButton) installButton.addEventListener('click', async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    installButton.hidden = true;
+  });
+  window.addEventListener('appinstalled', () => { if (installButton) installButton.hidden = true; });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,17 @@
+{
+  "id": "/trio/",
+  "name": "TrioTrends Historical Simulator",
+  "short_name": "TrioTrends",
+  "description": "TrioTrends historical Gold, Silver and Crude trade simulator.",
+  "start_url": "/trio/",
+  "scope": "/trio/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#f8fafc",
+  "icons": [
+    { "src": "/trio/icons/trio-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/trio/icons/trio-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/trio/icons/trio-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
