@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/trio",
+      "destination": "/trio/index.html"
+    },
+    {
       "source": "/api/simulate",
       "destination": "https://ethtrends-backend.up.railway.app/api/v1/simulator"
     }
