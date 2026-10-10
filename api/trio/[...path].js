@@ -59,17 +59,23 @@ module.exports = async function handler(req, res) {
   }
 
   const apiKey = process.env.TRIO_API_KEY;
-  const upstreamBase = (process.env.TRIO_API_URL || "").trim().replace(/\/+$/, "");
+  let upstreamBase = (process.env.TRIO_API_URL || "").trim().replace(/\/+$/, "");
+  // Accept either the Railway service root or a value ending in /api/trio[/v1].
+  // The proxy itself appends /api/trio/<route>, so avoid a duplicated API path.
+  upstreamBase = upstreamBase.replace(/\/api\/trio(?:\/v1)?$/i, "");
   if (!apiKey || !upstreamBase) {
     return res.status(503).json({ detail: "Trio API proxy is not configured." });
   }
 
+  // Vercel's root catch-all receives /api/trio/v1/... as
+  // req.query.path = ["trio", "v1", ...]. Strip the public proxy prefix.
   const rawParts = req.query.path;
   const pathParts = Array.isArray(rawParts)
     ? rawParts
     : typeof rawParts === "string"
       ? [rawParts]
       : [];
+  if (pathParts[0] === "trio") pathParts.shift();
 
   if (!pathParts.length || pathParts.some((part) => !/^[a-zA-Z0-9_-]+$/.test(part))) {
     return res.status(404).json({ detail: "Unknown Trio API endpoint." });
