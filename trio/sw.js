@@ -1,10 +1,10 @@
-const CACHE_NAME = "triotrends-pwa-v2";
+const CACHE_NAME = "triotrade-ethsim-replica-v2";
 const APP_SHELL = [
   "/trio/",
   "/trio/index.html",
   "/trio/manifest.webmanifest",
-  "/trio/trio.css?v=zec-mobile-pwa-2",
-  "/trio/trio.js?v=zec-mobile-pwa-2",
+  "/trio/trio.css?v=ethsim-visual-replica-2",
+  "/trio/trio.js?v=ethsim-visual-replica-2",
   "/trio/icons/trio-192.png",
   "/trio/icons/trio-512.png",
   "/trio/icons/trio-180.png",

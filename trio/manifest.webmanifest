@@ -1,7 +1,7 @@
 {
   "id": "/trio/",
-  "name": "TrioTrends Historical Simulator",
-  "short_name": "TrioTrends",
+  "name": "TrioTrade Historical Simulator",
+  "short_name": "TrioTrade",
   "description": "TrioTrends historical Gold, Silver, Crude and ZEC trade simulator.",
   "start_url": "/trio/",
   "scope": "/trio/",

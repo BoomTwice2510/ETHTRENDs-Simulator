@@ -8,77 +8,85 @@
 .trio-pwa-install{font:800 9px 'JetBrains Mono',monospace;color:var(--trio-blue);text-decoration:none;border:1px solid #bae6fd;border-radius:999px;padding:8px 10px;background:#f0f9ff;cursor:pointer}.trio-pwa-install[hidden]{display:none!important}
 @media(max-width:680px){.trio-pwa-install{font-size:7px;padding:6px}}
 
-/* Mobile-first PWA hardening: prevent page-level horizontal overflow. */
-html,body{width:100%;max-width:100%;overflow-x:clip}
-body{margin:0;-webkit-text-size-adjust:100%;overscroll-behavior-x:none}
-.trio-app,.trio-app *{min-width:0}
-.trio-app{width:100%;max-width:1180px;overflow-x:clip}
-.trio-topbar,.trio-hero,.trio-layout,.trio-results-column,.trio-summary,.trio-risk-grid,.trio-month-summary{min-width:0;max-width:100%}
-.trio-monthly-trades{max-width:100%;width:100%;overflow-x:auto;overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
-.trio-monthly-trades table{width:max-content;min-width:760px}
-.trio-chart{width:100%;max-width:100%;min-width:0}
-.trio-chart svg{max-width:100%}
-.trio-app img,.trio-app svg{max-width:100%}
-.trio-app input,.trio-app select,.trio-app button{max-width:100%;font-size:16px}
-.trio-app .field input,.trio-app .field select,.trio-month-row select{font-size:16px}
-@media(max-width:680px){
-  .trio-app{padding:calc(10px + env(safe-area-inset-top)) 12px calc(24px + env(safe-area-inset-bottom));}
-  .trio-topbar{display:flex;flex-direction:column;align-items:stretch;gap:9px;margin-bottom:12px}
-  .trio-app .brand{font-size:11px;letter-spacing:0}
-  .trio-topbar .top-right{display:flex;justify-content:flex-start;align-items:center;gap:7px;width:100%}
-  .trio-install,.trio-pwa-install{font-size:10px;padding:8px 10px}
-  .trio-app .live{font-size:9px;overflow-wrap:anywhere}
-  .trio-hero{display:block;padding:19px 16px;border-radius:16px;min-height:0!important}
-  .trio-hero-copy{max-width:100%;width:100%}
-  .trio-hero h1{font-size:clamp(25px,7.8vw,36px);line-height:1.02;overflow-wrap:anywhere;margin:12px 0}
-  .trio-hero p{font-size:12px;line-height:1.6}
-  .trio-hero-mark{display:none}
-  .trio-pills{gap:5px;margin-top:12px}
-  .trio-pills span,.trio-badge{font-size:8px;line-height:1.25}
-  .trio-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:12px}
-  .trio-controls{padding:14px;border-radius:14px}
-  .trio-section-head{align-items:flex-start}
-  .trio-section-head h2,.trio-section-head h3{font-size:17px}
+/* ETHsim visual parity: same white canvas, blue/pink accents, roomy cards and mobile-first flow. */
+.trio-app{max-width:1180px;margin:0 auto;padding:18px 18px 40px;color:#111;font-family:Inter,system-ui,sans-serif}
+.trio-app .trio-hero{min-height:300px;border-radius:24px;padding:30px 32px;background:linear-gradient(135deg,#f8fafc,#f1f5f9 58%,#e2e8f0);border-color:#cbd5e1;box-shadow:0 12px 30px rgba(0,0,0,.04)}
+.trio-app .trio-hero h1{font-size:clamp(34px,5.8vw,62px);line-height:.98;letter-spacing:-.045em;margin:12px 0 15px}
+.trio-app .trio-hero p{font-size:13px;line-height:1.7;color:#334155}
+.trio-app .trio-hero-mark img{width:100px;height:100px}
+.trio-app .card{border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.04)}
+.trio-app .trio-controls{padding:16px}
+.trio-app .trio-section-head h2,.trio-app .trio-section-head h3{font-size:15px}
+.trio-app .trio-metric{border-radius:11px;padding:12px;background:#f8fafc}
+.trio-app .trio-monthly-trades{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.trio-app .trio-monthly-trades table{min-width:680px}
+@media(max-width:760px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .trio-app{width:100%;max-width:100%;padding:10px 8px 30px;overflow-x:clip}
+  .trio-app .trio-topbar{display:flex;flex-direction:column;align-items:stretch;gap:9px;margin-bottom:10px}
+  .trio-app .brand{font-size:12px;gap:8px}
+  .trio-app .brand img{width:32px;height:32px}
+  .trio-app .trio-topbar .top-right{display:flex;width:100%;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:6px}
+  .trio-app .trio-install,.trio-app .trio-pwa-install{font-size:9px;padding:9px 11px}
+  .trio-app .live{font-size:8px}
+  .trio-app .trio-hero{display:block;min-height:0;padding:22px 16px 18px;border-radius:22px;position:relative}
+  .trio-app .trio-hero-copy{max-width:100%;position:relative;z-index:1}
+  .trio-app .trio-hero h1{font-size:clamp(31px,9vw,43px);max-width:100%;margin:13px 0 12px;line-height:.98}
+  .trio-app .trio-hero p{font-size:12px;line-height:1.65;max-width:100%;padding-right:0}
+  .trio-app .trio-hero-mark{display:none}
+  .trio-app .trio-pills{gap:6px;margin-top:13px}
+  .trio-app .trio-pills span{font-size:7px;padding:7px 8px}
+  .trio-app .trio-layout{display:flex;flex-direction:column;width:100%;gap:12px;margin-top:12px}
+  .trio-app .trio-controls,.trio-app .trio-results-column{width:100%;min-width:0;max-width:100%}
+  .trio-app .trio-controls{position:static;padding:15px;border-radius:18px}
+  .trio-app .trio-section-head{align-items:center;margin-bottom:13px}
+  .trio-app .trio-section-head h2,.trio-app .trio-section-head h3{font-size:17px}
   .trio-app .field{margin-top:13px}
-  .trio-app .field label,.trio-month-label{font-size:10px}
-  .trio-app .field input,.trio-app .field select,.trio-month-row select{height:46px;padding:0 12px;border-radius:11px}
-  .trio-quick-lev button{font-size:12px;padding:10px 4px}
-  .trio-data-note{padding:11px}
-  .trio-data-note strong{font-size:11px}
-  .trio-data-note small,.trio-model-note{font-size:10px}
-  .trio-app .run{font-size:11px;padding:15px 12px;border-radius:11px}
-  .trio-result-heading{align-items:flex-start;flex-direction:column;gap:6px}
-  .trio-result-heading h2{font-size:23px}
-  .trio-result-heading p{font-size:11px}
-  .trio-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .trio-metric{padding:11px 10px;border-radius:11px}
-  .trio-metric small{font-size:8px;line-height:1.4}
-  .trio-metric strong{font-size:clamp(13px,4vw,18px);line-height:1.25;overflow-wrap:anywhere;word-break:break-word}
-  .trio-metric em{font-size:9px;line-height:1.45}
-  .trio-risk-card,.trio-chart-card,.trio-month-card{padding:12px;margin-top:11px;border-radius:14px}
-  .trio-risk-card>p{font-size:11px}
-  .trio-risk-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .trio-risk-grid>div{padding:10px}
-  .trio-risk-grid small,.trio-month-summary small{font-size:8px;line-height:1.35}
-  .trio-risk-grid strong{font-size:12px;overflow-wrap:anywhere;word-break:break-word}
-  .trio-chart{height:180px}
-  .trio-month-row{display:flex;flex-direction:column;align-items:stretch;gap:7px}
-  .trio-month-row select{width:100%;max-width:none}
-  .trio-month-row span{font-size:10px;line-height:1.5}
-  .trio-month-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .trio-month-summary>div{padding:10px}
-  .trio-month-summary strong{font-size:11px;overflow-wrap:anywhere;word-break:break-word}
-  .trio-monthly-trades table{min-width:760px}
-  .trio-monthly-trades th{font-size:9px}
-  .trio-monthly-trades td{font-size:10px;padding:10px}
-  .trio-disclaimer{padding:12px}
-  .trio-disclaimer strong{font-size:9px;line-height:1.4}
-  .trio-disclaimer p{font-size:10px;line-height:1.6}
-  .trio-footer{font-size:8px;line-height:1.5;overflow-wrap:anywhere}
+  .trio-app .field label,.trio-app .trio-month-label{font-size:9px}
+  .trio-app .field input,.trio-app .field select,.trio-app .trio-month-row select{height:46px;font-size:14px;border-radius:11px;padding:0 12px;max-width:100%}
+  .trio-app .trio-quick-lev button{padding:10px 3px;font-size:10px}
+  .trio-app .trio-data-note{padding:12px;border-radius:11px}
+  .trio-app .trio-data-note strong{font-size:10px}
+  .trio-app .trio-data-note small,.trio-app .trio-model-note{font-size:10px;line-height:1.55}
+  .trio-app .run{font-size:11px;padding:15px;border-radius:11px}
+  .trio-app .trio-result-heading{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin:8px 2px 12px}
+  .trio-app .trio-result-heading h2{font-size:27px}
+  .trio-app .trio-result-heading p{font-size:10px}
+  .trio-app .trio-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .trio-app .trio-metric{min-width:0;padding:11px 10px;border-radius:12px}
+  .trio-app .trio-metric small{font-size:7px;line-height:1.4}
+  .trio-app .trio-metric strong{font-size:clamp(13px,4.2vw,18px);overflow-wrap:anywhere;white-space:normal}
+  .trio-app .trio-metric em{font-size:8px;line-height:1.4}
+  .trio-app .trio-risk-card,.trio-app .trio-chart-card,.trio-app .trio-month-card{padding:13px;margin-top:11px;border-radius:17px}
+  .trio-app .trio-risk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trio-app .trio-risk-grid>div{padding:10px;border-radius:10px}
+  .trio-app .trio-risk-grid strong{font-size:11px;overflow-wrap:anywhere}
+  .trio-app .trio-chart{height:180px;max-width:100%}
+  .trio-app .trio-month-row{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+  .trio-app .trio-month-row select{width:100%;max-width:none}
+  .trio-app .trio-month-row span{font-size:10px}
+  .trio-app .trio-month-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .trio-app .trio-month-summary>div{padding:10px;border-radius:10px;min-width:0}
+  .trio-app .trio-month-summary strong{font-size:11px;overflow-wrap:anywhere}
+  .trio-app .trio-monthly-trades{border:0;overflow:visible;margin-top:10px}
+  .trio-app .trio-monthly-trades table{display:block;width:100%;min-width:0;border:0}
+  .trio-app .trio-monthly-trades thead{display:none}
+  .trio-app .trio-monthly-trades tbody{display:grid;gap:8px}
+  .trio-app .trio-monthly-trades tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;padding:8px 11px;border:1px solid #cbd5e1;border-radius:13px;background:#f8fafc}
+  .trio-app .trio-monthly-trades td{display:flex;flex-direction:column;gap:4px;min-width:0;padding:8px 0;border:0;white-space:normal;overflow-wrap:anywhere;font-size:10px;line-height:1.35}
+  .trio-app .trio-monthly-trades td:before{color:#64748b;font:800 7px 'JetBrains Mono',monospace;letter-spacing:.04em}
+  .trio-app .trio-monthly-trades td:nth-child(1):before{content:'TRADE'}
+  .trio-app .trio-monthly-trades td:nth-child(2):before{content:'ENTRY TIME'}
+  .trio-app .trio-monthly-trades td:nth-child(3):before{content:'SIDE'}
+  .trio-app .trio-monthly-trades td:nth-child(4):before{content:'ENTRY'}
+  .trio-app .trio-monthly-trades td:nth-child(5):before{content:'EXIT'}
+  .trio-app .trio-monthly-trades td:nth-child(6):before{content:'GROSS P&L'}
+  .trio-app .trio-monthly-trades td:nth-child(7):before{content:'EST. COSTS'}
+  .trio-app .trio-monthly-trades td:nth-child(8):before{content:'NET P&L'}
+  .trio-app .trio-monthly-trades td:nth-child(9):before{content:'CAPITAL BEFORE'}
+  .trio-app .trio-monthly-trades td:nth-child(10):before{content:'CAPITAL AFTER'}
+  .trio-app .trio-disclaimer{padding:12px;border-radius:12px}
+  .trio-app .trio-disclaimer p{font-size:9px}
+  .trio-app .trio-footer{display:flex;flex-direction:column;gap:5px;font-size:7px;overflow-wrap:anywhere}
 }
-@media(max-width:360px){
-  .trio-app{padding-left:9px;padding-right:9px}
-  .trio-summary{grid-template-columns:minmax(0,1fr)}
-  .trio-hero h1{font-size:25px}
-  .trio-topbar .top-right{flex-wrap:wrap}
-}
+@media(max-width:360px){.trio-app .trio-hero h1{font-size:29px}.trio-app .trio-summary{gap:5px}.trio-app .trio-metric{padding:9px 8px}}
