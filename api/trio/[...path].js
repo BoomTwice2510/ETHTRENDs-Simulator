@@ -83,7 +83,7 @@ module.exports = async function handler(req, res) {
   const allowed =
     route === "v1/health" ||
     route === "v1/assets" ||
-    /^v1\/assets\/(GOLD|SILVER|CRUDE)\/trades$/.test(route);
+    /^v1\/assets\/(GOLD|SILVER|CRUDE|ZEC)\/trades$/.test(route);
 
   if (!allowed) {
     return res.status(404).json({ detail: "Unknown Trio API endpoint." });

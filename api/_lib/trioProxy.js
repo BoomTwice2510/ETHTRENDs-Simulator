@@ -45,7 +45,7 @@ module.exports = async function trioProxy(req, res, routeParts) {
   if (!Array.isArray(routeParts) || !routeParts.length || routeParts.some(p => typeof p !== "string" || !/^[A-Za-z0-9_-]+$/.test(p)))
     return res.status(404).json({detail:"Unknown Trio API endpoint."});
   const route = routeParts.join("/");
-  const allowed = route === "v1/health" || route === "v1/assets" || /^v1\/assets\/(GOLD|SILVER|CRUDE)\/trades$/.test(route);
+  const allowed = route === "v1/health" || route === "v1/assets" || /^v1\/assets\/(GOLD|SILVER|CRUDE|ZEC)\/trades$/.test(route);
   if (!allowed) return res.status(404).json({detail:"Unknown Trio API endpoint."});
   const target = new URL(`${upstreamBase}/api/trio/${route}`);
   if (route.endsWith("/trades")) {

@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/trio/icons/trio-180.png">
 <title>TrioTrends Simulator | ETHSim</title>
 <link rel="stylesheet" href="/css/sip.css?v=ethsim-clone-1">
-<link rel="stylesheet" href="/trio/trio.css?v=cost-month-dd-1">
+<link rel="stylesheet" href="/trio/trio.css?v=zec-mobile-pwa-2">
 </head>
 <body>
 <div class="app trio-app">
@@ -22,17 +22,17 @@
     <div class="top-right"><button class="trio-pwa-install" id="trioInstallBtn" type="button" hidden>INSTALL APP</button><a class="trio-install" href="/">← BACK TO ETH SIMULATOR</a><div class="live" id="apiState"><i id="apiDot"></i> CONNECTING TO TRIO API</div></div>
   </header>
   <section class="hero trio-hero">
-    <div class="trio-hero-copy"><div class="trio-kicker">01 · HISTORICAL SIGNAL QUEST</div><h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1><p>Replay TrioTrends' real completed trades across Gold, Silver and Crude. Change capital, position size and leverage, then inspect the balance journey trade by trade.</p><div class="trio-pills"><span>REAL TRADE RECORD</span><span id="loadedCount">LOADING SIGNALS</span><span>HISTORICAL SCENARIO</span></div></div>
+    <div class="trio-hero-copy"><div class="trio-kicker">01 · HISTORICAL SIGNAL QUEST</div><h1>WHAT IF YOU<br><span>FOLLOWED EVERY SIGNAL?</span></h1><p>Replay TrioTrends' real completed trades across Gold, Silver, Crude and ZEC. Change capital, position size and leverage, then inspect the balance journey trade by trade.</p><div class="trio-pills"><span>REAL TRADE RECORD</span><span id="loadedCount">LOADING SIGNALS</span><span>HISTORICAL SCENARIO</span></div></div>
     <div class="trio-hero-mark"><img src="/trio/trio-logo.png" alt="TrioTrade Gold Silver Crude Oil"></div>
   </section>
   <main class="trio-layout">
     <aside class="card trio-controls">
       <div class="trio-section-head"><div><div class="trio-kicker">BUILD YOUR SCENARIO</div><h2>Your rules</h2></div><span class="trio-step">01 / 02</span></div>
-      <div class="field"><label for="asset">SELECT ASSET</label><select id="asset"><option value="GOLD">Gold · XAUUSDT</option><option value="SILVER">Silver · XAGUSDT</option><option value="CRUDE">Crude · CLUSDT</option></select></div>
+      <div class="field"><label for="asset">SELECT ASSET</label><select id="asset"><option value="GOLD">Gold · XAUUSDT</option><option value="SILVER">Silver · XAGUSDT</option><option value="CRUDE">Crude · CLUSDT</option><option value="ZEC">ZEC · ZECUSDT</option></select></div>
       <div class="field"><label for="capital">STARTING CAPITAL · USDT</label><input id="capital" type="number" min="0.01" step="any" value="1000" inputmode="decimal"></div>
       <div class="field"><label for="size">POSITION SIZE · ASSET UNITS</label><input id="size" type="number" min="0.000001" step="any" value="0.01" inputmode="decimal"></div>
       <div class="field"><label for="leverage">LEVERAGE</label><input id="leverage" type="number" min="1" max="125" step="1" value="10" inputmode="numeric"><div class="trio-quick-lev"><button type="button" data-lev="5">5×</button><button type="button" data-lev="10" class="chosen">10×</button><button type="button" data-lev="20">20×</button><button type="button" data-lev="50">50×</button></div></div>
-      <div class="trio-data-note"><strong id="historyLabel">Loading historical trades…</strong><small>Closed trades fetched from the live Trio API. No sample trades.</small></div>
+      <div class="trio-data-note"><strong id="historyLabel">Loading historical trades…</strong><small id="assetRuleNote">Completed trades come from the TrioTrade backend. ZEC historical exits apply its dedicated 2% stop-loss; Gold, Silver and Crude keep their own strategy rules.</small></div>
       <div id="error" class="trio-error" role="alert" hidden></div>
       <button id="run" class="run" type="button">RUN MY SCENARIO ↗</button>
       <p class="trio-model-note">P&amp;L uses signed entry-to-exit price movement × asset units. Leverage affects margin, not fixed-quantity P&amp;L. Fees, funding and slippage are estimates, not exchange billing data.</p>
@@ -55,7 +55,7 @@
   </main>
   <footer class="trio-footer">TRIOTRENDS SIMULATOR <span>HISTORICAL DATA ONLY · NOT FINANCIAL ADVICE</span></footer>
 </div>
-<script src="/trio/trio.js?v=cost-month-dd-1"></script>
+<script src="/trio/trio.js?v=zec-mobile-pwa-2"></script>
 <script>
 (() => {
   if ('serviceWorker' in navigator) {

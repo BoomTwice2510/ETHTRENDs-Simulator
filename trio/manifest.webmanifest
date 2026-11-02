@@ -2,7 +2,7 @@
   "id": "/trio/",
   "name": "TrioTrends Historical Simulator",
   "short_name": "TrioTrends",
-  "description": "TrioTrends historical Gold, Silver and Crude trade simulator.",
+  "description": "TrioTrends historical Gold, Silver, Crude and ZEC trade simulator.",
   "start_url": "/trio/",
   "scope": "/trio/",
   "display": "standalone",
