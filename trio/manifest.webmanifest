@@ -2,16 +2,31 @@
   "id": "/trio/",
   "name": "TrioTrade Historical Simulator",
   "short_name": "TrioTrade",
-  "description": "TrioTrends historical Gold, Silver, Crude and ZEC trade simulator.",
+  "description": "Historical trade simulator for Gold, Silver, Crude and ZEC.",
   "start_url": "/trio/",
   "scope": "/trio/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#f8fafc",
-  "theme_color": "#f8fafc",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
-    { "src": "/trio/icons/trio-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/trio/icons/trio-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/trio/icons/trio-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/trio/icons/trio-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/trio/icons/trio-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/trio/icons/trio-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
